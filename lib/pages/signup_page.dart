@@ -1,6 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'home_page.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -16,30 +15,39 @@ class _SignUpPageState extends State<SignUpPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Sign Up Page'),
+        automaticallyImplyLeading: false,
+        title: const Center(child: Text('Sign Up')),
       ),
       body: Center(
         child: Padding(
-          padding: EdgeInsets.all(16.0),
+          padding: const EdgeInsets.all(16.0),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
                 controller: _usernameController,
-                decoration: InputDecoration(labelText: 'Username'),
+                decoration: const InputDecoration(labelText: 'Email'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               TextField(
                 controller: _passwordController,
                 obscureText: true,
-                decoration: InputDecoration(labelText: 'Password'),
+                decoration: const InputDecoration(labelText: 'Password'),
               ),
-              SizedBox(height: 20),
+              const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
                   await _signUp();
                 },
-                child: Text('Sign Up'),
+                child: const Text('Sign Up'),
+              ),
+              const SizedBox(height: 10),
+              TextButton(
+                onPressed: () {
+                  // Navigate to the login page when "Already have an account?" is pressed
+                  Navigator.pushReplacementNamed(context, '/');
+                },
+                child: const Text('Already have an account? Log In'),
               ),
             ],
           ),
