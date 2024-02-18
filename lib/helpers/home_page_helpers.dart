@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradproj2/pages/tickets.dart';
 
 Widget buildBlueSection(BuildContext context) {
   return Container(
@@ -54,24 +55,26 @@ Drawer buildDrawer(BuildContext context) {
         children: <Widget>[
           ListTile(
             title: const Text(
-              'Item 1',
+              'Tickets',
               style: TextStyle(
                 color: Colors.white,
               ),
             ),
-            onTap: () {
-              Navigator.pop(context);
+           onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(context, MaterialPageRoute(builder: (_) => TicketsPage())); // Navigate to Tickets page
             },
           ),
-          ListTile(
+           ListTile(
             title: const Text(
-              'Item 2',
+              'Booked Tickets',
               style: TextStyle(
                 color: Colors.white,
               ),
             ),
-            onTap: () {
-              Navigator.pop(context);
+           onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(context, MaterialPageRoute(builder: (_) => TicketsPage())); // Navigate to Tickets page
             },
           ),
           // Add more list tiles as needed
