@@ -3,12 +3,15 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 class TicketDetailsPage extends StatelessWidget {
   final Map<String, dynamic> ticketData;
-    final String documentID;
-      final bool isBooked;
+  final String documentID;
+  final bool isBooked;
 
-
-
-  const TicketDetailsPage({Key? key, required this.ticketData,required this.documentID,required this.isBooked}) : super(key: key);
+  const TicketDetailsPage({
+    Key? key,
+    required this.ticketData,
+    required this.documentID,
+    required this.isBooked,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,49 +42,87 @@ class TicketDetailsPage extends StatelessWidget {
               'Date: ${ticketData['flightTime']}',
               style: const TextStyle(fontSize: 16),
             ),
-
             Text(
               'Price: ${ticketData['ticketPrice']}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
             // Add more details as needed based on your Firestore schema
 
-            // Booking and Cancel buttons
-            ElevatedButton(
-              onPressed: () {
-                _bookTicket(context, ticketData,documentID);
-              },
-              child: const Text('Book'),
-            ),
-            ElevatedButton(
-              onPressed: () {
-                // Handle canceling ticket
-              },
-              child: const Text('Cancel'),
-            ),
+            // Booking button conditionally shown
+            if (!isBooked)
+              ElevatedButton(
+                onPressed: () {
+                  _bookTicket(context, ticketData, documentID);
+                },
+                child: const Text('Book'),
+              ),
+               if (isBooked)
+              ElevatedButton(
+                onPressed: () {
+                  _undoBooking(context, documentID);
+                },
+                child: const Text('Undo Booking'),
+              ),
           ],
         ),
       ),
     );
   }
 
-Future<void> _bookTicket(BuildContext context, Map<String, dynamic> ticketData, String documentID) async {
-  try {
-    // Implement the logic for booking the ticket
-    // For example, update the Firestore database to mark the ticket as booked for the specific user
+Future<void> _bookTicket(BuildContext context,
+      Map<String, dynamic> ticketData, String documentID) async {
+    try {
+      print('Booking document with $documentID');
 
-    // Assuming you have a 'booked' field in Firestore for each ticket
-    await FirebaseFirestore.instance
-        .collection('Tickets')
-        .doc(documentID) // Use the provided document ID
-        .update({'booked': true});
+      await FirebaseFirestore.instance
+          .collection('Tickets')
+          .doc(documentID)
+          .update({'booked': true});
 
-    // Once booked, you may want to navigate back to the TicketsPage or show a success message
-    Navigator.pop(context); // Navigate back to TicketsPage
-  } catch (e) {
-    // Handle any errors that occur during booking
-    print('Error booking ticket: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Ticket booked successfully!'),
+        ),
+      );
+
+      // Optionally, navigate to a new screen or pop the current screen
+      Navigator.pop(context);
+    } catch (e) {
+      // Handle any errors that occur during booking
+      print('Error booking ticket: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Failed to book the ticket. Please try again.'),
+        ),
+      );
+    }
   }
-}
+  Future<void> _undoBooking(BuildContext context, String documentID) async {
+    try {
+      print('Undoing booking for document with $documentID');
+
+      await FirebaseFirestore.instance
+          .collection('Tickets')
+          .doc(documentID)
+          .update({'booked': false});
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Booking undone successfully!'),
+        ),
+      );
+
+      Navigator.pop(context);
+    } catch (e) {
+      // Handle any errors that occur during undoing booking
+      print('Error undoing booking: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: const Text('Failed to undo booking. Please try again.'),
+        ),
+      );
+    }
+  }
+
 
 }
