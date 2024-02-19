@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return const MaterialApp(
-      debugShowCheckedModeBanner: false, // Set this to false to hide the debug banner
+      debugShowCheckedModeBanner: false, 
       title: 'Login App',
       initialRoute: Routes.login,
       onGenerateRoute: Routes.generateRoute,
