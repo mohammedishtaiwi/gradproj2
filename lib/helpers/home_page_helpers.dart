@@ -77,8 +77,7 @@ Drawer buildDrawer(BuildContext context) {
               Navigator.pop(context); // Close the drawer
               Navigator.push(context, MaterialPageRoute(builder: (_) => BookedTicketsPage())); // Navigate to Tickets page
             },
-          ),
-          // Add more list tiles as needed
+          ), 
         ],
       ),
     ),
