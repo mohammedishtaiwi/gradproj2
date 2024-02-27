@@ -5,7 +5,7 @@ import 'package:gradproj2/pages/tickets.dart';
 
 Widget buildBlueSection(BuildContext context) {
   return Container(
-    color: Colors.lightBlue,
+    color: Colors.blueGrey,
     height: MediaQuery.of(context).size.height / 4,
     child: const Center(
       child: Text(
