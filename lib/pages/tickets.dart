@@ -84,7 +84,7 @@ class TicketsPage extends StatelessWidget {
                         ),
                       );
                     } else {
-                      // Return an empty container for booked tickets
+                      
                       return Container();
                     }
                   })
