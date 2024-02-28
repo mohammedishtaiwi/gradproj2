@@ -1,5 +1,5 @@
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginPage extends StatefulWidget {
   @override
@@ -37,7 +37,7 @@ class _LoginPageState extends State<LoginPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
-                  await _signInWithEmailAndPassword();
+                  await _signInWithEmailAndPassword(context);
                 },
                 child: const Text('Login'),
               ),
@@ -55,21 +55,7 @@ class _LoginPageState extends State<LoginPage> {
     );
   }
 
-  // Future<void> _signInWithEmailAndPassword() async {
-  //   try {
-  //     await _auth.signInWithEmailAndPassword(
-  //       email: _emailController.text,
-  //       password: _passwordController.text,
-  //     );
-
-  //     // Handle successful login (e.g., navigate to home page)
-  //     Navigator.pushReplacementNamed(context, '/home');
-  //   } catch (e) {
-  //     print('Failed to sign in: $e');
-  //     // Handle login failure (show a snackbar, etc.)
-  //   }
-  // }
-  Future<void> _signInWithEmailAndPassword() async {
+  Future<void> _signInWithEmailAndPassword(BuildContext context) async {
     try {
       UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
@@ -108,8 +94,35 @@ class _LoginPageState extends State<LoginPage> {
             'Failed to sign in: User not found or other authentication error.');
       }
     } catch (e) {
-      // Handle login failure (show a snackbar, etc.)
       print('Failed to sign in: $e');
+      // Handle login failure (show a popup window)
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text(
+                  'Error: Invalid username or password',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
     }
   }
 
@@ -126,7 +139,7 @@ class _LoginPageState extends State<LoginPage> {
         // User exists, navigate to the home page
         Navigator.pushReplacementNamed(context, '/home');
       } else {
-        // User doesn't exist, prompt them to sign up
+        // User doesn't exist, navigate to the sign-up page hon mu zabet
         Navigator.pushReplacementNamed(context, '/signup');
       }
     } catch (e) {

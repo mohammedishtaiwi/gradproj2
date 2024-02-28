@@ -1,10 +1,11 @@
 import 'package:flutter/material.dart';
+import 'package:gradproj2/Chatbot/chat_bot.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/tickets.dart';
 
 Widget buildBlueSection(BuildContext context) {
   return Container(
-    color: Colors.lightBlue,
+    color: Colors.blueGrey,
     height: MediaQuery.of(context).size.height / 4,
     child: const Center(
       child: Text(
@@ -35,7 +36,8 @@ Widget buildDividerBox(BuildContext context) {
   );
 }
 
-PopupMenuButton<String> buildPopupMenuButton(BuildContext context, Function(String) onSelected) {
+PopupMenuButton<String> buildPopupMenuButton(
+    BuildContext context, Function(String) onSelected) {
   return PopupMenuButton<String>(
     onSelected: onSelected,
     itemBuilder: (context) => [
@@ -61,23 +63,46 @@ Drawer buildDrawer(BuildContext context) {
                 color: Colors.white,
               ),
             ),
-           onTap: () {
+            onTap: () {
               Navigator.pop(context); // Close the drawer
-              Navigator.push(context, MaterialPageRoute(builder: (_) => TicketsPage())); // Navigate to Tickets page
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          TicketsPage())); // Navigate to Tickets page
             },
           ),
-           ListTile(
+          ListTile(
             title: const Text(
               'Booked Tickets',
               style: TextStyle(
                 color: Colors.white,
               ),
             ),
-           onTap: () {
+            onTap: () {
               Navigator.pop(context); // Close the drawer
-              Navigator.push(context, MaterialPageRoute(builder: (_) => BookedTicketsPage())); // Navigate to Tickets page
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          BookedTicketsPage())); // Navigate to Tickets page
             },
-          ), 
+          ),
+          ListTile(
+            title: const Text(
+              'Chat',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+            onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => Home())); // Navigate to Tickets page
+            },
+          ),
         ],
       ),
     ),
