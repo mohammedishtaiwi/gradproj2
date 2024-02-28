@@ -57,13 +57,42 @@ class _LoginPageState extends State<LoginPage> {
 
   Future<void> _signInWithEmailAndPassword(BuildContext context) async {
     try {
-      await _auth.signInWithEmailAndPassword(
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
         email: _emailController.text,
         password: _passwordController.text,
       );
 
-      // Handle successful login (e.g., navigate to home page)
-      Navigator.pushReplacementNamed(context, '/home');
+      User? user = userCredential.user;
+
+      // Check if the user exists and their email is verified
+      if (user != null && user.emailVerified) {
+        // Navigate to the home page on successful login
+        Navigator.pushReplacementNamed(context, '/home');
+      } else if (user != null && !user.emailVerified) {
+        // Display a message to inform the user to verify their email
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Email not verified'),
+              content: Text(
+                  'Your email is not verified. Please check your email and verify your account before logging in.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        // Handle the case where the login fails (show a snackbar, etc.)
+        print(
+            'Failed to sign in: User not found or other authentication error.');
+      }
     } catch (e) {
       print('Failed to sign in: $e');
       // Handle login failure (show a popup window)
