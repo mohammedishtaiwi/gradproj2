@@ -53,10 +53,52 @@ Drawer buildDrawer(BuildContext context) {
   return Drawer(
     child: Container(
       color: const Color.fromARGB(255, 48, 48, 48),
-      child: ListView(
-        padding: const EdgeInsets.only(top: 50),
+      child: Column(
         children: <Widget>[
+          Container(
+            padding: EdgeInsets.only(
+              top: MediaQuery.of(context).padding.top,
+              bottom: 8,
+            ),
+            constraints: const BoxConstraints(maxWidth: 288),
+            decoration: BoxDecoration(
+              color: const Color.fromARGB(255, 48, 48, 48),
+              borderRadius: BorderRadius.circular(30),
+            ),
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                children: [
+                  CircleAvatar(
+                    backgroundColor: Colors.white.withOpacity(0.2),
+                    foregroundColor: Colors.white,
+                    child: const Icon(Icons.person_outline),
+                  ),
+                  const SizedBox(width: 8),
+                  Column(
+                    mainAxisSize: MainAxisSize.min,
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text(
+                        "Profile Name",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 17,
+                          fontFamily: "Inter",
+                        ),
+                      ),
+                      const SizedBox(height: 2),
+                    ],
+                  ),
+                ],
+              ),
+            ),
+          ),
+          // Divider between profile and menu items
+          Divider(color: Colors.white),
+          //MENU ITEMS
           ListTile(
+            leading: Icon(Icons.event),
             title: const Text(
               'Tickets',
               style: TextStyle(
@@ -73,6 +115,7 @@ Drawer buildDrawer(BuildContext context) {
             },
           ),
           ListTile(
+            leading: Icon(Icons.confirmation_number),
             title: const Text(
               'Booked Tickets',
               style: TextStyle(
@@ -89,6 +132,7 @@ Drawer buildDrawer(BuildContext context) {
             },
           ),
           ListTile(
+            leading: Icon(Icons.chat),
             title: const Text(
               'Chat',
               style: TextStyle(
@@ -102,6 +146,15 @@ Drawer buildDrawer(BuildContext context) {
                   MaterialPageRoute(
                       builder: (_) => Home())); // Navigate to Tickets page
             },
+          ),
+          ListTile(
+            leading: Icon(Icons.person),
+            title: const Text(
+              'Profile',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
           ),
         ],
       ),
