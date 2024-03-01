@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/Chatbot/chat_bot.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
+import 'package:gradproj2/pages/profile_page.dart';
 import 'package:gradproj2/pages/tickets.dart';
 
 Widget buildBlueSection(BuildContext context) {
@@ -155,6 +156,13 @@ Drawer buildDrawer(BuildContext context) {
                 color: Colors.white,
               ),
             ),
+             onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => Profile())); // Navigate to Tickets page
+            },
           ),
         ],
       ),
