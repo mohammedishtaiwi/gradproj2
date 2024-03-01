@@ -1,14 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class Profile extends StatefulWidget {
-  const Profile({Key? key}) : super(key: key);
+  Profile({Key? key}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
 }
 
 class _ProfileState extends State<Profile> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+
+  Future<void> _signOut(BuildContext context) async {
+    await _auth.signOut();
+    Navigator.pushReplacementNamed(context, '/');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -22,13 +30,14 @@ class _ProfileState extends State<Profile> {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              CircleAvatar(
+              const CircleAvatar(
                 radius: 50,
                 // Placeholder image, you can replace it with the user's profile picture
-                backgroundImage: NetworkImage('https://via.placeholder.com/150'),
+                backgroundImage:
+                    NetworkImage('https://via.placeholder.com/150'),
               ),
               const SizedBox(height: 16),
-              Text(
+              const Text(
                 'John Doe',
                 style: TextStyle(
                   fontSize: 24,
@@ -36,7 +45,7 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
+              const Text(
                 'Software Developer',
                 style: TextStyle(
                   fontSize: 18,
@@ -44,30 +53,29 @@ class _ProfileState extends State<Profile> {
                 ),
               ),
               const SizedBox(height: 8),
-              Text(
+              const Text(
                 'john.doe@example.com',
                 style: TextStyle(
                   fontSize: 18,
                   color: Colors.grey,
                 ),
               ),
-              
               const SizedBox(height: 16),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () {  Navigator.pop(context); // Close the drawer
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) =>
-                          BookedTicketsPage())); 
-                      // Add functionality for "Flights" button
+                    onPressed: () {
+                      Navigator.pop(context); // Close the drawer
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => BookedTicketsPage(),
+                        ),
+                      );
                     },
                     child: const Text('Booked Tickets'),
                   ),
-                 
                 ],
               ),
               const SizedBox(height: 16),
@@ -76,13 +84,13 @@ class _ProfileState extends State<Profile> {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Add functionality for logging out
+                      // Add functionality for editing profile
                     },
                     child: const Text('Edit Profile'),
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Add functionality for editing profile
+                      _signOut(context); // Call the sign-out method
                     },
                     child: const Text('Log Out'),
                   ),
