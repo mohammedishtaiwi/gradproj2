@@ -156,6 +156,13 @@ Drawer buildDrawer(BuildContext context) {
                 color: Colors.white,
               ),
             ),
+             onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => Profile())); // Navigate to Tickets page
+            },
           ),
         ],
       ),
