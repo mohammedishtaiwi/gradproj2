@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
+import 'package:gradproj2/pages/profile_page.dart';
 import 'pages/login_page.dart';
 import 'pages/home_page.dart';
 import 'pages/signup_page.dart';
@@ -11,6 +12,7 @@ class Routes {
   static const String signup = '/signup';
   static const String tickets = '/tickets'; 
   static const String bookedTickets = '/booked'; 
+  static const String profile = '/profile'; 
  
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -25,6 +27,8 @@ class Routes {
         return MaterialPageRoute(builder: (_) => TicketsPage());
         case bookedTickets:
         return MaterialPageRoute(builder: (_) => BookedTicketsPage());
+        case profile:
+        return MaterialPageRoute(builder: (_) => Profile());
       default:
         return MaterialPageRoute(
           builder: (_) => Scaffold(

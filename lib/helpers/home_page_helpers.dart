@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
+import 'package:gradproj2/pages/profile_page.dart';
 import 'package:gradproj2/pages/tickets.dart';
 
 Widget buildBlueSection(BuildContext context) {
@@ -76,6 +77,18 @@ Drawer buildDrawer(BuildContext context) {
            onTap: () {
               Navigator.pop(context); // Close the drawer
               Navigator.push(context, MaterialPageRoute(builder: (_) => BookedTicketsPage())); // Navigate to Tickets page
+            },
+          ),
+          ListTile(
+            title: const Text(
+              'Profile',
+              style: TextStyle(
+                color: Colors.white,
+              ),
+            ),
+           onTap: () {
+              Navigator.pop(context); // Close the drawer
+              Navigator.push(context, MaterialPageRoute(builder: (_) => Profile())); // Navigate to Tickets page
             },
           ),
           // Add more list tiles as needed
