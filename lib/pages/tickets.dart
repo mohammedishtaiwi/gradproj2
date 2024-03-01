@@ -58,28 +58,34 @@ class TicketsPage extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         children: <Widget>[
                           Container(
-                            padding: EdgeInsets.all(16),
-                            decoration: BoxDecoration(
+                            padding: const EdgeInsets.all(16),
+                            decoration: const BoxDecoration(
                                 color: Colors.blueGrey,
                                 borderRadius: BorderRadius.only(
                                     topLeft: Radius.circular(24),
-                                    topRight: Radius.circular(24))),
+                                    topRight: Radius.circular(24),
+                                    ),
+                                    
+
+
+                                    ),
+                                    
                             child: Column(
                               children: <Widget>[
                                 Row(
                                   children: <Widget>[
                                     Text(
                                       '${data['departureCity']}', //REPLACE WITH ABBRV
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 16,
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(6),
+                                      padding: const EdgeInsets.all(6),
                                       decoration: BoxDecoration(
                                           color: Colors.white,
                                           borderRadius:
@@ -107,11 +113,17 @@ class TicketsPage extends StatelessWidget {
                                                 builder:
                                                     (context, constraints) {
                                                   return Flex(
+                                                    direction: Axis.horizontal,
+                                                    mainAxisSize:
+                                                        MainAxisSize.max,
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
                                                     children: List.generate(
                                                         (constraints.constrainWidth() /
                                                                 6)
                                                             .floor(),
-                                                        (index) => SizedBox(
+                                                        (index) => const SizedBox(
                                                               height: 1,
                                                               width: 3,
                                                               child:
@@ -121,12 +133,6 @@ class TicketsPage extends StatelessWidget {
                                                                         .white), // DASHED LINE
                                                               ),
                                                             )),
-                                                    direction: Axis.horizontal,
-                                                    mainAxisSize:
-                                                        MainAxisSize.max,
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment
-                                                            .spaceBetween,
                                                   );
                                                 },
                                               ),
@@ -134,7 +140,7 @@ class TicketsPage extends StatelessWidget {
                                             Center(
                                                 child: Transform.rotate(
                                               angle: 1.5,
-                                              child: Icon(
+                                              child: const Icon(
                                                 Icons.local_airport,
                                                 color: Colors.white, //PLANE
                                                 size: 24,
@@ -145,7 +151,7 @@ class TicketsPage extends StatelessWidget {
                                       ),
                                     ),
                                     Container(
-                                      padding: EdgeInsets.all(6),
+                                      padding: const EdgeInsets.all(6),
                                       decoration: BoxDecoration(
                                           color: Colors.white, //SECOND CIRCLE
                                           borderRadius:
@@ -162,19 +168,19 @@ class TicketsPage extends StatelessWidget {
                                         ),
                                       ),
                                     ),
-                                    SizedBox(
+                                    const SizedBox(
                                       width: 16,
                                     ),
                                     Text(
                                       ' ${data['arrivalCity']}', //REPLACE WITH ABBRV
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black),
                                     )
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 4,
                                 ),
                                 Row(
@@ -185,11 +191,11 @@ class TicketsPage extends StatelessWidget {
                                         width: 100,
                                         child: Text(
                                           '${data['departureCity']}',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.white),
                                         )),
-                                    Text(
+                                    const Text(
                                       "6H 30M", // REPLACE WITH FLIGHT TIME
                                       style: TextStyle(
                                           fontSize: 13,
@@ -201,16 +207,16 @@ class TicketsPage extends StatelessWidget {
                                         child: Text(
                                           '${data['arrivalCity']}',
                                           textAlign: TextAlign.end,
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.white),
                                         )),
                                   ],
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 16,
                                 ),
-                                Row(
+                                const Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
@@ -231,19 +237,19 @@ class TicketsPage extends StatelessWidget {
                                     ),
                                   ],
                                 ),
-                                SizedBox(height: 12),
+                                const SizedBox(height: 12),
                                 Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    Text(
+                                    const Text(
                                       "1 May 2020", //REPLACE WITH DATE
                                       style: TextStyle(
                                           fontSize: 12, color: Colors.white),
                                     ),
                                     Row(
                                       children: <Widget>[
-                                        Text(
+                                        const Text(
                                           "Flight No : ",
                                           style: TextStyle(
                                               fontSize: 12,
@@ -251,7 +257,7 @@ class TicketsPage extends StatelessWidget {
                                         ),
                                         Text(
                                           '${data['flightNumber']}',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontSize: 12,
                                               fontWeight: FontWeight.bold,
                                               color: Colors.white),
@@ -267,7 +273,7 @@ class TicketsPage extends StatelessWidget {
                             color: Colors.blueGrey,
                             child: Row(
                               children: <Widget>[
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                   width: 10,
                                   child: DecoratedBox(
@@ -284,11 +290,15 @@ class TicketsPage extends StatelessWidget {
                                     child: LayoutBuilder(
                                       builder: (context, constraints) {
                                         return Flex(
+                                          direction: Axis.horizontal,
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: List.generate(
                                               (constraints.constrainWidth() /
                                                       10)
                                                   .floor(),
-                                              (index) => SizedBox(
+                                              (index) => const SizedBox(
                                                     height: 1,
                                                     width: 5,
                                                     child: DecoratedBox(
@@ -297,16 +307,12 @@ class TicketsPage extends StatelessWidget {
                                                               .white), //DASHED LINE
                                                     ),
                                                   )),
-                                          direction: Axis.horizontal,
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
                                         );
                                       },
                                     ),
                                   ),
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   height: 20,
                                   width: 10,
                                   child: DecoratedBox(
@@ -321,27 +327,27 @@ class TicketsPage extends StatelessWidget {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.only(
+                            padding: const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 12),
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                                 color: Colors.blueGrey,
                                 borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(24),
-                                    bottomRight: Radius.circular(24))),
+                                    bottomLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15))),
                             child: Row(
                               children: <Widget>[
                                 Container(
-                                  padding: EdgeInsets.all(8),
+                                  padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
                                       color: Colors.white, //CIRLE OF PLANE
-                                      borderRadius: BorderRadius.circular(20)),
-                                  child: Icon(Icons.flight_land,
+                                      borderRadius: BorderRadius.circular(34)),
+                                  child: const Icon(Icons.flight_land,
                                       color: Colors.black), //PLANE
                                 ),
-                                SizedBox(
+                                const SizedBox(
                                   width: 16,
                                 ),
-                                Text("Jet Airways", //REPLACE WITH AIRLINES
+                                const Text("Jet Airways", //REPLACE WITH AIRLINES
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -349,7 +355,7 @@ class TicketsPage extends StatelessWidget {
                                 Expanded(
                                     child: Text('${data['ticketPrice']}',
                                         textAlign: TextAlign.end,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.black))),

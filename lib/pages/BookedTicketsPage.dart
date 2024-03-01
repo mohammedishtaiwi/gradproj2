@@ -338,8 +338,8 @@ class BookedTicketsPage extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: Colors.blueGrey,
                                 borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(24),
-                                    bottomRight: Radius.circular(24))),
+                                    bottomLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15))),
                             child: Row(
                               children: <Widget>[
                                 Container(
