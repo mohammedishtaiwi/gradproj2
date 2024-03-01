@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 
 class TicketDetailsPage extends StatelessWidget {
   final Map<String, dynamic> ticketData;
@@ -24,7 +25,6 @@ class TicketDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            
             Text(
               'Flight Number: ${ticketData['flightNumber']}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -39,16 +39,13 @@ class TicketDetailsPage extends StatelessWidget {
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              'Date: ${ticketData['flightTime']}',
+              'Date: ${_formatFlightTime(ticketData['flightTime'])}',
               style: const TextStyle(fontSize: 16),
             ),
             Text(
               'Price: ${ticketData['ticketPrice']}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-           
-
-            
             if (!isBooked)
               ElevatedButton(
                 onPressed: () {
@@ -56,7 +53,7 @@ class TicketDetailsPage extends StatelessWidget {
                 },
                 child: const Text('Book'),
               ),
-               if (isBooked)
+            if (isBooked)
               ElevatedButton(
                 onPressed: () {
                   _undoBooking(context, documentID);
@@ -69,15 +66,22 @@ class TicketDetailsPage extends StatelessWidget {
     );
   }
 
-Future<void> _bookTicket(BuildContext context,
+  Future<void> _bookTicket(BuildContext context,
       Map<String, dynamic> ticketData, String documentID) async {
     try {
       print('Booking document with $documentID');
 
+      // Get the current timestamp
+      final DateTime now = DateTime.now();
+      final Timestamp timestamp = Timestamp.fromDate(now);
+
       await FirebaseFirestore.instance
           .collection('Tickets')
           .doc(documentID)
-          .update({'booked': true});
+          .update({
+        'booked': true,
+        'bookingTime': timestamp, // Update the bookingTime field
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -85,10 +89,8 @@ Future<void> _bookTicket(BuildContext context,
         ),
       );
 
-      
       Navigator.pop(context);
     } catch (e) {
-      
       print('Error booking ticket: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -97,24 +99,53 @@ Future<void> _bookTicket(BuildContext context,
       );
     }
   }
+
   Future<void> _undoBooking(BuildContext context, String documentID) async {
     try {
       print('Undoing booking for document with $documentID');
 
-      await FirebaseFirestore.instance
+      // Check if the ticket is already booked
+      final DocumentSnapshot ticketSnapshot = await FirebaseFirestore.instance
           .collection('Tickets')
           .doc(documentID)
-          .update({'booked': false});
+          .get();
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Booking undone successfully!'),
-        ),
-      );
+      if (ticketSnapshot.exists) {
+        final bool isBooked = ticketData['booked'] ?? false;
 
-      Navigator.pop(context);
+        if (isBooked) {
+          await FirebaseFirestore.instance
+              .collection('Tickets')
+              .doc(documentID)
+              .update({
+            'booked': false,
+            'bookingTime': null, // Set bookingTime to null
+          });
+
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Booking undone successfully!'),
+            ),
+          );
+
+          Navigator.pop(context);
+        } else {
+          // Ticket is not booked, show appropriate message
+          ScaffoldMessenger.of(context).showSnackBar(
+            SnackBar(
+              content: const Text('Ticket is not booked.'),
+            ),
+          );
+        }
+      } else {
+        // Document not found, handle as needed
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: const Text('Ticket document not found.'),
+          ),
+        );
+      }
     } catch (e) {
-      
       print('Error undoing booking: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -123,6 +154,15 @@ Future<void> _bookTicket(BuildContext context,
       );
     }
   }
-
-
 }
+
+String _formatFlightTime(Timestamp flightTime) {
+  // Convert Timestamp to DateTime
+  DateTime dateTime = flightTime.toDate();
+
+  // Format the DateTime to a human-readable string
+  String formattedTime = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+
+  return formattedTime;
+}
+
