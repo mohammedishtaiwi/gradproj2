@@ -56,6 +56,25 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
+//   Future<void> _signUp() async {
+//     try {
+//       UserCredential userCredential =
+//           await _auth.createUserWithEmailAndPassword(
+//         email: _usernameController.text,
+//         password: _passwordController.text,
+//       );
+
+//       User? user = userCredential.user;
+//       if (user != null) {
+//         // Navigate to the home page on successful sign up
+//         Navigator.pushReplacementNamed(context, '/home');
+//       }
+//     } catch (e) {
+//       print('Failed to sign up: $e');
+//       // Handle sign up failure (show a snackbar, etc.)
+//     }
+//   }
+// }
   Future<void> _signUp() async {
     try {
       UserCredential userCredential =
@@ -66,8 +85,57 @@ class _SignUpPageState extends State<SignUpPage> {
 
       User? user = userCredential.user;
       if (user != null) {
-        // Navigate to the home page on successful sign up
-        Navigator.pushReplacementNamed(context, '/home');
+        // Send email verification
+        await user.sendEmailVerification();
+
+        // Display a dialog to inform the user to check their email
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: Text('Verify your email'),
+              content: Text(
+                  'A verification email has been sent. Please check your email and verify your account.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+
+        // Show CircularProgressIndicator while waiting for email verification
+        showDialog(
+          context: context,
+          barrierDismissible: false,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              content: Row(
+                children: [
+                  CircularProgressIndicator(),
+                  SizedBox(width: 20),
+                  Text('Verifying email...'),
+                ],
+              ),
+            );
+          },
+        );
+
+        // Wait for the user to verify their email before navigating to home
+        await user.reload();
+        user = _auth.currentUser;
+
+        // Dismiss the CircularProgressIndicator dialog
+        Navigator.of(context).pop();
+
+        if (user != null && user.emailVerified) {
+          // Navigate to the home page on successful sign up
+          Navigator.pushReplacementNamed(context, '/home');
+        }
       }
     } catch (e) {
       print('Failed to sign up: $e');

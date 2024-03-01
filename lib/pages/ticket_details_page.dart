@@ -24,7 +24,7 @@ class TicketDetailsPage extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            // Display ticket details using ticketData
+            
             Text(
               'Flight Number: ${ticketData['flightNumber']}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
@@ -46,9 +46,9 @@ class TicketDetailsPage extends StatelessWidget {
               'Price: ${ticketData['ticketPrice']}',
               style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
             ),
-            // Add more details as needed based on your Firestore schema
+           
 
-            // Booking button conditionally shown
+            
             if (!isBooked)
               ElevatedButton(
                 onPressed: () {
@@ -85,10 +85,10 @@ Future<void> _bookTicket(BuildContext context,
         ),
       );
 
-      // Optionally, navigate to a new screen or pop the current screen
+      
       Navigator.pop(context);
     } catch (e) {
-      // Handle any errors that occur during booking
+      
       print('Error booking ticket: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
@@ -114,7 +114,7 @@ Future<void> _bookTicket(BuildContext context,
 
       Navigator.pop(context);
     } catch (e) {
-      // Handle any errors that occur during undoing booking
+      
       print('Error undoing booking: $e');
       ScaffoldMessenger.of(context).showSnackBar(
         SnackBar(
