@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gradproj2/pages/ticket_details_page.dart';
 
 class BookedTicketsPage extends StatelessWidget {
+  const BookedTicketsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -373,6 +375,7 @@ class BookedTicketsPage extends StatelessWidget {
                     ),
                   );
                 }
+                return null;
               },
             );
           },

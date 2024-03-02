@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'ticket_details_page.dart'; // Import the TicketDetailsPage
+import 'ticket_details_page.dart';
+import 'package:intl/intl.dart';
 
 class TicketsPage extends StatelessWidget {
   @override
@@ -60,16 +61,12 @@ class TicketsPage extends StatelessWidget {
                           Container(
                             padding: const EdgeInsets.all(16),
                             decoration: const BoxDecoration(
-                                color: Colors.blueGrey,
-                                borderRadius: BorderRadius.only(
-                                    topLeft: Radius.circular(24),
-                                    topRight: Radius.circular(24),
-                                    ),
-                                    
-
-
-                                    ),
-                                    
+                              color: Colors.blueGrey,
+                              borderRadius: BorderRadius.only(
+                                topLeft: Radius.circular(24),
+                                topRight: Radius.circular(24),
+                              ),
+                            ),
                             child: Column(
                               children: <Widget>[
                                 Row(
@@ -123,7 +120,8 @@ class TicketsPage extends StatelessWidget {
                                                         (constraints.constrainWidth() /
                                                                 6)
                                                             .floor(),
-                                                        (index) => const SizedBox(
+                                                        (index) =>
+                                                            const SizedBox(
                                                               height: 1,
                                                               width: 3,
                                                               child:
@@ -195,9 +193,9 @@ class TicketsPage extends StatelessWidget {
                                               fontSize: 12,
                                               color: Colors.white),
                                         )),
-                                    const Text(
-                                      "6H 30M", // REPLACE WITH FLIGHT TIME
-                                      style: TextStyle(
+                                    Text(
+                                      '${data['flightDuration']}', // REPLACE WITH FLIGHT TIME
+                                      style: const TextStyle(
                                           fontSize: 13,
                                           fontWeight: FontWeight.bold,
                                           color: Colors.black),
@@ -216,21 +214,21 @@ class TicketsPage extends StatelessWidget {
                                 const SizedBox(
                                   height: 16,
                                 ),
-                                const Row(
+                                Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
                                     Text(
-                                      '8:30 AM', //REPLACE WITH DEPARTURE TIME
+                                      '${data['departureTime']}', //REPLACE WITH DEPARTURE TIME
 
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold),
                                     ),
                                     Text(
-                                      "02:30 PM", //REPLACE WITH ARRIVAL TIME
-                                      style: TextStyle(
+                                      '${data['arrivalTime']}', //REPLACE WITH ARRIVAL TIME
+                                      style: const TextStyle(
                                           fontSize: 18,
                                           color: Colors.black,
                                           fontWeight: FontWeight.bold),
@@ -242,24 +240,17 @@ class TicketsPage extends StatelessWidget {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: <Widget>[
-                                    const Text(
-                                      "1 May 2020", //REPLACE WITH DATE
-                                      style: TextStyle(
+                                    Text(
+                                      _formatFlightTime(data['flightDate']),
+                                      style: const TextStyle(
                                           fontSize: 12, color: Colors.white),
                                     ),
                                     Row(
                                       children: <Widget>[
-                                        const Text(
-                                          "Flight No : ",
-                                          style: TextStyle(
-                                              fontSize: 12,
-                                              color: Colors.white),
-                                        ),
                                         Text(
-                                          '${data['flightNumber']}',
+                                          "Flight No : ${data['flightNumber']}",
                                           style: const TextStyle(
                                               fontSize: 12,
-                                              fontWeight: FontWeight.bold,
                                               color: Colors.white),
                                         ),
                                       ],
@@ -347,7 +338,8 @@ class TicketsPage extends StatelessWidget {
                                 const SizedBox(
                                   width: 16,
                                 ),
-                                const Text("Jet Airways", //REPLACE WITH AIRLINES
+                                const Text(
+                                    "Jet Airways", //REPLACE WITH AIRLINES
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
@@ -376,4 +368,14 @@ class TicketsPage extends StatelessWidget {
       ),
     );
   }
+}
+
+String _formatFlightTime(Timestamp flightTime) {
+  // Convert Timestamp to DateTime
+  DateTime dateTime = flightTime.toDate();
+
+  // Format the DateTime to a human-readable string
+  String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
+
+  return formattedTime;
 }
