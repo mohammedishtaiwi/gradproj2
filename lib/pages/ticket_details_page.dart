@@ -39,7 +39,7 @@ class TicketDetailsPage extends StatelessWidget {
               style: const TextStyle(fontSize: 16),
             ),
             Text(
-              'Date: ${_formatFlightTime(ticketData['flightTime'])}',
+              'Date: ${_formatFlightTime(ticketData['flightDate'])}',
               style: const TextStyle(fontSize: 16),
             ),
             Text(
@@ -161,8 +161,7 @@ String _formatFlightTime(Timestamp flightTime) {
   DateTime dateTime = flightTime.toDate();
 
   // Format the DateTime to a human-readable string
-  String formattedTime = DateFormat('yyyy-MM-dd HH:mm').format(dateTime);
+  String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
 
   return formattedTime;
 }
-

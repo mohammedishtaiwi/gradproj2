@@ -375,6 +375,7 @@ class BookedTicketsPage extends StatelessWidget {
                     ),
                   );
                 }
+                return null;
               },
             );
           },
