@@ -1,7 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gradproj2/Chatbot/chat_bot.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/profile_page.dart';
@@ -23,11 +22,20 @@ class _HomePageState extends State<HomePage> {
   List<String> cities = [];
   String selectedDepartureCity = '';
   String selectedArrivalCity = '';
-  DateTime? selectedDate; // Add this line
+  DateTime? selectedDate;
 
   @override
   void initState() {
     super.initState();
+    // Initialize the selected cities here
+    getUniqueCities().then((cities) {
+      if (cities.isNotEmpty) {
+        setState(() {
+          selectedDepartureCity = cities.first;
+          selectedArrivalCity = cities.first;
+        });
+      }
+    });
   }
 
   Future<void> _signOut(BuildContext context) async {
@@ -79,149 +87,167 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           buildDividerBox(context),
-          buildSelectorBox(context),
+          buildselectorBox(context),
         ],
       ),
     );
   }
 
-  Widget buildSelectorBox(BuildContext context) {
+  Widget buildselectorBox(BuildContext context) {
     return StreamBuilder<List<String>>(
-        stream: getCitiesStream(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            List<String> cities = snapshot.data ?? [];
+      stream: FirebaseFirestore.instance.collection('Tickets').snapshots().map(
+        (snapshot) {
+          Set<String> uniqueCities = Set<String>();
+          snapshot.docs.forEach((doc) {
+            var ticketData = doc.data() as Map<String, dynamic>;
+            uniqueCities.add(ticketData['departureCity']);
+            uniqueCities.add(ticketData['arrivalCity']);
+          });
+          return uniqueCities.toList();
+        },
+      ),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator();
+        } else if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+          return Text('No cities found.');
+        } else {
+          List<String> cities = snapshot.data!;
 
-            return Positioned(
-                top: 2 / 3 * MediaQuery.of(context).size.height - 250,
-                left: 10,
-                right: 10,
-                child: Container(
-                    height: 350.0,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color.fromARGB(255, 48, 48, 48),
+          return Positioned(
+            top: 2 / 3 * MediaQuery.of(context).size.height - 250,
+            left: 10,
+            right: 10,
+            child: Container(
+              height: 350.0,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(20),
+                color: const Color.fromARGB(255, 48, 48, 48),
+              ),
+              child: Padding(
+                padding: const EdgeInsets.all(16.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Center(
+                      child: Text(
+                        'Flight Selector',
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
                     ),
-                    child: Padding(
-                      padding: const EdgeInsets.all(16.0),
-                      child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            const Center(
-                              child: Text(
-                                'Flight Selector',
-                                style: TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                            Column(
-                              children: [
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'From:  ',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                      ),
-                                    ),
-                                    DropdownButton<String>(
-                                      value: selectedDepartureCity,
-                                      items: cities.map((city) {
-                                        return DropdownMenuItem<String>(
-                                          value: city,
-                                          child: Text(
-                                            city,
-                                            style:
-                                                TextStyle(color: Colors.white),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedDepartureCity = value!;
-                                        });
-                                      },
-                                      dropdownColor:
-                                          const Color.fromARGB(255, 48, 48, 48),
-                                    ),
-                                  ],
-                                ),
-                                const Text(
-                                  '---------------------------------------',
-                                  style: TextStyle(
-                                      color: Colors.white70,
-                                      fontSize: 30,
-                                      fontWeight: FontWeight.w200),
-                                ),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'To:  ',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    DropdownButton<String>(
-                                      value: selectedArrivalCity,
-                                      items: cities.map((city) {
-                                        return DropdownMenuItem<String>(
-                                          value: city,
-                                          child: Text(
-                                            city,
-                                            style: const TextStyle(
-                                                color: Colors.white),
-                                          ),
-                                        );
-                                      }).toList(),
-                                      onChanged: (value) {
-                                        setState(() {
-                                          selectedArrivalCity = value!;
-                                        });
-                                      },
-                                      dropdownColor:
-                                          const Color.fromARGB(255, 48, 48, 48),
-                                    ),
-                                  ],
-                                ),
-                                const SizedBox(height: 10),
-                                Row(
-                                  children: [
-                                    const Text(
-                                      'Date:  ',
-                                      style: TextStyle(
-                                        color: Colors.white,
-                                        fontSize: 16,
-                                      ),
-                                    ),
-                                    ElevatedButton(
-                                      onPressed: () {
-                                        _selectDate(context);
-                                      },
-                                      child: Text(
-                                        selectedDate != null
-                                            ? DateFormat.yMMMd()
-                                                .format(selectedDate!)
-                                            : 'Select Date',
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                              ],
-                            ),
-                          ]),
-                    )));
-          }
-        });
+                    const SizedBox(height: 20),
+                    Row(
+                      children: [
+                        const Text(
+                          'From:',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          value: selectedDepartureCity,
+                          items: cities.map((city) {
+                            return DropdownMenuItem<String>(
+                              value: city,
+                              child: Text(city),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedDepartureCity = value!;
+                            });
+                          },
+                        ),
+                        const SizedBox(height: 20),
+                        const Text(
+                          'To:',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        DropdownButton<String>(
+                          value: selectedArrivalCity,
+                          items: cities.map((city) {
+                            return DropdownMenuItem<String>(
+                              value: city,
+                              child: Text(city),
+                            );
+                          }).toList(),
+                          onChanged: (value) {
+                            setState(() {
+                              selectedArrivalCity = value!;
+                            });
+                          },
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 10),
+                    Row(
+                      children: [
+                        const Text(
+                          'Date:  ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        ElevatedButton(
+                          onPressed: () {
+                            _selectDate(context);
+                          },
+                          child: Text(
+                            selectedDate != null
+                                ? DateFormat.yMMMd().format(selectedDate!)
+                                : 'Select Date',
+                          ),
+                        ),
+                      ],
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          );
+        }
+      },
+    );
+  }
+
+  Widget buildDropdown({
+    required String label,
+    required String value,
+    required ValueChanged<String?> onChanged,
+  }) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(
+          label,
+          style: TextStyle(
+            color: Colors.white,
+            fontSize: 16,
+          ),
+        ),
+        DropdownButton<String>(
+          value: value,
+          items: cities.map((city) {
+            return DropdownMenuItem<String>(
+              value: city,
+              child: Text(city),
+            );
+          }).toList(),
+          onChanged: onChanged,
+        ),
+      ],
+    );
   }
 
   Widget buildBlueSection(BuildContext context) {
@@ -490,28 +516,32 @@ class _HomePageState extends State<HomePage> {
       if (querySnapshot.docs.isNotEmpty) {
         return querySnapshot.docs.first.data() as Map<String, dynamic>;
       } else {
-        return {};
+        return {}; // Return an empty map if no booked tickets are found
       }
     } catch (e) {
       log(404 as String);
-      return {};
+      return {}; // Return an empty map in case of an error
     }
   }
 
-  Stream<List<String>> getCitiesStream() {
-    return FirebaseFirestore.instance.collection('Tickets').snapshots().map(
-      (snapshot) {
-        Set<String> uniqueCities = <String>{};
+  Future<List<String>> getUniqueCities() async {
+    try {
+      QuerySnapshot querySnapshot =
+          await FirebaseFirestore.instance.collection('Tickets').get();
 
-        snapshot.docs.forEach((doc) {
-          var ticketData = doc.data() as Map<String, dynamic>;
-          uniqueCities.add(ticketData['departureCity']);
-          uniqueCities.add(ticketData['arrivalCity']);
-        });
+      Set<String> uniqueCities = Set<String>();
 
-        return uniqueCities.toList();
-      },
-    );
+      querySnapshot.docs.forEach((doc) {
+        var ticketData = doc.data() as Map<String, dynamic>;
+        uniqueCities.add(ticketData['departureCity']);
+        uniqueCities.add(ticketData['arrivalCity']);
+      });
+
+      return uniqueCities.toList();
+    } catch (e) {
+      print('Error getting cities: $e');
+      return []; // Return an empty list in case of an error
+    }
   }
 
   Future<void> _selectDate(BuildContext context) async {
