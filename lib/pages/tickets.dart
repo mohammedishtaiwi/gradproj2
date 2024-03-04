@@ -248,7 +248,7 @@ class TicketsPage extends StatelessWidget {
                                     Row(
                                       children: <Widget>[
                                         Text(
-                                          "Flight No : ${data['flightNumber']}",
+                                          "Flight No: ${data['flightNumber']}",
                                           style: const TextStyle(
                                               fontSize: 12,
                                               color: Colors.white),
