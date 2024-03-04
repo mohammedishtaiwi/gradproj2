@@ -3,6 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:gradproj2/pages/ticket_details_page.dart';
 
 class BookedTicketsPage extends StatelessWidget {
+  const BookedTicketsPage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -338,8 +340,8 @@ class BookedTicketsPage extends StatelessWidget {
                             decoration: BoxDecoration(
                                 color: Colors.blueGrey,
                                 borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(24),
-                                    bottomRight: Radius.circular(24))),
+                                    bottomLeft: Radius.circular(15),
+                                    bottomRight: Radius.circular(15))),
                             child: Row(
                               children: <Widget>[
                                 Container(
@@ -373,6 +375,7 @@ class BookedTicketsPage extends StatelessWidget {
                     ),
                   );
                 }
+                return null;
               },
             );
           },
