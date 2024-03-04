@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gradproj2/pages/edit_profile.dart';
 
 class Profile extends StatefulWidget {
   Profile({Key? key}) : super(key: key);
@@ -83,8 +84,14 @@ class _ProfileState extends State<Profile> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
                   ElevatedButton(
-                    onPressed: () {
-                      // Add functionality for editing profile
+                   onPressed: () {
+                      Navigator.pop(context); // Close the drawer
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (_) => EditProfilePage(),
+                        ),
+                      );
                     },
                     child: const Text('Edit Profile'),
                   ),
