@@ -122,7 +122,7 @@ class _HomePageState extends State<HomePage> {
             left: 10,
             right: 10,
             child: Container(
-              height: 350.0,
+              height: 335.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: const Color.fromARGB(255, 48, 48, 48),
@@ -142,22 +142,41 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
                     Row(
                       children: [
+                        Center(
+                            child: Transform.rotate(
+                          angle: 1,
+                          child: Icon(
+                            Icons.local_airport,
+                            color: Colors.white, //PLANE
+                            size: 24,
+                          ),
+                        )),
+                        SizedBox(
+                          width: 10,
+                        ),
                         const Text(
-                          'From:',
+                          'From ',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         DropdownButton<String>(
                           value: selectedDepartureCity,
                           items: cities.map((city) {
                             return DropdownMenuItem<String>(
                               value: city,
-                              child: Text(city),
+                              child: Text(
+                                city,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 107, 104, 104),
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -166,20 +185,44 @@ class _HomePageState extends State<HomePage> {
                             });
                           },
                         ),
-                        const SizedBox(height: 20),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Center(
+                            child: Transform.rotate(
+                          angle: 1.9,
+                          child: Icon(
+                            Icons.local_airport,
+                            color: Colors.white, //PLANE
+                            size: 24,
+                          ),
+                        )),
+                        SizedBox(
+                          width: 10,
+                        ),
                         const Text(
-                          'To:',
+                          'To ',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         DropdownButton<String>(
                           value: selectedArrivalCity,
                           items: cities.map((city) {
                             return DropdownMenuItem<String>(
                               value: city,
-                              child: Text(city),
+                              child: Text(
+                                city,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 107, 104, 104),
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -190,28 +233,94 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     Row(
                       children: [
+                        SizedBox(
+                          width: 10,
+                        ),
                         const Text(
-                          'Date:  ',
+                          'From',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
                         ),
-                        ElevatedButton(
+                        SizedBox(
+                          width: 5,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.calendar_month),
+                          color: Colors.white,
                           onPressed: () {
                             _selectDate(context);
                           },
-                          child: Text(
-                            selectedDate != null
-                                ? DateFormat.yMMMd().format(selectedDate!)
-                                : 'Select Date',
+                        ),
+                        Text(
+                          selectedDate != null
+                              ? DateFormat.yMMMd().format(selectedDate!)
+                              : '',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
+                    Row(
+                      children: [
+                        SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'To',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 5,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.calendar_month),
+                          color: Colors.white,
+                          onPressed: () {
+                            _selectDate(context);
+                          },
+                        ),
+                        Text(
+                          selectedDate != null
+                              ? DateFormat.yMMMd().format(selectedDate!)
+                              : '',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 0,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              //FUNCTION OF THE BUTTON
+                            },
+                            child: Text(
+                              "Search Flights",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -334,7 +443,7 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Card(
                 elevation: 10,
-                color: const Color.fromARGB(255, 48, 48, 48),
+                color: Color.fromARGB(255, 62, 62, 62),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -433,7 +542,7 @@ class _HomePageState extends State<HomePage> {
                               width: 8,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
-                                    color: Colors.black, //SECOND DO TIN CIRCLE
+                                    color: Colors.black, //SECOND DOT IN CIRCLE
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                             ),
