@@ -4,6 +4,22 @@ import 'ticket_details_page.dart';
 import 'package:intl/intl.dart';
 
 class TicketsPage extends StatelessWidget {
+  final String? departureCity;
+  final String? arrivalCity;
+  final bool? isRoundTrip;
+  final bool isRoundTripSelected;
+  final bool isOneWaySelected;
+  // final DateTime? selectedDate;
+
+  TicketsPage({
+    Key? key,
+    this.departureCity,
+    this.arrivalCity,
+    this.isRoundTrip,
+  })  : isRoundTripSelected = isRoundTrip ?? true,
+        isOneWaySelected = !(isRoundTrip ?? true),
+        super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -27,8 +43,30 @@ class TicketsPage extends StatelessWidget {
               );
             }
 
+            List<DocumentSnapshot> filteredFlights =
+                snapshot.data!.docs.where((document) {
+              Map<String, dynamic> data =
+                  document.data() as Map<String, dynamic>;
+
+              bool isRoundTrip = data['isroundtrip'] ?? false;
+              bool isOneWay = data['isoneway'] ?? false;
+
+              bool isMatchingCities = data['departureCity'] == departureCity &&
+                  data['arrivalCity'] == arrivalCity;
+
+              return (isRoundTrip && isRoundTripSelected ||
+                      isOneWay && isOneWaySelected) &&
+                  isMatchingCities;
+            }).toList();
+
+            if (filteredFlights.isEmpty) {
+              return Center(
+                child: Text('No flights available.'),
+              );
+            }
+
             return ListView(
-              children: snapshot.data!.docs.map((DocumentSnapshot document) {
+              children: filteredFlights.map((DocumentSnapshot document) {
                 Map<String, dynamic> data =
                     document.data() as Map<String, dynamic>;
 
@@ -269,10 +307,12 @@ class TicketsPage extends StatelessWidget {
                                   width: 10,
                                   child: DecoratedBox(
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            topRight: Radius.circular(10),
-                                            bottomRight: Radius.circular(10)),
-                                        color: Colors.white), //SIDE CURVE LEFT
+                                      borderRadius: BorderRadius.only(
+                                        topRight: Radius.circular(10),
+                                        bottomRight: Radius.circular(10),
+                                      ),
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                                 Expanded(
@@ -286,18 +326,18 @@ class TicketsPage extends StatelessWidget {
                                           mainAxisAlignment:
                                               MainAxisAlignment.spaceBetween,
                                           children: List.generate(
-                                              (constraints.constrainWidth() /
-                                                      10)
-                                                  .floor(),
-                                              (index) => const SizedBox(
-                                                    height: 1,
-                                                    width: 5,
-                                                    child: DecoratedBox(
-                                                      decoration: BoxDecoration(
-                                                          color: Colors
-                                                              .white), //DASHED LINE
-                                                    ),
-                                                  )),
+                                            (constraints.constrainWidth() / 10)
+                                                .floor(),
+                                            (index) => const SizedBox(
+                                              height: 1,
+                                              width: 5,
+                                              child: DecoratedBox(
+                                                decoration: BoxDecoration(
+                                                  color: Colors.white,
+                                                ),
+                                              ),
+                                            ),
+                                          ),
                                         );
                                       },
                                     ),
@@ -308,10 +348,12 @@ class TicketsPage extends StatelessWidget {
                                   width: 10,
                                   child: DecoratedBox(
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.only(
-                                            topLeft: Radius.circular(10),
-                                            bottomLeft: Radius.circular(10)),
-                                        color: Colors.white), //SIDE CURVE RIGHT
+                                      borderRadius: BorderRadius.only(
+                                        topLeft: Radius.circular(10),
+                                        bottomLeft: Radius.circular(10),
+                                      ),
+                                      color: Colors.white,
+                                    ),
                                   ),
                                 ),
                               ],
@@ -321,36 +363,47 @@ class TicketsPage extends StatelessWidget {
                             padding: const EdgeInsets.only(
                                 left: 16, right: 16, bottom: 12),
                             decoration: const BoxDecoration(
-                                color: Colors.blueGrey,
-                                borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(15),
-                                    bottomRight: Radius.circular(15))),
+                              color: Colors.blueGrey,
+                              borderRadius: BorderRadius.only(
+                                bottomLeft: Radius.circular(15),
+                                bottomRight: Radius.circular(15),
+                              ),
+                            ),
                             child: Row(
                               children: <Widget>[
                                 Container(
                                   padding: const EdgeInsets.all(8),
                                   decoration: BoxDecoration(
-                                      color: Colors.white, //CIRLE OF PLANE
-                                      borderRadius: BorderRadius.circular(34)),
-                                  child: const Icon(Icons.flight_land,
-                                      color: Colors.black), //PLANE
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(34),
+                                  ),
+                                  child: const Icon(
+                                    Icons.flight_land,
+                                    color: Colors.black,
+                                  ),
                                 ),
                                 const SizedBox(
                                   width: 16,
                                 ),
                                 const Text(
-                                    "Jet Airways", //REPLACE WITH AIRLINES
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.white)),
+                                  "Jet Airways",
+                                  style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.white,
+                                  ),
+                                ),
                                 Expanded(
-                                    child: Text('${data['ticketPrice']}',
-                                        textAlign: TextAlign.end,
-                                        style: const TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.black))),
+                                  child: Text(
+                                    '${data['ticketPrice']}',
+                                    textAlign: TextAlign.end,
+                                    style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                ),
                               ],
                             ),
                           ),
@@ -368,14 +421,21 @@ class TicketsPage extends StatelessWidget {
       ),
     );
   }
+
+  bool _isSameDate(Timestamp flightDate, DateTime? selectedDate) {
+    if (flightDate == null || selectedDate == null) {
+      return false;
+    }
+
+    DateTime dateTime = flightDate.toDate();
+    return dateTime.year == selectedDate.year &&
+        dateTime.month == selectedDate.month &&
+        dateTime.day == selectedDate.day;
+  }
 }
 
 String _formatFlightTime(Timestamp flightTime) {
-  // Convert Timestamp to DateTime
   DateTime dateTime = flightTime.toDate();
-
-  // Format the DateTime to a human-readable string
   String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
-
   return formattedTime;
 }
