@@ -4,6 +4,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gradproj2/Chatbot/chat_bot.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/profile_page.dart';
+import 'ticket_details_page.dart';
 import 'package:gradproj2/pages/tickets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
@@ -23,6 +24,8 @@ class _HomePageState extends State<HomePage> {
   String selectedDepartureCity = '';
   String selectedArrivalCity = '';
   DateTime? selectedDate;
+  bool isOneWaySelected = true;
+  bool isRoundTripSelected = false;
 
   @override
   void initState() {
@@ -121,7 +124,7 @@ class _HomePageState extends State<HomePage> {
             left: 10,
             right: 10,
             child: Container(
-              height: 350.0,
+              height: 335.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: const Color.fromARGB(255, 48, 48, 48),
@@ -141,22 +144,80 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Radio(
+                          value: true,
+                          groupValue: isOneWaySelected,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isOneWaySelected = value ?? false;
+                              isRoundTripSelected = !isOneWaySelected;
+                            });
+                          },
+                        ),
                         const Text(
-                          'From:',
+                          'One Way',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
+                        ),
+                        Radio(
+                          value: true,
+                          groupValue: isRoundTripSelected,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isRoundTripSelected = value ?? false;
+                              isOneWaySelected = !isRoundTripSelected;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'Round Trip',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Center(
+                            child: Transform.rotate(
+                          angle: 1,
+                          child: Icon(
+                            Icons.local_airport,
+                            color: Colors.white, //PLANE
+                            size: 24,
+                          ),
+                        )),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'From ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         DropdownButton<String>(
                           value: selectedDepartureCity,
                           items: cities.map((city) {
                             return DropdownMenuItem<String>(
                               value: city,
-                              child: Text(city),
+                              child: Text(
+                                city,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 107, 104, 104),
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -165,20 +226,44 @@ class _HomePageState extends State<HomePage> {
                             });
                           },
                         ),
-                        const SizedBox(height: 20),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Center(
+                            child: Transform.rotate(
+                          angle: 1.9,
+                          child: Icon(
+                            Icons.local_airport,
+                            color: Colors.white, //PLANE
+                            size: 24,
+                          ),
+                        )),
+                        SizedBox(
+                          width: 10,
+                        ),
                         const Text(
-                          'To:',
+                          'To ',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         DropdownButton<String>(
                           value: selectedArrivalCity,
                           items: cities.map((city) {
                             return DropdownMenuItem<String>(
                               value: city,
-                              child: Text(city),
+                              child: Text(
+                                city,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 107, 104, 104),
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -189,28 +274,92 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     Row(
                       children: [
+                        SizedBox(
+                          width: 10,
+                        ),
                         const Text(
-                          'Date:  ',
+                          'From',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
                         ),
-                        ElevatedButton(
+                        SizedBox(
+                          width: 5,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.calendar_month),
+                          color: Colors.white,
                           onPressed: () {
                             _selectDate(context);
                           },
-                          child: Text(
-                            selectedDate != null
-                                ? DateFormat.yMMMd().format(selectedDate!)
-                                : 'Select Date',
+                        ),
+                        Text(
+                          selectedDate != null
+                              ? DateFormat.yMMMd().format(selectedDate!)
+                              : '',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
+                    // Row(
+                    //   children: [
+                    //     SizedBox(
+                    //       width: 10,
+                    //     ),
+                    //     const Text(
+                    //       'To',
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 16,
+                    //       ),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 5,
+                    //     ),
+                    //     IconButton(
+                    //       icon: Icon(Icons.calendar_month),
+                    //       color: Colors.white,
+                    //       onPressed: () {
+                    //         _selectDate(context);
+                    //       },
+                    //     ),
+                    //     Text(
+                    //       selectedDate != null
+                    //           ? DateFormat.yMMMd().format(selectedDate!)
+                    //           : '',
+                    //       style: const TextStyle(
+                    //         color: Colors.white,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 0,
+                          child: ElevatedButton(
+                            onPressed: _searchFlights,
+                            child: const Text(
+                              "Search Flights",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -326,14 +475,14 @@ class _HomePageState extends State<HomePage> {
             String formattedFlightTime = DateFormat.yMMMd().format(flightTime);
 
             return Container(
-              height: 130.0,
+              height: 140.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.transparent,
               ),
               child: Card(
                 elevation: 10,
-                color: const Color.fromARGB(255, 48, 48, 48),
+                color: Color.fromARGB(255, 62, 62, 62),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -342,34 +491,160 @@ class _HomePageState extends State<HomePage> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        'Flight Number: ${ticketData['flightNumber']}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      Center(
+                        child: Text(
+                          '$formattedFlightTime',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
                         ),
                       ),
-                      Text(
-                        'Departure City: ${ticketData['departureCity']}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
+                      Row(
+                        children: <Widget>[
+                          Text(
+                            '${ticketData['departureCity']}', //REPLACE WITH ABBRV
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20)),
+                            child: SizedBox(
+                              height: 8,
+                              width: 8,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                    color: Colors.black, //DOT IN CIRCLE
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                            ),
+                          ),
+                          Expanded(
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: Stack(
+                                children: <Widget>[
+                                  SizedBox(
+                                    height: 24,
+                                    child: LayoutBuilder(
+                                      builder: (context, constraints) {
+                                        return Flex(
+                                          children: List.generate(
+                                              (constraints.constrainWidth() / 6)
+                                                  .floor(),
+                                              (index) => SizedBox(
+                                                    height: 1,
+                                                    width: 3,
+                                                    child: DecoratedBox(
+                                                      decoration: BoxDecoration(
+                                                          color: Colors
+                                                              .white), // DASHED LINE
+                                                    ),
+                                                  )),
+                                          direction: Axis.horizontal,
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
+                                        );
+                                      },
+                                    ),
+                                  ),
+                                  Center(
+                                      child: Transform.rotate(
+                                    angle: 1.5,
+                                    child: Icon(
+                                      Icons.local_airport,
+                                      color: Colors.white, //PLANE
+                                      size: 24,
+                                    ),
+                                  ))
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                            padding: EdgeInsets.all(6),
+                            decoration: BoxDecoration(
+                                color: Colors.white, //SECOND CIRCLE
+                                borderRadius: BorderRadius.circular(20)),
+                            child: SizedBox(
+                              height: 8,
+                              width: 8,
+                              child: DecoratedBox(
+                                decoration: BoxDecoration(
+                                    color: Colors.black, //SECOND DOT IN CIRCLE
+                                    borderRadius: BorderRadius.circular(5)),
+                              ),
+                            ),
+                          ),
+                          SizedBox(
+                            width: 10,
+                          ),
+                          Text(
+                            ' ${ticketData['arrivalCity']}', //REPLACE WITH ABBRV
+                            style: TextStyle(
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.white),
+                          )
+                        ],
+                      ),
+                      Center(
+                        child: Text(
+                          '${ticketData['flightDuration']}', // REPLACE WITH FLIGHT TIME
+                          style: TextStyle(
+                            fontSize: 10,
+                            fontWeight: FontWeight.bold,
+                            color: Colors.white,
+                          ),
                         ),
                       ),
-                      Text(
-                        'Arrival City: ${ticketData['arrivalCity']}',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
+                      SizedBox(
+                        height: 10,
                       ),
-                      Text(
-                        'Flight Time: $formattedFlightTime',
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 16,
-                        ),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: <Widget>[
+                          Text(
+                            'Flight Number ${ticketData['flightNumber']}',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
+                          ),
+                          GestureDetector(
+                            onTap: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => TicketDetailsPage(
+                                    ticketData: ticketData,
+                                    documentID: snapshot.data!.docs.first.id,
+                                    isBooked: isBooked,
+                                  ),
+                                ),
+                              );
+                            },
+                            child: Text(
+                              'View Ticket >',
+                              style: TextStyle(
+                                color: Colors
+                                    .blue, // You can change the color as needed
+                                fontSize: 14,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -441,20 +716,20 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const Divider(color: Colors.white),
-            ListTile(
-              leading: const Icon(Icons.event),
-              title: const Text(
-                'Tickets',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => TicketsPage()));
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.event),
+            //   title: const Text(
+            //     'Tickets',
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     Navigator.push(
+            //         context, MaterialPageRoute(builder: (_) => TicketsPage()));
+            //   },
+            // ),
             ListTile(
               leading: const Icon(Icons.confirmation_number),
               title: const Text(
@@ -558,5 +833,19 @@ class _HomePageState extends State<HomePage> {
         selectedDate = pickedDate;
       });
     }
+  }
+
+  void _searchFlights() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TicketsPage(
+          departureCity: selectedDepartureCity,
+          arrivalCity: selectedArrivalCity,
+          // selectedDate: selectedDate,
+          isRoundTrip: isRoundTripSelected,
+        ),
+      ),
+    );
   }
 }

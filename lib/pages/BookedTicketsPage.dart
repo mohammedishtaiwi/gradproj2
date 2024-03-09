@@ -258,7 +258,7 @@ class BookedTicketsPage extends StatelessWidget {
                                     Row(
                                       children: <Widget>[
                                         Text(
-                                          "Flight No : ",
+                                          "Flight No: ",
                                           style: TextStyle(
                                               fontSize: 12,
                                               color: Colors.white),

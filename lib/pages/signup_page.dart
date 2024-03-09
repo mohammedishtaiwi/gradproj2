@@ -1,5 +1,10 @@
+import 'dart:io';
+
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
+import 'package:image_picker/image_picker.dart';
 
 class SignUpPage extends StatefulWidget {
   @override
@@ -7,9 +12,13 @@ class SignUpPage extends StatefulWidget {
 }
 
 class _SignUpPageState extends State<SignUpPage> {
+  final TextEditingController _nameController = TextEditingController();
   final TextEditingController _usernameController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  final FirebaseStorage _storage = FirebaseStorage.instance;
+  PickedFile? _pickedImage;
 
   @override
   Widget build(BuildContext context) {
@@ -25,6 +34,10 @@ class _SignUpPageState extends State<SignUpPage> {
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               TextField(
+                controller: _nameController,
+                decoration: const InputDecoration(labelText: 'Name'),
+              ),
+              TextField(
                 controller: _usernameController,
                 decoration: const InputDecoration(labelText: 'Email'),
               ),
@@ -37,6 +50,13 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () async {
+                  await _pickImage();
+                },
+                child: const Text('Pick Profile Picture'),
+              ),
+              const SizedBox(height: 20),
+              ElevatedButton(
+                onPressed: () async {
                   await _signUp();
                 },
                 child: const Text('Sign Up'),
@@ -44,7 +64,6 @@ class _SignUpPageState extends State<SignUpPage> {
               const SizedBox(height: 10),
               TextButton(
                 onPressed: () {
-                  // Navigate to the login page when "Already have an account?" is pressed
                   Navigator.pushReplacementNamed(context, '/');
                 },
                 child: const Text('Already have an account? Log In'),
@@ -56,27 +75,39 @@ class _SignUpPageState extends State<SignUpPage> {
     );
   }
 
-//   Future<void> _signUp() async {
-//     try {
-//       UserCredential userCredential =
-//           await _auth.createUserWithEmailAndPassword(
-//         email: _usernameController.text,
-//         password: _passwordController.text,
-//       );
+  Future<void> _pickImage() async {
+    final XFile? pickedFile =
+        await ImagePicker().pickImage(source: ImageSource.gallery);
+    setState(() {
+      _pickedImage = pickedFile != null ? PickedFile(pickedFile.path) : null;
+    });
+  }
 
-//       User? user = userCredential.user;
-//       if (user != null) {
-//         // Navigate to the home page on successful sign up
-//         Navigator.pushReplacementNamed(context, '/home');
-//       }
-//     } catch (e) {
-//       print('Failed to sign up: $e');
-//       // Handle sign up failure (show a snackbar, etc.)
-//     }
-//   }
-// }
+  Future<String?> _uploadImage() async {
+    if (_pickedImage == null) return null;
+
+    try {
+      final Reference storageReference = _storage
+          .ref()
+          .child('profile_images/${DateTime.now().toIso8601String()}');
+      final UploadTask uploadTask =
+          storageReference.putFile(File(_pickedImage!.path));
+      await uploadTask.whenComplete(() => null);
+
+      return await storageReference.getDownloadURL();
+    } catch (e) {
+      print('Failed to upload image: $e');
+      return null;
+    }
+  }
+
   Future<void> _signUp() async {
     try {
+      if (_passwordController.text.length < 6) {
+        _showErrorDialog("Password must be at least 6 characters long.");
+        return;
+      }
+
       UserCredential userCredential =
           await _auth.createUserWithEmailAndPassword(
         email: _usernameController.text,
@@ -85,21 +116,31 @@ class _SignUpPageState extends State<SignUpPage> {
 
       User? user = userCredential.user;
       if (user != null) {
-        // Send email verification
+        // Upload image and get download URL
+        final imageUrl = await _uploadImage();
+
+        // Save user data to Firestore
+        await _firestore.collection('users').doc(user.uid).set({
+          'username': _usernameController.text,
+          'password': _passwordController.text,
+          'name': _nameController.text,
+          'profileImageUrl': imageUrl,
+        });
+
         await user.sendEmailVerification();
 
-        // Display a dialog to inform the user to check their email
         showDialog(
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
               title: Text('Verify your email'),
               content: Text(
-                  'A verification email has been sent. Please check your email and verify your account.'),
+                'A verification email has been sent. Please check your email and verify your account.',
+              ),
               actions: [
                 TextButton(
                   onPressed: () {
-                    Navigator.of(context).pop();
+                    Navigator.pushReplacementNamed(context, '/');
                   },
                   child: Text('OK'),
                 ),
@@ -108,12 +149,11 @@ class _SignUpPageState extends State<SignUpPage> {
           },
         );
 
-        // Show CircularProgressIndicator while waiting for email verification
         showDialog(
           context: context,
           barrierDismissible: false,
           builder: (BuildContext context) {
-            return AlertDialog(
+            return const AlertDialog(
               content: Row(
                 children: [
                   CircularProgressIndicator(),
@@ -140,6 +180,27 @@ class _SignUpPageState extends State<SignUpPage> {
     } catch (e) {
       print('Failed to sign up: $e');
       // Handle sign up failure (show a snackbar, etc.)
+      _showErrorDialog("Failed to sign up. Please try again.");
     }
+  }
+
+  void _showErrorDialog(String errorMessage) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Error'),
+          content: Text(errorMessage),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('OK'),
+            ),
+          ],
+        );
+      },
+    );
   }
 }
