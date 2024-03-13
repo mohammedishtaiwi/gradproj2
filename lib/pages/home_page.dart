@@ -23,6 +23,8 @@ class _HomePageState extends State<HomePage> {
   String selectedDepartureCity = '';
   String selectedArrivalCity = '';
   DateTime? selectedDate;
+  bool isOneWaySelected = true;
+  bool isRoundTripSelected = false;
 
   @override
   void initState() {
@@ -120,7 +122,7 @@ class _HomePageState extends State<HomePage> {
             left: 10,
             right: 10,
             child: Container(
-              height: 350.0,
+              height: 335.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
                 color: Colors.blueGrey, // Change the color to blue grey
@@ -140,22 +142,80 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ),
                     ),
-                    const SizedBox(height: 20),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
+                        Radio(
+                          value: true,
+                          groupValue: isOneWaySelected,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isOneWaySelected = value ?? false;
+                              isRoundTripSelected = !isOneWaySelected;
+                            });
+                          },
+                        ),
                         const Text(
-                          'From:',
+                          'One Way',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
+                        ),
+                        Radio(
+                          value: true,
+                          groupValue: isRoundTripSelected,
+                          onChanged: (bool? value) {
+                            setState(() {
+                              isRoundTripSelected = value ?? false;
+                              isOneWaySelected = !isRoundTripSelected;
+                            });
+                          },
+                        ),
+                        const Text(
+                          'Round Trip',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                      ],
+                    ),
+                    Row(
+                      children: [
+                        Center(
+                            child: Transform.rotate(
+                          angle: 1,
+                          child: Icon(
+                            Icons.local_airport,
+                            color: Colors.white, //PLANE
+                            size: 24,
+                          ),
+                        )),
+                        SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'From ',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         DropdownButton<String>(
                           value: selectedDepartureCity,
                           items: cities.map((city) {
                             return DropdownMenuItem<String>(
                               value: city,
-                              child: Text(city),
+                              child: Text(
+                                city,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 107, 104, 104),
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -164,20 +224,44 @@ class _HomePageState extends State<HomePage> {
                             });
                           },
                         ),
-                        const SizedBox(height: 20),
+                      ],
+                    ),
+                    const SizedBox(height: 5),
+                    Row(
+                      children: [
+                        Center(
+                            child: Transform.rotate(
+                          angle: 1.9,
+                          child: Icon(
+                            Icons.local_airport,
+                            color: Colors.white, //PLANE
+                            size: 24,
+                          ),
+                        )),
+                        SizedBox(
+                          width: 10,
+                        ),
                         const Text(
-                          'To:',
+                          'To ',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
+                        ),
+                        SizedBox(
+                          width: 10,
                         ),
                         DropdownButton<String>(
                           value: selectedArrivalCity,
                           items: cities.map((city) {
                             return DropdownMenuItem<String>(
                               value: city,
-                              child: Text(city),
+                              child: Text(
+                                city,
+                                style: TextStyle(
+                                  color: Color.fromARGB(255, 107, 104, 104),
+                                ),
+                              ),
                             );
                           }).toList(),
                           onChanged: (value) {
@@ -188,28 +272,92 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    const SizedBox(height: 10),
+                    const SizedBox(height: 15),
                     Row(
                       children: [
+                        SizedBox(
+                          width: 10,
+                        ),
                         const Text(
-                          'Date:  ',
+                          'From',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
                           ),
                         ),
-                        ElevatedButton(
+                        SizedBox(
+                          width: 5,
+                        ),
+                        IconButton(
+                          icon: Icon(Icons.calendar_month),
+                          color: Colors.white,
                           onPressed: () {
                             _selectDate(context);
                           },
-                          child: Text(
-                            selectedDate != null
-                                ? DateFormat.yMMMd().format(selectedDate!)
-                                : 'Select Date',
+                        ),
+                        Text(
+                          selectedDate != null
+                              ? DateFormat.yMMMd().format(selectedDate!)
+                              : '',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       ],
                     ),
+                    // Row(
+                    //   children: [
+                    //     SizedBox(
+                    //       width: 10,
+                    //     ),
+                    //     const Text(
+                    //       'To',
+                    //       style: TextStyle(
+                    //         color: Colors.white,
+                    //         fontSize: 16,
+                    //       ),
+                    //     ),
+                    //     SizedBox(
+                    //       width: 5,
+                    //     ),
+                    //     IconButton(
+                    //       icon: Icon(Icons.calendar_month),
+                    //       color: Colors.white,
+                    //       onPressed: () {
+                    //         _selectDate(context);
+                    //       },
+                    //     ),
+                    //     Text(
+                    //       selectedDate != null
+                    //           ? DateFormat.yMMMd().format(selectedDate!)
+                    //           : '',
+                    //       style: const TextStyle(
+                    //         color: Colors.white,
+                    //         fontWeight: FontWeight.bold,
+                    //       ),
+                    //     ),
+                    //   ],
+                    // ),
+                    const SizedBox(height: 8),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.center,
+                      children: [
+                        Expanded(
+                          flex: 0,
+                          child: ElevatedButton(
+                            onPressed: _searchFlights,
+                            child: const Text(
+                              "Search Flights",
+                              style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    )
                   ],
                 ),
               ),
@@ -332,7 +480,7 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Card(
                 elevation: 10,
-                color: const Color.fromARGB(255, 48, 48, 48),
+                color: Color.fromARGB(255, 62, 62, 62),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -431,7 +579,7 @@ class _HomePageState extends State<HomePage> {
                               width: 8,
                               child: DecoratedBox(
                                 decoration: BoxDecoration(
-                                    color: Colors.black, //SECOND DO TIN CIRCLE
+                                    color: Colors.black, //SECOND DOT IN CIRCLE
                                     borderRadius: BorderRadius.circular(5)),
                               ),
                             ),
@@ -566,20 +714,20 @@ class _HomePageState extends State<HomePage> {
               ),
             ),
             const Divider(color: Colors.white),
-            ListTile(
-              leading: const Icon(Icons.event),
-              title: const Text(
-                'Tickets',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => TicketsPage()));
-              },
-            ),
+            // ListTile(
+            //   leading: const Icon(Icons.event),
+            //   title: const Text(
+            //     'Tickets',
+            //     style: TextStyle(
+            //       color: Colors.white,
+            //     ),
+            //   ),
+            //   onTap: () {
+            //     Navigator.pop(context);
+            //     Navigator.push(
+            //         context, MaterialPageRoute(builder: (_) => TicketsPage()));
+            //   },
+            // ),
             ListTile(
               leading: const Icon(Icons.confirmation_number),
               title: const Text(
@@ -683,5 +831,19 @@ class _HomePageState extends State<HomePage> {
         selectedDate = pickedDate;
       });
     }
+  }
+
+  void _searchFlights() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (_) => TicketsPage(
+          departureCity: selectedDepartureCity,
+          arrivalCity: selectedArrivalCity,
+          // selectedDate: selectedDate,
+          isRoundTrip: isRoundTripSelected,
+        ),
+      ),
+    );
   }
 }
