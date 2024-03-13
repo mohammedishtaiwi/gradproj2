@@ -13,7 +13,6 @@ class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
 
   @override
-  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -28,7 +27,6 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     super.initState();
-    // Initialize the selected cities here
     getUniqueCities().then((cities) {
       if (cities.isNotEmpty) {
         setState(() {
@@ -88,13 +86,13 @@ class _HomePageState extends State<HomePage> {
             ],
           ),
           buildDividerBox(context),
-          buildselectorBox(context),
+          buildSelectorBox(context),
         ],
       ),
     );
   }
 
-  Widget buildselectorBox(BuildContext context) {
+  Widget buildSelectorBox(BuildContext context) {
     return StreamBuilder<List<String>>(
       stream: FirebaseFirestore.instance.collection('Tickets').snapshots().map(
         (snapshot) {
@@ -125,7 +123,7 @@ class _HomePageState extends State<HomePage> {
               height: 350.0,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(20),
-                color: const Color.fromARGB(255, 48, 48, 48),
+                color: Colors.blueGrey, // Change the color to blue grey
               ),
               child: Padding(
                 padding: const EdgeInsets.all(16.0),
