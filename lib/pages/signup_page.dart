@@ -7,6 +7,8 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 
 class SignUpPage extends StatefulWidget {
+  const SignUpPage({super.key});
+
   @override
   _SignUpPageState createState() => _SignUpPageState();
 }
@@ -133,8 +135,8 @@ class _SignUpPageState extends State<SignUpPage> {
           context: context,
           builder: (BuildContext context) {
             return AlertDialog(
-              title: Text('Verify your email'),
-              content: Text(
+              title: const Text('Verify your email'),
+              content: const Text(
                 'A verification email has been sent. Please check your email and verify your account.',
               ),
               actions: [
@@ -142,7 +144,7 @@ class _SignUpPageState extends State<SignUpPage> {
                   onPressed: () {
                     Navigator.pushReplacementNamed(context, '/');
                   },
-                  child: Text('OK'),
+                  child: const Text('OK'),
                 ),
               ],
             );
@@ -189,14 +191,14 @@ class _SignUpPageState extends State<SignUpPage> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: Text('Error'),
+          title: const Text('Error'),
           content: Text(errorMessage),
           actions: [
             TextButton(
               onPressed: () {
                 Navigator.of(context).pop();
               },
-              child: Text('OK'),
+              child: const Text('OK'),
             ),
           ],
         );

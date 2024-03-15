@@ -10,7 +10,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
 
 class HomePage extends StatefulWidget {
-  HomePage({Key? key}) : super(key: key);
+  const HomePage({Key? key}) : super(key: key);
 
   @override
   _HomePageState createState() => _HomePageState();
@@ -98,22 +98,22 @@ class _HomePageState extends State<HomePage> {
     return StreamBuilder<List<String>>(
       stream: FirebaseFirestore.instance.collection('Tickets').snapshots().map(
         (snapshot) {
-          Set<String> uniqueCities = Set<String>();
-          snapshot.docs.forEach((doc) {
-            var ticketData = doc.data() as Map<String, dynamic>;
+          Set<String> uniqueCities = <String>{};
+          for (var doc in snapshot.docs) {
+            var ticketData = doc.data();
             uniqueCities.add(ticketData['departureCity']);
             uniqueCities.add(ticketData['arrivalCity']);
-          });
+          }
           return uniqueCities.toList();
         },
       ),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (snapshot.hasError) {
           return Text('Error: ${snapshot.error}');
         } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return Text('No cities found.');
+          return const Text('No cities found.');
         } else {
           List<String> cities = snapshot.data!;
 
@@ -186,13 +186,13 @@ class _HomePageState extends State<HomePage> {
                         Center(
                             child: Transform.rotate(
                           angle: 1,
-                          child: Icon(
+                          child: const Icon(
                             Icons.local_airport,
                             color: Colors.white, //PLANE
                             size: 24,
                           ),
                         )),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         const Text(
@@ -202,7 +202,7 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 16,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         DropdownButton<String>(
@@ -212,7 +212,7 @@ class _HomePageState extends State<HomePage> {
                               value: city,
                               child: Text(
                                 city,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color.fromARGB(255, 107, 104, 104),
                                 ),
                               ),
@@ -232,13 +232,13 @@ class _HomePageState extends State<HomePage> {
                         Center(
                             child: Transform.rotate(
                           angle: 1.9,
-                          child: Icon(
+                          child: const Icon(
                             Icons.local_airport,
                             color: Colors.white, //PLANE
                             size: 24,
                           ),
                         )),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         const Text(
@@ -248,7 +248,7 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 16,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         DropdownButton<String>(
@@ -258,7 +258,7 @@ class _HomePageState extends State<HomePage> {
                               value: city,
                               child: Text(
                                 city,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color.fromARGB(255, 107, 104, 104),
                                 ),
                               ),
@@ -275,7 +275,7 @@ class _HomePageState extends State<HomePage> {
                     const SizedBox(height: 15),
                     Row(
                       children: [
-                        SizedBox(
+                        const SizedBox(
                           width: 10,
                         ),
                         const Text(
@@ -285,11 +285,11 @@ class _HomePageState extends State<HomePage> {
                             fontSize: 16,
                           ),
                         ),
-                        SizedBox(
+                        const SizedBox(
                           width: 5,
                         ),
                         IconButton(
-                          icon: Icon(Icons.calendar_month),
+                          icon: const Icon(Icons.calendar_month),
                           color: Colors.white,
                           onPressed: () {
                             _selectDate(context);
@@ -299,7 +299,7 @@ class _HomePageState extends State<HomePage> {
                           selectedDate != null
                               ? DateFormat.yMMMd().format(selectedDate!)
                               : '',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
                           ),
@@ -378,7 +378,7 @@ class _HomePageState extends State<HomePage> {
       children: [
         Text(
           label,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.white,
             fontSize: 16,
           ),
@@ -480,7 +480,7 @@ class _HomePageState extends State<HomePage> {
               ),
               child: Card(
                 elevation: 10,
-                color: Color.fromARGB(255, 62, 62, 62),
+                color: const Color.fromARGB(255, 62, 62, 62),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
@@ -491,7 +491,7 @@ class _HomePageState extends State<HomePage> {
                     children: [
                       Center(
                         child: Text(
-                          '$formattedFlightTime',
+                          formattedFlightTime,
                           style: const TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -503,16 +503,16 @@ class _HomePageState extends State<HomePage> {
                         children: <Widget>[
                           Text(
                             '${ticketData['departureCity']}', //REPLACE WITH ABBRV
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Container(
-                            padding: EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
                                 color: Colors.white,
                                 borderRadius: BorderRadius.circular(20)),
@@ -536,10 +536,14 @@ class _HomePageState extends State<HomePage> {
                                     child: LayoutBuilder(
                                       builder: (context, constraints) {
                                         return Flex(
+                                          direction: Axis.horizontal,
+                                          mainAxisSize: MainAxisSize.max,
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceBetween,
                                           children: List.generate(
                                               (constraints.constrainWidth() / 6)
                                                   .floor(),
-                                              (index) => SizedBox(
+                                              (index) => const SizedBox(
                                                     height: 1,
                                                     width: 3,
                                                     child: DecoratedBox(
@@ -548,10 +552,6 @@ class _HomePageState extends State<HomePage> {
                                                               .white), // DASHED LINE
                                                     ),
                                                   )),
-                                          direction: Axis.horizontal,
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
                                         );
                                       },
                                     ),
@@ -559,7 +559,7 @@ class _HomePageState extends State<HomePage> {
                                   Center(
                                       child: Transform.rotate(
                                     angle: 1.5,
-                                    child: Icon(
+                                    child: const Icon(
                                       Icons.local_airport,
                                       color: Colors.white, //PLANE
                                       size: 24,
@@ -570,7 +570,7 @@ class _HomePageState extends State<HomePage> {
                             ),
                           ),
                           Container(
-                            padding: EdgeInsets.all(6),
+                            padding: const EdgeInsets.all(6),
                             decoration: BoxDecoration(
                                 color: Colors.white, //SECOND CIRCLE
                                 borderRadius: BorderRadius.circular(20)),
@@ -584,12 +584,12 @@ class _HomePageState extends State<HomePage> {
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             width: 10,
                           ),
                           Text(
                             ' ${ticketData['arrivalCity']}', //REPLACE WITH ABBRV
-                            style: TextStyle(
+                            style: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white),
@@ -599,14 +599,14 @@ class _HomePageState extends State<HomePage> {
                       Center(
                         child: Text(
                           '${ticketData['flightDuration']}', // REPLACE WITH FLIGHT TIME
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 10,
                             fontWeight: FontWeight.bold,
                             color: Colors.white,
                           ),
                         ),
                       ),
-                      SizedBox(
+                      const SizedBox(
                         height: 10,
                       ),
                       Row(
@@ -632,7 +632,7 @@ class _HomePageState extends State<HomePage> {
                                 ),
                               );
                             },
-                            child: Text(
+                            child: const Text(
                               'View Ticket >',
                               style: TextStyle(
                                 color: Colors
@@ -769,7 +769,7 @@ class _HomePageState extends State<HomePage> {
               onTap: () {
                 Navigator.pop(context);
                 Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => Profile()));
+                    context, MaterialPageRoute(builder: (_) => const Profile()));
               },
             ),
           ],
@@ -802,13 +802,13 @@ class _HomePageState extends State<HomePage> {
       QuerySnapshot querySnapshot =
           await FirebaseFirestore.instance.collection('Tickets').get();
 
-      Set<String> uniqueCities = Set<String>();
+      Set<String> uniqueCities = <String>{};
 
-      querySnapshot.docs.forEach((doc) {
+      for (var doc in querySnapshot.docs) {
         var ticketData = doc.data() as Map<String, dynamic>;
         uniqueCities.add(ticketData['departureCity']);
         uniqueCities.add(ticketData['arrivalCity']);
-      });
+      }
 
       return uniqueCities.toList();
     } catch (e) {

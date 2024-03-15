@@ -84,8 +84,8 @@ class TicketDetailsPage extends StatelessWidget {
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Ticket booked successfully!'),
+        const SnackBar(
+          content: Text('Ticket booked successfully!'),
         ),
       );
 
@@ -93,8 +93,8 @@ class TicketDetailsPage extends StatelessWidget {
     } catch (e) {
       print('Error booking ticket: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Failed to book the ticket. Please try again.'),
+        const SnackBar(
+          content: Text('Failed to book the ticket. Please try again.'),
         ),
       );
     }
@@ -123,8 +123,8 @@ class TicketDetailsPage extends StatelessWidget {
           });
 
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Booking undone successfully!'),
+            const SnackBar(
+              content: Text('Booking undone successfully!'),
             ),
           );
 
@@ -132,24 +132,24 @@ class TicketDetailsPage extends StatelessWidget {
         } else {
           // Ticket is not booked, show appropriate message
           ScaffoldMessenger.of(context).showSnackBar(
-            SnackBar(
-              content: const Text('Ticket is not booked.'),
+            const SnackBar(
+              content: Text('Ticket is not booked.'),
             ),
           );
         }
       } else {
         // Document not found, handle as needed
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
-            content: const Text('Ticket document not found.'),
+          const SnackBar(
+            content: Text('Ticket document not found.'),
           ),
         );
       }
     } catch (e) {
       print('Error undoing booking: $e');
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: const Text('Failed to undo booking. Please try again.'),
+        const SnackBar(
+          content: Text('Failed to undo booking. Please try again.'),
         ),
       );
     }

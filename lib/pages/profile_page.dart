@@ -5,7 +5,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gradproj2/pages/edit_profile.dart';
 
 class Profile extends StatefulWidget {
-  Profile({Key? key}) : super(key: key);
+  const Profile({Key? key}) : super(key: key);
 
   @override
   State<Profile> createState() => _ProfileState();
@@ -37,7 +37,7 @@ class _ProfileState extends State<Profile> {
         future: _firestore.collection('users').doc(_user?.uid).get(),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -55,13 +55,13 @@ class _ProfileState extends State<Profile> {
                       radius: 50,
                       backgroundImage: profileImageUrl != null
                           ? NetworkImage(profileImageUrl)
-                          : AssetImage('assets/placeholder_image.png')
+                          : const AssetImage('assets/placeholder_image.png')
                               as ImageProvider<Object>?,
                     ),
                     const SizedBox(height: 16),
                     Text(
                       userData?['name'] ?? 'User Name',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
                       ),
@@ -70,7 +70,7 @@ class _ProfileState extends State<Profile> {
                     const SizedBox(height: 8),
                     Text(
                       userData?['username'] ?? 'user@example.com',
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 18,
                         color: Colors.grey,
                       ),
@@ -85,7 +85,7 @@ class _ProfileState extends State<Profile> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => BookedTicketsPage(),
+                                builder: (_) => const BookedTicketsPage(),
                               ),
                             );
                           },
@@ -103,7 +103,7 @@ class _ProfileState extends State<Profile> {
                             Navigator.push(
                               context,
                               MaterialPageRoute(
-                                builder: (_) => EditProfilePage(),
+                                builder: (_) => const EditProfilePage(),
                               ),
                             );
                           },
