@@ -26,6 +26,8 @@ class TicketsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Center(child: Text('Tickets')),
       ),
+
+      
       body: Center(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('Tickets').snapshots(),
