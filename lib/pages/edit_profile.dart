@@ -16,7 +16,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Edit Profile'),
+        title: const Text('Edit Profile'),
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
@@ -29,25 +29,25 @@ class _EditProfilePageState extends State<EditProfilePage> {
             //       ? NetworkImage(profilePictureUrl)
             //       : AssetImage('assets/default_profile_picture.png'), // You can set a default profile picture.
             // ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 // Implement profile picture editing logic here.
               },
-              child: Text('Change Profile Picture'),
+              child: const Text('Change Profile Picture'),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               onChanged: (value) {
                 setState(() {
                   newUsername = value;
                 });
               },
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Change Username',
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             TextField(
               onChanged: (value) {
                 setState(() {
@@ -55,16 +55,16 @@ class _EditProfilePageState extends State<EditProfilePage> {
                 });
               },
               obscureText: true, // Use this for password fields to hide the entered text.
-              decoration: InputDecoration(
+              decoration: const InputDecoration(
                 labelText: 'Change Password',
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             ElevatedButton(
               onPressed: () {
                 // Implement logic to update the user's information with newUsername, newPassword, and profilePictureUrl.
               },
-              child: Text('Save Changes'),
+              child: const Text('Save Changes'),
             ),
           ],
         ),
@@ -75,7 +75,7 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
 void main() {
   runApp(
-    MaterialApp(
+    const MaterialApp(
       home: EditProfilePage(),
     ),
   );

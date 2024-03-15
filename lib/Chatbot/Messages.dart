@@ -17,17 +17,17 @@ class _MessagesScreenState extends State<MessagesScreen> {
         final isUserMessage = widget.messages[index]['isUserMessage'];
         final textColor = isUserMessage ? Colors.white : Colors.black;
         return Container(
-          margin: EdgeInsets.all(10),
+          margin: const EdgeInsets.all(10),
           child: Row(
             mainAxisAlignment:
                 isUserMessage ? MainAxisAlignment.end : MainAxisAlignment.start,
             children: [
               Container(
-                padding: EdgeInsets.symmetric(vertical: 14, horizontal: 14),
+                padding: const EdgeInsets.symmetric(vertical: 14, horizontal: 14),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(40),
-                    topRight: Radius.circular(40),
+                    bottomLeft: const Radius.circular(40),
+                    topRight: const Radius.circular(40),
                     bottomRight: Radius.circular(isUserMessage ? 0 : 40),
                     topLeft: Radius.circular(isUserMessage ? 40 : 0),
                   ),
@@ -43,7 +43,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
           ),
         );
       },
-      separatorBuilder: (_, i) => Padding(padding: EdgeInsets.only(top: 10)),
+      separatorBuilder: (_, i) => const Padding(padding: EdgeInsets.only(top: 10)),
       itemCount: widget.messages.length,
     );
   }

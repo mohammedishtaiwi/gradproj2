@@ -11,7 +11,7 @@ class TicketsPage extends StatelessWidget {
   final bool isOneWaySelected;
   // final DateTime? selectedDate;
 
-  TicketsPage({
+  const TicketsPage({
     Key? key,
     this.departureCity,
     this.arrivalCity,
@@ -62,7 +62,7 @@ class TicketsPage extends StatelessWidget {
             }).toList();
 
             if (filteredFlights.isEmpty) {
-              return Center(
+              return const Center(
                 child: Text('No flights available.'),
               );
             }
@@ -425,7 +425,7 @@ class TicketsPage extends StatelessWidget {
   }
 
   bool _isSameDate(Timestamp flightDate, DateTime? selectedDate) {
-    if (flightDate == null || selectedDate == null) {
+    if (selectedDate == null) {
       return false;
     }
 

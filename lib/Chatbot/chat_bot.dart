@@ -25,7 +25,7 @@ class _HomeState extends State<Home> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('AiAvatar QAIA'),
+        title: const Text('AiAvatar QAIA'),
       ),
       body: Container(
         color: Colors.white, //this is the color of the background
@@ -33,14 +33,14 @@ class _HomeState extends State<Home> {
           children: [
             Expanded(child: MessagesScreen(messages: messages)),
             Container(
-              padding: EdgeInsets.symmetric(horizontal: 14, vertical: 8),
+              padding: const EdgeInsets.symmetric(horizontal: 14, vertical: 8),
               color: Colors.white,
               child: Row(
                 children: [
                   Expanded(
                     child: TextField(
                       controller: _controller,
-                      style: TextStyle(
+                      style: const TextStyle(
                           color: Colors
                               .black), // i Set text color to white so i can see whats written
                       decoration: InputDecoration(
@@ -59,7 +59,7 @@ class _HomeState extends State<Home> {
                       sendMessage(_controller.text);
                       _controller.clear();
                     },
-                    icon: Icon(Icons.send),
+                    icon: const Icon(Icons.send),
                     color: Colors.blueGrey,
                   ),
                 ],

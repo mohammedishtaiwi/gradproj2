@@ -21,19 +21,19 @@ class Routes {
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
       case login:
-        return MaterialPageRoute(builder: (_) => LoginPage());
+        return MaterialPageRoute(builder: (_) => const LoginPage());
       case home:
-        return MaterialPageRoute(builder: (_) => HomePage());
+        return MaterialPageRoute(builder: (_) => const HomePage());
       case signup:
-        return MaterialPageRoute(builder: (_) => SignUpPage());
+        return MaterialPageRoute(builder: (_) => const SignUpPage());
       case tickets:
-        return MaterialPageRoute(builder: (_) => TicketsPage());
+        return MaterialPageRoute(builder: (_) => const TicketsPage());
       case bookedTickets:
-        return MaterialPageRoute(builder: (_) => BookedTicketsPage());
+        return MaterialPageRoute(builder: (_) => const BookedTicketsPage());
       case chat:
-        return MaterialPageRoute(builder: (_) => Home());
+        return MaterialPageRoute(builder: (_) => const Home());
          case profile:
-        return MaterialPageRoute(builder: (_) => Profile());
+        return MaterialPageRoute(builder: (_) => const Profile());
 
       default:
         return MaterialPageRoute(
