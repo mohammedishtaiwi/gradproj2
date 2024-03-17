@@ -71,7 +71,6 @@ class TicketDetailsPage extends StatelessWidget {
     try {
       print('Booking document with $documentID');
 
-      // Get the current timestamp
       final DateTime now = DateTime.now();
       final Timestamp timestamp = Timestamp.fromDate(now);
 
@@ -80,7 +79,7 @@ class TicketDetailsPage extends StatelessWidget {
           .doc(documentID)
           .update({
         'booked': true,
-        'bookingTime': timestamp, // Update the bookingTime field
+        'bookingTime': timestamp,
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -104,47 +103,34 @@ class TicketDetailsPage extends StatelessWidget {
     try {
       print('Undoing booking for document with $documentID');
 
-      // Check if the ticket is already booked
-      final DocumentSnapshot ticketSnapshot = await FirebaseFirestore.instance
+      final QuerySnapshot snapshot = await FirebaseFirestore.instance
           .collection('Tickets')
-          .doc(documentID)
+          .where('booked', isEqualTo: true)
           .get();
 
-      if (ticketSnapshot.exists) {
-        final bool isBooked = ticketData['booked'] ?? false;
-
-        if (isBooked) {
-          await FirebaseFirestore.instance
-              .collection('Tickets')
-              .doc(documentID)
-              .update({
-            'booked': false,
-            'bookingTime': null, // Set bookingTime to null
-          });
-
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Booking undone successfully!'),
-            ),
-          );
-
-          Navigator.pop(context);
-        } else {
-          // Ticket is not booked, show appropriate message
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('Ticket is not booked.'),
-            ),
-          );
-        }
+      if (snapshot.docs.length == 1) {
+        final batch = FirebaseFirestore.instance.batch();
+        snapshot.docs.forEach((doc) {
+          batch.update(doc.reference, {'booked': false, 'bookingTime': null});
+        });
+        await batch.commit();
       } else {
-        // Document not found, handle as needed
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Ticket document not found.'),
-          ),
-        );
+        await FirebaseFirestore.instance
+            .collection('Tickets')
+            .doc(documentID)
+            .update({
+          'booked': false,
+          'bookingTime': null,
+        });
       }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Booking undone successfully!'),
+        ),
+      );
+
+      Navigator.pop(context);
     } catch (e) {
       print('Error undoing booking: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -154,14 +140,12 @@ class TicketDetailsPage extends StatelessWidget {
       );
     }
   }
-}
 
-String _formatFlightTime(Timestamp flightTime) {
-  // Convert Timestamp to DateTime
-  DateTime dateTime = flightTime.toDate();
+  String _formatFlightTime(Timestamp flightTime) {
+    DateTime dateTime = flightTime.toDate();
 
-  // Format the DateTime to a human-readable string
-  String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
+    String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
 
-  return formattedTime;
+    return formattedTime;
+  }
 }

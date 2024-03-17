@@ -13,6 +13,7 @@ class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
 
   @override
+  // ignore: library_private_types_in_public_api
   _HomePageState createState() => _HomePageState();
 }
 
@@ -22,7 +23,8 @@ class _HomePageState extends State<HomePage> {
   List<String> cities = [];
   String selectedDepartureCity = '';
   String selectedArrivalCity = '';
-  DateTime? selectedDate;
+  DateTime? selectedFromDate;
+  DateTime? selectedToDate;
   bool isOneWaySelected = true;
   bool isRoundTripSelected = false;
 
@@ -46,6 +48,7 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
+    User? currentUser = FirebaseAuth.instance.currentUser;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -65,7 +68,7 @@ class _HomePageState extends State<HomePage> {
           }),
         ],
       ),
-      drawer: buildDrawer(context),
+      drawer: buildDrawer(context, currentUser),
       body: Stack(
         children: [
           Column(
@@ -118,9 +121,10 @@ class _HomePageState extends State<HomePage> {
           List<String> cities = snapshot.data!;
 
           return Positioned(
-            top: 2 / 3 * MediaQuery.of(context).size.height - 250,
+            top: 2 / 3 * MediaQuery.of(context).size.height - 265,
             left: 10,
             right: 10,
+            bottom: 19,
             child: Container(
               height: 335.0,
               decoration: BoxDecoration(
@@ -213,7 +217,7 @@ class _HomePageState extends State<HomePage> {
                               child: Text(
                                 city,
                                 style: const TextStyle(
-                                  color: Color.fromARGB(255, 107, 104, 104),
+                                  color: Colors.black,
                                 ),
                               ),
                             );
@@ -259,7 +263,7 @@ class _HomePageState extends State<HomePage> {
                               child: Text(
                                 city,
                                 style: const TextStyle(
-                                  color: Color.fromARGB(255, 107, 104, 104),
+                                  color: Colors.black,
                                 ),
                               ),
                             );
@@ -290,14 +294,14 @@ class _HomePageState extends State<HomePage> {
                         ),
                         IconButton(
                           icon: const Icon(Icons.calendar_month),
-                          color: Colors.white,
+                          color: Colors.black,
                           onPressed: () {
-                            _selectDate(context);
+                            _selectDate(context, true);
                           },
                         ),
                         Text(
-                          selectedDate != null
-                              ? DateFormat.yMMMd().format(selectedDate!)
+                          selectedFromDate != null
+                              ? DateFormat.yMMMd().format(selectedFromDate!)
                               : '',
                           style: const TextStyle(
                             color: Colors.white,
@@ -306,39 +310,39 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    // Row(
-                    //   children: [
-                    //     SizedBox(
-                    //       width: 10,
-                    //     ),
-                    //     const Text(
-                    //       'To',
-                    //       style: TextStyle(
-                    //         color: Colors.white,
-                    //         fontSize: 16,
-                    //       ),
-                    //     ),
-                    //     SizedBox(
-                    //       width: 5,
-                    //     ),
-                    //     IconButton(
-                    //       icon: Icon(Icons.calendar_month),
-                    //       color: Colors.white,
-                    //       onPressed: () {
-                    //         _selectDate(context);
-                    //       },
-                    //     ),
-                    //     Text(
-                    //       selectedDate != null
-                    //           ? DateFormat.yMMMd().format(selectedDate!)
-                    //           : '',
-                    //       style: const TextStyle(
-                    //         color: Colors.white,
-                    //         fontWeight: FontWeight.bold,
-                    //       ),
-                    //     ),
-                    //   ],
-                    // ),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 10,
+                        ),
+                        const Text(
+                          'To',
+                          style: TextStyle(
+                            color: Colors.white,
+                            fontSize: 16,
+                          ),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        IconButton(
+                          icon: const Icon(Icons.calendar_month),
+                          color: Colors.black,
+                          onPressed: () {
+                            _selectDate(context, false);
+                          },
+                        ),
+                        Text(
+                          selectedToDate != null
+                              ? DateFormat.yMMMd().format(selectedToDate!)
+                              : '',
+                          style: const TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
                     const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -416,7 +420,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildDividerBox(BuildContext context) {
     return Positioned(
-      top: 1 / 3 * MediaQuery.of(context).size.height - 130,
+      top: 1 / 3 * MediaQuery.of(context).size.height - 150,
       left: 5,
       right: 5,
       child: StreamBuilder<QuerySnapshot>(
@@ -451,15 +455,18 @@ class _HomePageState extends State<HomePage> {
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
-                  child: const Column(
-                    crossAxisAlignment: CrossAxisAlignment.center,
+                  child: const Stack(
                     children: [
-                      Text(
-                        'No Flights Have Been Booked',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
+                      Positioned.fill(
+                        child: Center(
+                          child: Text(
+                            'No Flights Have Been Booked',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -668,111 +675,119 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Drawer buildDrawer(BuildContext context) {
+  Drawer buildDrawer(BuildContext context, User? user) {
+    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+
     return Drawer(
       child: Container(
         color: const Color.fromARGB(255, 48, 48, 48),
-        child: Column(
-          children: <Widget>[
-            Container(
-              padding: EdgeInsets.only(
-                top: MediaQuery.of(context).padding.top,
-                bottom: 8,
-              ),
-              constraints: const BoxConstraints(maxWidth: 288),
-              decoration: BoxDecoration(
-                color: const Color.fromARGB(255, 48, 48, 48),
-                borderRadius: BorderRadius.circular(30),
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    CircleAvatar(
-                      backgroundColor: Colors.white.withOpacity(0.2),
-                      foregroundColor: Colors.white,
-                      child: const Icon(Icons.person_outline),
+        child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          future: _firestore.collection('users').doc(user?.uid).get(),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(child: CircularProgressIndicator());
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else {
+              final userData = snapshot.data?.data();
+              final profileImageUrl = userData?['profileImageUrl'];
+
+              return Column(
+                children: <Widget>[
+                  Container(
+                    padding: EdgeInsets.only(
+                      top: MediaQuery.of(context).padding.top,
+                      bottom: 8,
                     ),
-                    const SizedBox(width: 8),
-                    const Column(
-                      mainAxisSize: MainAxisSize.min,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Profile Name",
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 17,
-                            fontFamily: "Inter",
+                    constraints: const BoxConstraints(maxWidth: 288),
+                    decoration: BoxDecoration(
+                      color: const Color.fromARGB(255, 48, 48, 48),
+                      borderRadius: BorderRadius.circular(30),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.all(16),
+                      child: Row(
+                        children: [
+                          CircleAvatar(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            foregroundColor: Colors.white,
+                            backgroundImage: profileImageUrl != null
+                                ? NetworkImage(profileImageUrl)
+                                : AssetImage('assets/placeholder_image.png')
+                                    as ImageProvider<Object>?,
+                            child: profileImageUrl == null
+                                ? const Icon(Icons.person_outline)
+                                : null,
                           ),
-                        ),
-                        SizedBox(height: 2),
-                      ],
+                          const SizedBox(width: 8),
+                          Column(
+                            mainAxisSize: MainAxisSize.min,
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                userData?['name'] ?? "Profile Name",
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 17,
+                                  fontFamily: "Inter",
+                                ),
+                              ),
+                              SizedBox(height: 2),
+                            ],
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-            ),
-            const Divider(color: Colors.white),
-            // ListTile(
-            //   leading: const Icon(Icons.event),
-            //   title: const Text(
-            //     'Tickets',
-            //     style: TextStyle(
-            //       color: Colors.white,
-            //     ),
-            //   ),
-            //   onTap: () {
-            //     Navigator.pop(context);
-            //     Navigator.push(
-            //         context, MaterialPageRoute(builder: (_) => TicketsPage()));
-            //   },
-            // ),
-            ListTile(
-              leading: const Icon(Icons.confirmation_number),
-              title: const Text(
-                'Booked Tickets',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (_) => const BookedTicketsPage()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.chat),
-              title: const Text(
-                'Chat',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => const Home()));
-              },
-            ),
-            ListTile(
-              leading: const Icon(Icons.person),
-              title: const Text(
-                'Profile',
-                style: TextStyle(
-                  color: Colors.white,
-                ),
-              ),
-              onTap: () {
-                Navigator.pop(context);
-                Navigator.push(
-                    context, MaterialPageRoute(builder: (_) => const Profile()));
-              },
-            ),
-          ],
+                  ),
+                  const Divider(color: Colors.white),
+                  ListTile(
+                    leading: const Icon(Icons.confirmation_number),
+                    title: const Text(
+                      'Booked Tickets',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const BookedTicketsPage()));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.chat),
+                    title: const Text(
+                      'Chat',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const Home()));
+                    },
+                  ),
+                  ListTile(
+                    leading: const Icon(Icons.person),
+                    title: const Text(
+                      'Profile',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
+                    onTap: () {
+                      Navigator.pop(context);
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) => const Profile()));
+                    },
+                  ),
+                ],
+              );
+            }
+          },
         ),
       ),
     );
@@ -817,18 +832,22 @@ class _HomePageState extends State<HomePage> {
     }
   }
 
-  Future<void> _selectDate(BuildContext context) async {
-    DateTime currentDate = DateTime.now();
-    DateTime? pickedDate = await showDatePicker(
+  Future<void> _selectDate(BuildContext context, bool isFromDate) async {
+    final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: currentDate,
-      firstDate: currentDate,
-      lastDate: currentDate.add(const Duration(days: 365)),
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
     );
-
-    if (pickedDate != null && pickedDate != currentDate) {
+    if (picked != null) {
       setState(() {
-        selectedDate = pickedDate;
+        if (isFromDate) {
+          selectedFromDate = picked;
+          selectedToDate =
+              null; // Reset the to date when changing the from date
+        } else {
+          selectedToDate = picked;
+        }
       });
     }
   }
