@@ -7,14 +7,17 @@ class TicketsPage extends StatelessWidget {
   final String? departureCity;
   final String? arrivalCity;
   final bool? isRoundTrip;
+  final DateTime? selectedFromDate;
+  final DateTime? selectedToDate;
   final bool isRoundTripSelected;
   final bool isOneWaySelected;
-  // final DateTime? selectedDate;
 
   const TicketsPage({
     Key? key,
     this.departureCity,
     this.arrivalCity,
+    this.selectedFromDate,
+    this.selectedToDate,
     this.isRoundTrip,
   })  : isRoundTripSelected = isRoundTrip ?? true,
         isOneWaySelected = !(isRoundTrip ?? true),
@@ -26,8 +29,6 @@ class TicketsPage extends StatelessWidget {
       appBar: AppBar(
         title: const Center(child: Text('Tickets')),
       ),
-
-      
       body: Center(
         child: StreamBuilder(
           stream: FirebaseFirestore.instance.collection('Tickets').snapshots(),
@@ -55,10 +56,29 @@ class TicketsPage extends StatelessWidget {
 
               bool isMatchingCities = data['departureCity'] == departureCity &&
                   data['arrivalCity'] == arrivalCity;
+              bool isMatchingDate = false;
 
+              if (isOneWay && selectedFromDate != null) {
+                DateTime flightDate = data['flightDate'].toDate();
+                isMatchingDate = flightDate.year == selectedFromDate!.year &&
+                    flightDate.month == selectedFromDate!.month &&
+                    flightDate.day == selectedFromDate!.day;
+              } else if (isRoundTrip &&
+                  selectedFromDate != null &&
+                  selectedToDate != null) {
+                DateTime flightDate = data['flightDate'].toDate();
+                DateTime returnDate = data['ReturnDate'].toDate();
+                isMatchingDate = (flightDate.year == selectedFromDate!.year &&
+                        flightDate.month == selectedFromDate!.month &&
+                        flightDate.day == selectedFromDate!.day) &&
+                    (returnDate.year == selectedToDate!.year &&
+                        returnDate.month == selectedToDate!.month &&
+                        returnDate.day == selectedToDate!.day);
+              }
               return (isRoundTrip && isRoundTripSelected ||
                       isOneWay && isOneWaySelected) &&
-                  isMatchingCities;
+                  isMatchingCities &&
+                  isMatchingDate;
             }).toList();
 
             if (filteredFlights.isEmpty) {
@@ -387,8 +407,8 @@ class TicketsPage extends StatelessWidget {
                                 const SizedBox(
                                   width: 16,
                                 ),
-                                const Text(
-                                  "Jet Airways",
+                                Text(
+                                  '${data['Airline']}',
                                   style: TextStyle(
                                     fontSize: 16,
                                     fontWeight: FontWeight.w500,

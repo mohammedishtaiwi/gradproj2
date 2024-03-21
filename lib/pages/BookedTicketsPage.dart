@@ -131,7 +131,8 @@ class BookedTicketsPage extends StatelessWidget {
                                                         (constraints.constrainWidth() /
                                                                 6)
                                                             .floor(),
-                                                        (index) => const SizedBox(
+                                                        (index) =>
+                                                            const SizedBox(
                                                               height: 1,
                                                               width: 3,
                                                               child:
@@ -355,7 +356,7 @@ class BookedTicketsPage extends StatelessWidget {
                                 const SizedBox(
                                   width: 16,
                                 ),
-                                const Text("Jet Airways", //REPLACE WITH AIRLINES
+                                Text('${data['Airline']}',
                                     style: TextStyle(
                                         fontSize: 16,
                                         fontWeight: FontWeight.w500,
