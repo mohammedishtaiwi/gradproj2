@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class TicketDetailsPage extends StatelessWidget {
   final Map<String, dynamic> ticketData;
@@ -82,6 +83,14 @@ class TicketDetailsPage extends StatelessWidget {
         'bookingTime': timestamp,
       });
 
+      final currentUser = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .update({
+        'bookedTickets': FieldValue.arrayUnion([documentID]),
+      });
+
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
           content: Text('Ticket booked successfully!'),
@@ -109,20 +118,35 @@ class TicketDetailsPage extends StatelessWidget {
           .get();
 
       if (snapshot.docs.length == 1) {
-        final batch = FirebaseFirestore.instance.batch();
-        snapshot.docs.forEach((doc) {
-          batch.update(doc.reference, {'booked': false, 'bookingTime': null});
-        });
-        await batch.commit();
-      } else {
+        // If only one ticket is booked, clear the array
+        final currentUser = FirebaseAuth.instance.currentUser;
         await FirebaseFirestore.instance
-            .collection('Tickets')
-            .doc(documentID)
+            .collection('users')
+            .doc(currentUser!.uid)
             .update({
-          'booked': false,
-          'bookingTime': null,
+          'bookedTickets': FieldValue.delete(),
         });
       }
+      // Otherwise, update the specific ticket document
+      if (snapshot.docs.isNotEmpty) {
+        final batch = FirebaseFirestore.instance.batch();
+        snapshot.docs.forEach((doc) {
+          batch.update(doc.reference, {
+            'booked': false,
+            'bookingTime': null,
+          });
+        });
+        await batch.commit();
+      }
+
+      // Remove the undone ticket from the user's bookedTickets array
+      final currentUser = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .update({
+        'bookedTickets': FieldValue.arrayRemove([documentID]),
+      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
