@@ -228,6 +228,17 @@ class _HomePageState extends State<HomePage> {
                             });
                           },
                         ),
+                        IconButton(
+                          icon: const Icon(Icons.swap_vert),
+                          color: Colors.white,
+                          onPressed: () {
+                            setState(() {
+                              final temp = selectedDepartureCity;
+                              selectedDepartureCity = selectedArrivalCity;
+                              selectedArrivalCity = temp;
+                            });
+                          },
+                        ),
                       ],
                     ),
                     const SizedBox(height: 5),
@@ -283,7 +294,7 @@ class _HomePageState extends State<HomePage> {
                           width: 10,
                         ),
                         const Text(
-                          'From',
+                          'Departure',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 16,
@@ -310,39 +321,40 @@ class _HomePageState extends State<HomePage> {
                         ),
                       ],
                     ),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
-                          'To',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
+                    if (isRoundTripSelected)
+                      Row(
+                        children: [
+                          const SizedBox(
+                            width: 10,
                           ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.calendar_month),
-                          color: Colors.black,
-                          onPressed: () {
-                            _selectDate(context, false);
-                          },
-                        ),
-                        Text(
-                          selectedToDate != null
-                              ? DateFormat.yMMMd().format(selectedToDate!)
-                              : '',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
+                          const Text(
+                            'Return',
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                            ),
                           ),
-                        ),
-                      ],
-                    ),
+                          const SizedBox(
+                            width: 5,
+                          ),
+                          IconButton(
+                            icon: const Icon(Icons.calendar_month),
+                            color: Colors.black,
+                            onPressed: () {
+                              _selectDate(context, false);
+                            },
+                          ),
+                          Text(
+                            selectedToDate != null
+                                ? DateFormat.yMMMd().format(selectedToDate!)
+                                : '',
+                            style: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ],
+                      ),
                     const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
@@ -853,16 +865,26 @@ class _HomePageState extends State<HomePage> {
   }
 
   void _searchFlights() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (_) => TicketsPage(
-          departureCity: selectedDepartureCity,
-          arrivalCity: selectedArrivalCity,
-          // selectedDate: selectedDate,
-          isRoundTrip: isRoundTripSelected,
+    if (isRoundTripSelected &&
+        (selectedFromDate == null || selectedToDate == null)) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(
+          content: Text('Please select both departure and return dates.'),
         ),
-      ),
-    );
+      );
+    } else {
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (_) => TicketsPage(
+            departureCity: selectedDepartureCity,
+            arrivalCity: selectedArrivalCity,
+            isRoundTrip: isRoundTripSelected,
+            selectedFromDate: selectedFromDate,
+            selectedToDate: selectedToDate,
+          ),
+        ),
+      );
+    }
   }
 }
