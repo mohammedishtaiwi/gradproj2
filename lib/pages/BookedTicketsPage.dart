@@ -384,4 +384,8 @@ class BookedTicketsPage extends StatelessWidget {
       ),
     );
   }
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> 44346b7d332d72160b4b7d0916f99db92a74cff0
