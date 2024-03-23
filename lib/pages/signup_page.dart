@@ -29,48 +29,51 @@ class _SignUpPageState extends State<SignUpPage> {
         automaticallyImplyLeading: false,
         title: const Center(child: Text('Sign Up')),
       ),
-      body: Center(
-        child: Padding(
-          padding: const EdgeInsets.all(16.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              TextField(
-                controller: _nameController,
-                decoration: const InputDecoration(labelText: 'Name'),
-              ),
-              TextField(
-                controller: _usernameController,
-                decoration: const InputDecoration(labelText: 'Email'),
-              ),
-              const SizedBox(height: 20),
-              TextField(
-                controller: _passwordController,
-                obscureText: true,
-                decoration: const InputDecoration(labelText: 'Password'),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  await _pickImage();
-                },
-                child: const Text('Pick Profile Picture'),
-              ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () async {
-                  await _signUp();
-                },
-                child: const Text('Sign Up'),
-              ),
-              const SizedBox(height: 10),
-              TextButton(
-                onPressed: () {
-                  Navigator.pushReplacementNamed(context, '/');
-                },
-                child: const Text('Already have an account? Log In'),
-              ),
-            ],
+      body: SingleChildScrollView(
+        // Wrap with SingleChildScrollView
+        child: Center(
+          child: Padding(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                TextField(
+                  controller: _nameController,
+                  decoration: const InputDecoration(labelText: 'Name'),
+                ),
+                TextField(
+                  controller: _usernameController,
+                  decoration: const InputDecoration(labelText: 'Email'),
+                ),
+                const SizedBox(height: 20),
+                TextField(
+                  controller: _passwordController,
+                  obscureText: true,
+                  decoration: const InputDecoration(labelText: 'Password'),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    await _pickImage();
+                  },
+                  child: const Text('Pick Profile Picture'),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () async {
+                    await _signUp();
+                  },
+                  child: const Text('Sign Up'),
+                ),
+                const SizedBox(height: 10),
+                TextButton(
+                  onPressed: () {
+                    Navigator.pushReplacementNamed(context, '/');
+                  },
+                  child: const Text('Already have an account? Log In'),
+                ),
+              ],
+            ),
           ),
         ),
       ),
@@ -107,6 +110,16 @@ class _SignUpPageState extends State<SignUpPage> {
     try {
       if (_passwordController.text.length < 6) {
         _showErrorDialog("Password must be at least 6 characters long.");
+        return;
+      }
+
+      // Check if a profile picture is uploaded
+      if (_pickedImage == null) {
+        ScaffoldMessenger.of(context).showSnackBar(
+          SnackBar(
+            content: Text('Please upload a photo'),
+          ),
+        );
         return;
       }
 

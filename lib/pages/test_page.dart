@@ -27,6 +27,19 @@
 //     Navigator.pushReplacementNamed(context, '/');
 //   }
 
+//   Future<void> _changePassword(BuildContext context) async {
+//     try {
+//       await _auth.sendPasswordResetEmail(email: _user!.email!);
+//       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//         content: Text('Password reset email sent. Check your inbox.'),
+//       ));
+//     } catch (error) {
+//       ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+//         content: Text('Failed to send password reset email: $error'),
+//       ));
+//     }
+//   }
+
 //   @override
 //   Widget build(BuildContext context) {
 //     return Scaffold(
@@ -112,6 +125,12 @@
 //                             ),
 //                           );
 //                         },
+//                       ),
+//                       ElevatedButton(
+//                         onPressed: () {
+//                           _changePassword(context);
+//                         },
+//                         child: const Text('Change Password'),
 //                       ),
 //                       const SizedBox(height: 16),
 //                       CustomButton(

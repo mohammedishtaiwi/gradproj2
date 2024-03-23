@@ -6,64 +6,92 @@ import 'package:firebase_auth/firebase_auth.dart';
 class TicketDetailsPage extends StatelessWidget {
   final Map<String, dynamic> ticketData;
   final String documentID;
-  final bool isBooked;
 
   const TicketDetailsPage({
     Key? key,
     required this.ticketData,
     required this.documentID,
-    required this.isBooked,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Ticket Details'),
-      ),
-      body: Padding(
-        padding: const EdgeInsets.all(16),
-        child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
-          children: [
-            Text(
-              'Flight Number: ${ticketData['flightNumber']}',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+    final currentUser = FirebaseAuth.instance.currentUser;
+
+    return FutureBuilder<DocumentSnapshot>(
+      future: FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .get(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return CircularProgressIndicator(); // or any loading indicator
+        }
+
+        if (snapshot.hasError) {
+          return Text('Error: ${snapshot.error}');
+        }
+
+        bool isTicketBooked = false;
+
+        if (snapshot.hasData) {
+          Map<String, dynamic> userData =
+              snapshot.data!.data() as Map<String, dynamic>;
+          List<dynamic> bookedTickets = userData['bookedTickets'];
+          isTicketBooked =
+              bookedTickets != null && bookedTickets.contains(documentID);
+        }
+
+        return Scaffold(
+          appBar: AppBar(
+            title: const Text('Ticket Details'),
+          ),
+          body: Padding(
+            padding: const EdgeInsets.all(16),
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.stretch,
+              children: [
+                Text(
+                  'Flight Number: ${ticketData['flightNumber']}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                const SizedBox(height: 10),
+                Text(
+                  'Departure: ${ticketData['departureCity']}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'Arrival: ${ticketData['arrivalCity']}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'Date: ${_formatFlightTime(ticketData['flightDate'])}',
+                  style: const TextStyle(fontSize: 16),
+                ),
+                Text(
+                  'Price: ${ticketData['ticketPrice']}',
+                  style: const TextStyle(
+                      fontSize: 18, fontWeight: FontWeight.bold),
+                ),
+                if (!isTicketBooked)
+                  ElevatedButton(
+                    onPressed: () {
+                      _bookTicket(context, ticketData, documentID);
+                    },
+                    child: const Text('Book'),
+                  ),
+                if (isTicketBooked)
+                  ElevatedButton(
+                    onPressed: () {
+                      _undoBooking(context, documentID);
+                    },
+                    child: const Text('Undo Booking'),
+                  ),
+              ],
             ),
-            const SizedBox(height: 10),
-            Text(
-              'Departure: ${ticketData['departureCity']}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              'Arrival: ${ticketData['arrivalCity']}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              'Date: ${_formatFlightTime(ticketData['flightDate'])}',
-              style: const TextStyle(fontSize: 16),
-            ),
-            Text(
-              'Price: ${ticketData['ticketPrice']}',
-              style: const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-            ),
-            if (!isBooked)
-              ElevatedButton(
-                onPressed: () {
-                  _bookTicket(context, ticketData, documentID);
-                },
-                child: const Text('Book'),
-              ),
-            if (isBooked)
-              ElevatedButton(
-                onPressed: () {
-                  _undoBooking(context, documentID);
-                },
-                child: const Text('Undo Booking'),
-              ),
-          ],
-        ),
-      ),
+          ),
+        );
+      },
     );
   }
 

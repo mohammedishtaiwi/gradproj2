@@ -49,6 +49,7 @@ class _HomePageState extends State<HomePage> {
   @override
   Widget build(BuildContext context) {
     User? currentUser = FirebaseAuth.instance.currentUser;
+    String userId = currentUser!.uid;
     return Scaffold(
       key: _scaffoldKey,
       appBar: AppBar(
@@ -90,7 +91,7 @@ class _HomePageState extends State<HomePage> {
               ),
             ],
           ),
-          buildDividerBox(context),
+          buildDividerBox(context, userId),
           buildSelectorBox(context),
         ],
       ),
@@ -430,31 +431,29 @@ class _HomePageState extends State<HomePage> {
     );
   }
 
-  Widget buildDividerBox(BuildContext context) {
+  Widget buildDividerBox(BuildContext context, String userId) {
     return Positioned(
       top: 1 / 3 * MediaQuery.of(context).size.height - 150,
       left: 5,
       right: 5,
-      child: StreamBuilder<QuerySnapshot>(
+      child: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
-            .collection('Tickets')
-            .orderBy('bookingTime', descending: true)
-            .limit(1)
+            .collection('users')
+            .doc(userId)
             .snapshots(),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
+        builder: (context, userSnapshot) {
+          if (userSnapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
-            return const Text('No booked tickets found.');
+          } else if (userSnapshot.hasError) {
+            return Text('Error: ${userSnapshot.error}');
+          } else if (!userSnapshot.hasData ||
+              userSnapshot.data!.data() == null) {
+            return const Text('User data not found.');
           } else {
-            var ticketData =
-                snapshot.data!.docs.first.data() as Map<String, dynamic>;
+            var userData = userSnapshot.data!.data() as Map<String, dynamic>;
+            var bookedTickets = userData['bookedTickets'] ?? [];
 
-            bool isBooked = ticketData['booked'] ?? false;
-
-            if (!isBooked) {
+            if (bookedTickets.isEmpty) {
               return Container(
                 height: 130.0,
                 decoration: BoxDecoration(
@@ -487,186 +486,243 @@ class _HomePageState extends State<HomePage> {
               );
             }
 
-            DateTime flightTime =
-                ticketData['flightTime']?.toDate() ?? DateTime.now();
-            String formattedFlightTime = DateFormat.yMMMd().format(flightTime);
-
-            return Container(
-              height: 140.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.transparent,
-              ),
-              child: Card(
-                elevation: 10,
-                color: const Color.fromARGB(255, 62, 62, 62),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(15),
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(10),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Center(
-                        child: Text(
-                          formattedFlightTime,
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
+            return StreamBuilder<QuerySnapshot>(
+              stream: FirebaseFirestore.instance
+                  .collection('Tickets')
+                  .where(FieldPath.documentId, whereIn: bookedTickets)
+                  // .orderBy('bookingTime', descending: true)
+                  .limit(1)
+                  .snapshots(),
+              builder: (context, snapshot) {
+                if (snapshot.connectionState == ConnectionState.waiting) {
+                  return const CircularProgressIndicator();
+                } else if (snapshot.hasError) {
+                  return Text('Error: ${snapshot.error}');
+                } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
+                  return Container(
+                    height: 130.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.transparent,
+                    ),
+                    child: Card(
+                      elevation: 10,
+                      color: const Color.fromARGB(255, 48, 48, 48),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      Row(
-                        children: <Widget>[
-                          Text(
-                            '${ticketData['departureCity']}', //REPLACE WITH ABBRV
-                            style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                                color: Colors.white,
-                                borderRadius: BorderRadius.circular(20)),
-                            child: SizedBox(
-                              height: 8,
-                              width: 8,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                    color: Colors.black, //DOT IN CIRCLE
-                                    borderRadius: BorderRadius.circular(5)),
+                      child: const Stack(
+                        children: [
+                          Positioned.fill(
+                            child: Center(
+                              child: Text(
+                                'No Flights Have Been Booked',
+                                style: TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
-                          Expanded(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Stack(
-                                children: <Widget>[
-                                  SizedBox(
-                                    height: 24,
-                                    child: LayoutBuilder(
-                                      builder: (context, constraints) {
-                                        return Flex(
-                                          direction: Axis.horizontal,
-                                          mainAxisSize: MainAxisSize.max,
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: List.generate(
-                                              (constraints.constrainWidth() / 6)
-                                                  .floor(),
-                                              (index) => const SizedBox(
-                                                    height: 1,
-                                                    width: 3,
-                                                    child: DecoratedBox(
-                                                      decoration: BoxDecoration(
-                                                          color: Colors
-                                                              .white), // DASHED LINE
-                                                    ),
-                                                  )),
-                                        );
-                                      },
-                                    ),
-                                  ),
-                                  Center(
-                                      child: Transform.rotate(
-                                    angle: 1.5,
-                                    child: const Icon(
-                                      Icons.local_airport,
-                                      color: Colors.white, //PLANE
-                                      size: 24,
-                                    ),
-                                  ))
-                                ],
-                              ),
-                            ),
-                          ),
-                          Container(
-                            padding: const EdgeInsets.all(6),
-                            decoration: BoxDecoration(
-                                color: Colors.white, //SECOND CIRCLE
-                                borderRadius: BorderRadius.circular(20)),
-                            child: SizedBox(
-                              height: 8,
-                              width: 8,
-                              child: DecoratedBox(
-                                decoration: BoxDecoration(
-                                    color: Colors.black, //SECOND DOT IN CIRCLE
-                                    borderRadius: BorderRadius.circular(5)),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          Text(
-                            ' ${ticketData['arrivalCity']}', //REPLACE WITH ABBRV
-                            style: const TextStyle(
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.white),
-                          )
                         ],
                       ),
-                      Center(
-                        child: Text(
-                          '${ticketData['flightDuration']}', // REPLACE WITH FLIGHT TIME
-                          style: const TextStyle(
-                            fontSize: 10,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
-                          ),
-                        ),
+                    ),
+                  );
+                } else {
+                  var ticketData =
+                      snapshot.data!.docs.first.data() as Map<String, dynamic>;
+
+                  DateTime flightTime =
+                      ticketData['flightTime']?.toDate() ?? DateTime.now();
+                  String formattedFlightTime =
+                      DateFormat.yMMMd().format(flightTime);
+
+                  return Container(
+                    height: 140.0,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(20),
+                      color: Colors.transparent,
+                    ),
+                    child: Card(
+                      elevation: 10,
+                      color: const Color.fromARGB(255, 62, 62, 62),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(15),
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: <Widget>[
-                          Text(
-                            'Flight Number ${ticketData['flightNumber']}',
-                            style: const TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
+                      child: Padding(
+                        padding: const EdgeInsets.all(10),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Center(
+                              child: Text(
+                                formattedFlightTime,
+                                style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
                             ),
-                          ),
-                          GestureDetector(
-                            onTap: () {
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => TicketDetailsPage(
-                                    ticketData: ticketData,
-                                    documentID: snapshot.data!.docs.first.id,
-                                    isBooked: isBooked,
+                            Row(
+                              children: <Widget>[
+                                Text(
+                                  '${ticketData['departureCity']}', //REPLACE WITH ABBRV
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: SizedBox(
+                                    height: 8,
+                                    width: 8,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: Colors.black, //DOT IN CIRCLE
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                    ),
                                   ),
                                 ),
-                              );
-                            },
-                            child: const Text(
-                              'View Ticket >',
-                              style: TextStyle(
-                                color: Colors
-                                    .blue, // You can change the color as needed
-                                fontSize: 14,
-                                fontWeight: FontWeight.bold,
+                                Expanded(
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          height: 24,
+                                          child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                              return Flex(
+                                                direction: Axis.horizontal,
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: List.generate(
+                                                    (constraints.constrainWidth() /
+                                                            6)
+                                                        .floor(),
+                                                    (index) => const SizedBox(
+                                                          height: 1,
+                                                          width: 3,
+                                                          child: DecoratedBox(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    color: Colors
+                                                                        .white), // DASHED LINE
+                                                          ),
+                                                        )),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        Center(
+                                            child: Transform.rotate(
+                                          angle: 1.5,
+                                          child: const Icon(
+                                            Icons.local_airport,
+                                            color: Colors.white, //PLANE
+                                            size: 24,
+                                          ),
+                                        ))
+                                      ],
+                                    ),
+                                  ),
+                                ),
+                                Container(
+                                  padding: const EdgeInsets.all(6),
+                                  decoration: BoxDecoration(
+                                      color: Colors.white, //SECOND CIRCLE
+                                      borderRadius: BorderRadius.circular(20)),
+                                  child: SizedBox(
+                                    height: 8,
+                                    width: 8,
+                                    child: DecoratedBox(
+                                      decoration: BoxDecoration(
+                                          color: Colors
+                                              .black, //SECOND DOT IN CIRCLE
+                                          borderRadius:
+                                              BorderRadius.circular(5)),
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Text(
+                                  ' ${ticketData['arrivalCity']}', //REPLACE WITH ABBRV
+                                  style: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                )
+                              ],
+                            ),
+                            Center(
+                              child: Text(
+                                '${ticketData['flightDuration']}', // REPLACE WITH FLIGHT TIME
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.white,
+                                ),
                               ),
                             ),
-                          ),
-                        ],
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: <Widget>[
+                                Text(
+                                  'Flight Number ${ticketData['flightNumber']}',
+                                  style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                  ),
+                                ),
+                                GestureDetector(
+                                  onTap: () {
+                                    Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                        builder: (_) => TicketDetailsPage(
+                                          ticketData: ticketData,
+                                          documentID:
+                                              snapshot.data!.docs.first.id,
+                                        ),
+                                      ),
+                                    );
+                                  },
+                                  child: const Text(
+                                    'View Ticket >',
+                                    style: TextStyle(
+                                      color: Colors
+                                          .blue, // You can change the color as needed
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        ),
                       ),
-                    ],
-                  ),
-                ),
-              ),
+                    ),
+                  );
+                }
+              },
             );
           }
         },
@@ -693,8 +749,8 @@ class _HomePageState extends State<HomePage> {
     return Drawer(
       child: Container(
         color: const Color.fromARGB(255, 48, 48, 48),
-        child: FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          future: _firestore.collection('users').doc(user?.uid).get(),
+        child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+          stream: _firestore.collection('users').doc(user?.uid).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
               return Center(child: CircularProgressIndicator());
@@ -725,7 +781,8 @@ class _HomePageState extends State<HomePage> {
                             foregroundColor: Colors.white,
                             backgroundImage: profileImageUrl != null
                                 ? NetworkImage(profileImageUrl)
-                                : AssetImage('assets/placeholder_image.png')
+                                : const AssetImage(
+                                        'assets/default_profile_picture.png')
                                     as ImageProvider<Object>?,
                             child: profileImageUrl == null
                                 ? const Icon(Icons.person_outline)

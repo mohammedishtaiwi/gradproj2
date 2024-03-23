@@ -48,23 +48,28 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<void> _saveChanges(BuildContext context) async {
     try {
-      if (_profilePictureUrl != widget.profileImageUrl) {
-        final Reference storageReference = FirebaseStorage.instance
-            .ref()
-            .child('profile_pictures')
-            .child('${_user?.uid}.jpg');
-
-        final UploadTask uploadTask =
-            storageReference.putFile(File(_profilePictureUrl));
-        await uploadTask.whenComplete(() async {
-          String downloadUrl = await storageReference.getDownloadURL();
-
-          await _firestore
-              .collection('users')
-              .doc(_user?.uid)
-              .update({'profileImageUrl': downloadUrl});
-        });
+      if (_profilePictureUrl == 'assets/default_profile_picture.png') {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: Text('Please choose a profile picture')),
+        );
+        return; // Exit the method without proceeding further
       }
+
+      final Reference storageReference = FirebaseStorage.instance
+          .ref()
+          .child('profile_pictures')
+          .child('${_user?.uid}.jpg');
+
+      final UploadTask uploadTask =
+          storageReference.putFile(File(_profilePictureUrl));
+      await uploadTask.whenComplete(() async {
+        String downloadUrl = await storageReference.getDownloadURL();
+
+        await _firestore
+            .collection('users')
+            .doc(_user?.uid)
+            .update({'profileImageUrl': downloadUrl});
+      });
 
       await _user?.updateDisplayName(_newName);
       await _firestore
