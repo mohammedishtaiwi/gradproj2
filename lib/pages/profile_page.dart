@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
   Future<void> _changePassword(BuildContext context) async {
     try {
       await _auth.sendPasswordResetEmail(email: _user!.email!);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Password reset email sent. Check your inbox.'),
       ));
     } catch (error) {
@@ -48,7 +48,7 @@ class _ProfileState extends State<Profile> {
         backgroundColor: Colors.blueGrey,
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () async {
               final userData =
                   await _firestore.collection('users').doc(_user?.uid).get();
@@ -156,7 +156,7 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const CustomButton({
+  const CustomButton({super.key, 
     required this.text,
     required this.onPressed,
   });
@@ -165,10 +165,10 @@ class CustomButton extends StatelessWidget {
   Widget build(BuildContext context) {
     return ElevatedButton(
       onPressed: onPressed,
-      child: Text(text),
       style: ElevatedButton.styleFrom(
         backgroundColor: Colors.black87,
       ),
+      child: Text(text),
     );
   }
 }

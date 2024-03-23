@@ -116,7 +116,7 @@ class _SignUpPageState extends State<SignUpPage> {
       // Check if a profile picture is uploaded
       if (_pickedImage == null) {
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text('Please upload a photo'),
           ),
         );

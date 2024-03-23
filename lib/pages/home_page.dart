@@ -744,16 +744,16 @@ class _HomePageState extends State<HomePage> {
   }
 
   Drawer buildDrawer(BuildContext context, User? user) {
-    final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+    final FirebaseFirestore firestore = FirebaseFirestore.instance;
 
     return Drawer(
       child: Container(
         color: const Color.fromARGB(255, 48, 48, 48),
         child: StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-          stream: _firestore.collection('users').doc(user?.uid).snapshots(),
+          stream: firestore.collection('users').doc(user?.uid).snapshots(),
           builder: (context, snapshot) {
             if (snapshot.connectionState == ConnectionState.waiting) {
-              return Center(child: CircularProgressIndicator());
+              return const Center(child: CircularProgressIndicator());
             } else if (snapshot.hasError) {
               return Text('Error: ${snapshot.error}');
             } else {
@@ -801,7 +801,7 @@ class _HomePageState extends State<HomePage> {
                                   fontFamily: "Inter",
                                 ),
                               ),
-                              SizedBox(height: 2),
+                              const SizedBox(height: 2),
                             ],
                           ),
                         ],
@@ -925,7 +925,7 @@ class _HomePageState extends State<HomePage> {
     if (isRoundTripSelected &&
         (selectedFromDate == null || selectedToDate == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text('Please select both departure and return dates.'),
         ),
       );

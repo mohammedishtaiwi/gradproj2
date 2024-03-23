@@ -10,7 +10,7 @@ class BookedTicketsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Text('User not logged in.'),
         ),
@@ -401,7 +401,7 @@ class BookedTicketsPage extends StatelessWidget {
                                     width: 16,
                                   ),
                                   Text('${ticketData['Airline']}',
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.white)),

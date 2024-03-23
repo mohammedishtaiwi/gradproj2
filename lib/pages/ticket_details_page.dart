@@ -24,7 +24,7 @@ class TicketDetailsPage extends StatelessWidget {
           .get(),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator(); // or any loading indicator
+          return const CircularProgressIndicator(); // or any loading indicator
         }
 
         if (snapshot.hasError) {
@@ -38,7 +38,7 @@ class TicketDetailsPage extends StatelessWidget {
               snapshot.data!.data() as Map<String, dynamic>;
           List<dynamic> bookedTickets = userData['bookedTickets'];
           isTicketBooked =
-              bookedTickets != null && bookedTickets.contains(documentID);
+              bookedTickets.contains(documentID);
         }
 
         return Scaffold(
@@ -158,12 +158,12 @@ class TicketDetailsPage extends StatelessWidget {
       // Otherwise, update the specific ticket document
       if (snapshot.docs.isNotEmpty) {
         final batch = FirebaseFirestore.instance.batch();
-        snapshot.docs.forEach((doc) {
+        for (var doc in snapshot.docs) {
           batch.update(doc.reference, {
             'booked': false,
             'bookingTime': null,
           });
-        });
+        }
         await batch.commit();
       }
 
