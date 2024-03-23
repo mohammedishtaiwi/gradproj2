@@ -30,7 +30,7 @@ class _ProfileState extends State<Profile> {
   Future<void> _changePassword(BuildContext context) async {
     try {
       await _auth.sendPasswordResetEmail(email: _user!.email!);
-      ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+      ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
         content: Text('Password reset email sent. Check your inbox.'),
       ));
     } catch (error) {
@@ -45,9 +45,10 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
+        backgroundColor: Colors.blueGrey,
         actions: [
           IconButton(
-            icon: Icon(Icons.edit),
+            icon: const Icon(Icons.edit),
             onPressed: () async {
               final userData =
                   await _firestore.collection('users').doc(_user?.uid).get();
@@ -92,7 +93,8 @@ class _ProfileState extends State<Profile> {
                         radius: 50,
                         backgroundImage: profileImageUrl != null
                             ? NetworkImage(profileImageUrl)
-                            : const AssetImage('assets/placeholder_image.png')
+                            : const AssetImage(
+                                    'assets/default_profile_picture.png')
                                 as ImageProvider<Object>?,
                       ),
                       const SizedBox(height: 16),
@@ -109,44 +111,33 @@ class _ProfileState extends State<Profile> {
                         userData?['username'] ?? 'user@example.com',
                         style: const TextStyle(
                           fontSize: 18,
-                          color: Colors.grey,
+                          color: Colors.black87,
                         ),
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              Navigator.pop(context);
-                              Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                  builder: (_) => const BookedTicketsPage(),
-                                ),
-                              );
-                            },
-                            child: const Text('Booked Tickets'),
-                          ),
-                          ElevatedButton(
-                            onPressed: () {
-                              _changePassword(context);
-                            },
-                            child: const Text('Change Password'),
-                          ),
-                        ],
+                      const SizedBox(height: 40),
+                      CustomButton(
+                        text: 'Booked Tickets',
+                        onPressed: () {
+                          Navigator.pop(context);
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (_) => const BookedTicketsPage(),
+                            ),
+                          );
+                        },
                       ),
-                      const SizedBox(height: 16),
-                      Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          ElevatedButton(
-                            onPressed: () {
-                              _signOut(context);
-                            },
-                            child: const Text('Log Out'),
-                          ),
-                        ],
+                      CustomButton(
+                        onPressed: () {
+                          _changePassword(context);
+                        },
+                        text: 'Change Password',
+                      ),
+                      CustomButton(
+                        text: 'Log Out',
+                        onPressed: () {
+                          _signOut(context);
+                        },
                       ),
                     ],
                   ),
@@ -156,6 +147,28 @@ class _ProfileState extends State<Profile> {
           }
         },
       ),
+      backgroundColor: Colors.blueGrey,
+    );
+  }
+}
+
+class CustomButton extends StatelessWidget {
+  final String text;
+  final VoidCallback onPressed;
+
+  const CustomButton({super.key, 
+    required this.text,
+    required this.onPressed,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    return ElevatedButton(
+      onPressed: onPressed,
+      style: ElevatedButton.styleFrom(
+        backgroundColor: Colors.black87,
+      ),
+      child: Text(text),
     );
   }
 }
