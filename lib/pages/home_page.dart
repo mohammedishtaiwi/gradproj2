@@ -1,6 +1,7 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gradproj2/pages/profile_page.dart';
 import 'ticket_details_page.dart';
 import 'package:gradproj2/pages/tickets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -842,7 +843,8 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushReplacementNamed(context, '/profile');
+                      Navigator.push(context,
+                          MaterialPageRoute(builder: (_) =>  const Profile()));
                     },
                   ),
                 ],

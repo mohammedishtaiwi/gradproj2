@@ -47,14 +47,9 @@ class _EditProfilePageState extends State<EditProfilePage> {
   }
 
   Future<void> _saveChanges(BuildContext context) async {
-    try {
-      if (_profilePictureUrl == 'assets/default_profile_picture.png') {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(content: Text('Please choose a profile picture')),
-        );
-        return; // Exit the method without proceeding further
-      }
-
+  try {
+    // Upload new profile picture if it's different from the current one
+    if (_profilePictureUrl != widget.profileImageUrl) {
       final Reference storageReference = FirebaseStorage.instance
           .ref()
           .child('profile_pictures')
@@ -70,24 +65,31 @@ class _EditProfilePageState extends State<EditProfilePage> {
             .doc(_user?.uid)
             .update({'profileImageUrl': downloadUrl});
       });
-
-      await _user?.updateDisplayName(_newName);
-      await _firestore
-          .collection('users')
-          .doc(_user?.uid)
-          .update({'name': _newName, 'username': _newUsername});
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
-      );
-
-      Navigator.pop(context);
-    } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update profile: $error')),
-      );
     }
+
+    // Update name if it's different from the current one
+    if (_newName != widget.currentName) {
+      await _user?.updateDisplayName(_newName);
+      await _firestore.collection('users').doc(_user?.uid).update({'name': _newName});
+    }
+
+    // Update username if it's different from the current one
+    if (_newUsername != widget.currentUsername) {
+      await _firestore.collection('users').doc(_user?.uid).update({'username': _newUsername});
+    }
+
+    ScaffoldMessenger.of(context).showSnackBar(
+      const SnackBar(content: Text('Profile updated successfully')),
+    );
+
+    Navigator.pop(context);
+  } catch (error) {
+    ScaffoldMessenger.of(context).showSnackBar(
+      SnackBar(content: Text('Failed to update profile: $error')),
+    );
   }
+}
+
 
   @override
   Widget build(BuildContext context) {

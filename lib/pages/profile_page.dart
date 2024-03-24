@@ -1,8 +1,8 @@
-// ignore_for_file: unused_local_variable
-
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gradproj2/pages/BookedTicketsPage.dart';
+import 'package:gradproj2/pages/edit_profile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -24,7 +24,7 @@ class _ProfileState extends State<Profile> {
 
   Future<void> _signOut(BuildContext context) async {
     await _auth.signOut();
-    Navigator.pushReplacementNamed(context, '/');
+    Navigator.popAndPushNamed(context, '/');
   }
 
   Future<void> _changePassword(BuildContext context) async {
@@ -45,10 +45,15 @@ class _ProfileState extends State<Profile> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Profile'),
-        backgroundColor: Colors.blueGrey,
+        leading: IconButton(
+        icon: Icon(Icons.arrow_back),
+        onPressed: () {
+          Navigator.pushReplacementNamed(context, '/home');
+        },
+      ),
         actions: [
           IconButton(
-            icon: const Icon(Icons.edit),
+            icon: Icon(Icons.edit),
             onPressed: () async {
               final userData =
                   await _firestore.collection('users').doc(_user?.uid).get();
@@ -56,7 +61,16 @@ class _ProfileState extends State<Profile> {
               final currentName = userData.data()?['name'];
               final currentUsername = userData.data()?['username'];
 
-              Navigator.pushReplacementNamed(context, '/edit');
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (_) => EditProfilePage(
+                    profileImageUrl: profileImageUrl ?? '',
+                    currentName: currentName ?? '',
+                    currentUsername: currentUsername ?? '',
+                  ),
+                ),
+              );
             },
           ),
         ],
@@ -71,6 +85,8 @@ class _ProfileState extends State<Profile> {
           } else {
             final userData = snapshot.data?.data();
             final profileImageUrl = userData?['profileImageUrl'];
+            final name = userData?['name'];
+            final email = _user?.email;
 
             return SingleChildScrollView(
               child: Center(
@@ -84,46 +100,60 @@ class _ProfileState extends State<Profile> {
                         radius: 50,
                         backgroundImage: profileImageUrl != null
                             ? NetworkImage(profileImageUrl)
-                            : const AssetImage(
-                                    'assets/default_profile_picture.png')
+                            : const AssetImage('assets/placeholder_image.png')
                                 as ImageProvider<Object>?,
                       ),
                       const SizedBox(height: 16),
                       Text(
-                        userData?['name'] ?? 'User Name',
+                        name ?? 'User Name',
                         style: const TextStyle(
                           fontSize: 24,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
                       const SizedBox(height: 8),
-                      const SizedBox(height: 8),
                       Text(
-                        userData?['username'] ?? 'user@example.com',
+                        email ?? 'user@example.com',
                         style: const TextStyle(
                           fontSize: 18,
-                          color: Colors.black87,
+                          color: Colors.grey,
                         ),
                       ),
-                      const SizedBox(height: 40),
-                      CustomButton(
-                        text: 'Booked Tickets',
-                        onPressed: () {
-                          Navigator.pop(context);
-                          Navigator.pushReplacementNamed(context, '/booked');
-                        },
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              Navigator.pop(context);
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (_) => const BookedTicketsPage(),
+                                ),
+                              );
+                            },
+                            child: const Text('Booked Tickets'),
+                          ),
+                          ElevatedButton(
+                            onPressed: () {
+                              _changePassword(context);
+                            },
+                            child: const Text('Change Password'),
+                          ),
+                        ],
                       ),
-                      CustomButton(
-                        onPressed: () {
-                          _changePassword(context);
-                        },
-                        text: 'Change Password',
-                      ),
-                      CustomButton(
-                        text: 'Log Out',
-                        onPressed: () {
-                          _signOut(context);
-                        },
+                      const SizedBox(height: 16),
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                        children: [
+                          ElevatedButton(
+                            onPressed: () {
+                              _signOut(context);
+                            },
+                            child: const Text('Log Out'),
+                          ),
+                        ],
                       ),
                     ],
                   ),
@@ -133,29 +163,6 @@ class _ProfileState extends State<Profile> {
           }
         },
       ),
-      backgroundColor: Colors.blueGrey,
-    );
-  }
-}
-
-class CustomButton extends StatelessWidget {
-  final String text;
-  final VoidCallback onPressed;
-
-  const CustomButton({
-    super.key,
-    required this.text,
-    required this.onPressed,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: onPressed,
-      style: ElevatedButton.styleFrom(
-        backgroundColor: Colors.black87,
-      ),
-      child: Text(text),
     );
   }
 }
