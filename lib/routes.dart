@@ -4,6 +4,7 @@ import 'package:gradproj2/Chatbot/chat_bot.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/edit_profile.dart';
 import 'package:gradproj2/pages/profile_page.dart';
+import 'package:gradproj2/pages/ticket_details_page.dart';
 // import 'package:gradproj2/pages/profile_page.dart';
 import 'pages/login_page.dart';
 import 'pages/home_page.dart';
@@ -19,6 +20,7 @@ class Routes {
   static const String chat = '/chat';
   static const String profile = '/profile';
   static const String editProfile = '/edit';
+  static const String ticketsDetailsPage = '/ticketsDetails';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -36,6 +38,13 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const Home());
       case profile:
         return MaterialPageRoute(builder: (_) => const Profile());
+
+      case ticketsDetailsPage:
+        return MaterialPageRoute(
+            builder: (_) => const TicketDetailsPage(
+                  ticketData: {},
+                  documentID: '',
+                ));
       case editProfile:
         return MaterialPageRoute(
             builder: (_) => const EditProfilePage(

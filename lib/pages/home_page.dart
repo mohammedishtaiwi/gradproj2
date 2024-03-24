@@ -1,9 +1,6 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gradproj2/Chatbot/chat_bot.dart';
-import 'package:gradproj2/pages/BookedTicketsPage.dart';
-import 'package:gradproj2/pages/profile_page.dart';
 import 'ticket_details_page.dart';
 import 'package:gradproj2/pages/tickets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -819,10 +816,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (_) => const BookedTicketsPage()));
+                      Navigator.pushReplacementNamed(context, '/booked');
                     },
                   ),
                   ListTile(
@@ -835,8 +829,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => const Home()));
+                      Navigator.pushReplacementNamed(context, '/home');
                     },
                   ),
                   ListTile(
@@ -849,8 +842,7 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.push(context,
-                          MaterialPageRoute(builder: (_) => const Profile()));
+                      Navigator.pushReplacementNamed(context, '/profile');
                     },
                   ),
                 ],
