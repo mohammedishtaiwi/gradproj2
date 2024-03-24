@@ -1,8 +1,8 @@
+// ignore_for_file: unused_local_variable
+
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gradproj2/pages/BookedTicketsPage.dart';
-import 'package:gradproj2/pages/edit_profile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -56,16 +56,7 @@ class _ProfileState extends State<Profile> {
               final currentName = userData.data()?['name'];
               final currentUsername = userData.data()?['username'];
 
-              Navigator.push(
-                context,
-                MaterialPageRoute(
-                  builder: (_) => EditProfilePage(
-                    profileImageUrl: profileImageUrl ?? '',
-                    currentName: currentName ?? '',
-                    currentUsername: currentUsername ?? '',
-                  ),
-                ),
-              );
+              Navigator.pushReplacementNamed(context, '/edit');
             },
           ),
         ],
@@ -119,12 +110,7 @@ class _ProfileState extends State<Profile> {
                         text: 'Booked Tickets',
                         onPressed: () {
                           Navigator.pop(context);
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (_) => const BookedTicketsPage(),
-                            ),
-                          );
+                          Navigator.pushReplacementNamed(context, '/booked');
                         },
                       ),
                       CustomButton(
@@ -156,7 +142,8 @@ class CustomButton extends StatelessWidget {
   final String text;
   final VoidCallback onPressed;
 
-  const CustomButton({super.key, 
+  const CustomButton({
+    super.key,
     required this.text,
     required this.onPressed,
   });

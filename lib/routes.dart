@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:gradproj2/Chatbot/chat_bot.dart';
 
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
+import 'package:gradproj2/pages/edit_profile.dart';
 import 'package:gradproj2/pages/profile_page.dart';
 // import 'package:gradproj2/pages/profile_page.dart';
 import 'pages/login_page.dart';
@@ -17,6 +18,7 @@ class Routes {
   static const String bookedTickets = '/booked';
   static const String chat = '/chat';
   static const String profile = '/profile';
+  static const String editProfile = '/edit';
 
   static Route<dynamic> generateRoute(RouteSettings settings) {
     switch (settings.name) {
@@ -32,8 +34,15 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const BookedTicketsPage());
       case chat:
         return MaterialPageRoute(builder: (_) => const Home());
-         case profile:
+      case profile:
         return MaterialPageRoute(builder: (_) => const Profile());
+      case editProfile:
+        return MaterialPageRoute(
+            builder: (_) => const EditProfilePage(
+                  profileImageUrl: '',
+                  currentName: '',
+                  currentUsername: '',
+                ));
 
       default:
         return MaterialPageRoute(
