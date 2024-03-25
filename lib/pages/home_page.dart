@@ -97,44 +97,46 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildSelectorBox(BuildContext context) {
-    return StreamBuilder<List<String>>(
-      stream: FirebaseFirestore.instance.collection('Tickets').snapshots().map(
-        (snapshot) {
-          Set<String> uniqueCities = <String>{};
-          for (var doc in snapshot.docs) {
-            var ticketData = doc.data();
-            uniqueCities.add(ticketData['departureCity']);
-            uniqueCities.add(ticketData['arrivalCity']);
-          }
-          return uniqueCities.toList();
-        },
-      ),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        } else if (snapshot.hasError) {
-          return Text('Error: ${snapshot.error}');
-        } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-          return const Text('No cities found.');
-        } else {
-          List<String> cities = snapshot.data!;
+  return StatefulBuilder(
+    builder: (context, setState) {
+      return StreamBuilder<List<String>>(
+        stream: FirebaseFirestore.instance.collection('Tickets').snapshots().map(
+          (snapshot) {
+            Set<String> uniqueCities = <String>{};
+            for (var doc in snapshot.docs) {
+              var ticketData = doc.data();
+              uniqueCities.add(ticketData['departureCity']);
+              uniqueCities.add(ticketData['arrivalCity']);
+            }
+            return uniqueCities.toList();
+          },
+        ),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const CircularProgressIndicator();
+          } else if (snapshot.hasError) {
+            return Text('Error: ${snapshot.error}');
+          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+            return const Text('No cities found.');
+          } else {
+            List<String> cities = snapshot.data!;
 
-          return Positioned(
-            top: 2 / 3 * MediaQuery.of(context).size.height - 265,
-            left: 10,
-            right: 10,
-            bottom: 19,
-            child: Container(
-              height: 335.0,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(20),
-                color: Colors.blueGrey, // Change the color to blue grey
-              ),
-              child: Padding(
-                padding: const EdgeInsets.all(16.0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
+            return Positioned(
+              top: 2 / 3 * MediaQuery.of(context).size.height - 251,
+              left: 10,
+              right: 10,
+              bottom: 19,
+              child: Container(
+                height: 335.0,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: Colors.blueGrey, // Change the color to blue grey
+                ),
+                child: Padding(
+                  padding: const EdgeInsets.all(16.0),
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+               children: [
                     const Center(
                       child: Text(
                         'Flight Selector',
@@ -321,6 +323,7 @@ class _HomePageState extends State<HomePage> {
                       ],
                     ),
                     if (isRoundTripSelected)
+                    
                       Row(
                         children: [
                           const SizedBox(
@@ -354,19 +357,20 @@ class _HomePageState extends State<HomePage> {
                           ),
                         ],
                       ),
-                    const SizedBox(height: 8),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         Expanded(
-                          flex: 0,
-                          child: ElevatedButton(
-                            onPressed: _searchFlights,
-                            child: const Text(
-                              "Search Flights",
-                              style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
+                          child: Align(
+                          alignment: Alignment.bottomCenter,
+                            child: ElevatedButton(
+                              onPressed: _searchFlights,
+                              child: const Text(
+                                "Search Flights",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -374,14 +378,17 @@ class _HomePageState extends State<HomePage> {
                       ],
                     )
                   ],
+                  ),
                 ),
               ),
-            ),
-          );
-        }
-      },
-    );
-  }
+            );
+          }
+        },
+      );
+    },
+  );
+}
+
 
   Widget buildDropdown({
     required String label,
@@ -417,12 +424,16 @@ class _HomePageState extends State<HomePage> {
       color: Colors.blueGrey,
       height: MediaQuery.of(context).size.height / 4,
       child: const Center(
-        child: Text(
-          '',
-          style: TextStyle(
-            color: Colors.white,
-            fontSize: 30,
-            fontWeight: FontWeight.bold,
+        child: Padding(
+          
+          padding: EdgeInsets.fromLTRB(0, 0, 0,20),
+          child: Text(
+            'Latest Booked Ticket',
+            style: TextStyle(
+              color: Colors.white,
+              fontSize: 20,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ),
       ),
@@ -431,7 +442,7 @@ class _HomePageState extends State<HomePage> {
 
   Widget buildDividerBox(BuildContext context, String userId) {
     return Positioned(
-      top: 1 / 3 * MediaQuery.of(context).size.height - 150,
+      top: 1 / 3 * MediaQuery.of(context).size.height - 140,
       left: 5,
       right: 5,
       child: StreamBuilder<DocumentSnapshot>(
@@ -844,7 +855,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (_) =>  const Profile()));
+                          MaterialPageRoute(builder: (_) =>  Profile()));
                     },
                   ),
                 ],

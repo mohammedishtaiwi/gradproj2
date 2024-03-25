@@ -32,14 +32,16 @@ class TicketDetailsPage extends StatelessWidget {
         }
 
         bool isTicketBooked = false;
+if (snapshot.hasData) {
+  Map<String, dynamic>? userData = snapshot.data!.data() as Map<String, dynamic>?;
+  if (userData != null && userData.containsKey('bookedTickets')) {
+    List<dynamic>? bookedTickets = userData['bookedTickets'];
+    if (bookedTickets != null) {
+      isTicketBooked = bookedTickets.contains(documentID);
+    }
+  }
+}
 
-        if (snapshot.hasData) {
-          Map<String, dynamic> userData =
-              snapshot.data!.data() as Map<String, dynamic>;
-          List<dynamic> bookedTickets = userData['bookedTickets'];
-          isTicketBooked =
-              bookedTickets.contains(documentID);
-        }
 
         return Scaffold(
           appBar: AppBar(
