@@ -41,6 +41,8 @@ dependencies:
   intl: ^0.19.0
   image_picker: ^0.8.4
   firebase_storage: ^11.6.9
+  ikchatbot: ^1.0.5
+  kommunicate_flutter: ^1.9.0
 
 dev_dependencies:
   flutter_test:
@@ -64,8 +66,9 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/dialog_flow_auth.json
+    # - assets/dialog_flow_auth.json
     - assets/default_profile_picture.png
+    # - android/app/src/main/assets/applozic-settings.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

@@ -1,11 +1,13 @@
 import 'dart:developer';
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/profile_page.dart';
 import 'ticket_details_page.dart';
 import 'package:gradproj2/pages/tickets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
+import 'package:kommunicate_flutter/kommunicate_flutter.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({Key? key}) : super(key: key);
@@ -97,298 +99,298 @@ class _HomePageState extends State<HomePage> {
   }
 
   Widget buildSelectorBox(BuildContext context) {
-  return StatefulBuilder(
-    builder: (context, setState) {
-      return StreamBuilder<List<String>>(
-        stream: FirebaseFirestore.instance.collection('Tickets').snapshots().map(
-          (snapshot) {
-            Set<String> uniqueCities = <String>{};
-            for (var doc in snapshot.docs) {
-              var ticketData = doc.data();
-              uniqueCities.add(ticketData['departureCity']);
-              uniqueCities.add(ticketData['arrivalCity']);
-            }
-            return uniqueCities.toList();
-          },
-        ),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const CircularProgressIndicator();
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-            return const Text('No cities found.');
-          } else {
-            List<String> cities = snapshot.data!;
+    return StatefulBuilder(
+      builder: (context, setState) {
+        return StreamBuilder<List<String>>(
+          stream:
+              FirebaseFirestore.instance.collection('Tickets').snapshots().map(
+            (snapshot) {
+              Set<String> uniqueCities = <String>{};
+              for (var doc in snapshot.docs) {
+                var ticketData = doc.data();
+                uniqueCities.add(ticketData['departureCity']);
+                uniqueCities.add(ticketData['arrivalCity']);
+              }
+              return uniqueCities.toList();
+            },
+          ),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return const CircularProgressIndicator();
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
+              return const Text('No cities found.');
+            } else {
+              List<String> cities = snapshot.data!;
 
-            return Positioned(
-              top: 2 / 3 * MediaQuery.of(context).size.height - 251,
-              left: 10,
-              right: 10,
-              bottom: 19,
-              child: Container(
-                height: 335.0,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Colors.blueGrey, // Change the color to blue grey
-                ),
-                child: Padding(
-                  padding: const EdgeInsets.all(16.0),
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-               children: [
-                    const Center(
-                      child: Text(
-                        'Flight Selector',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
+              return Positioned(
+                top: 2 / 3 * MediaQuery.of(context).size.height - 251,
+                left: 10,
+                right: 10,
+                bottom: 19,
+                child: Container(
+                  height: 335.0,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: const Color.fromARGB(
+                        255, 110, 131, 141), // Change the color to blue grey
+                  ),
+                  child: Padding(
+                    padding: const EdgeInsets.all(16.0),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        Radio(
-                          value: true,
-                          groupValue: isOneWaySelected,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isOneWaySelected = value ?? false;
-                              isRoundTripSelected = !isOneWaySelected;
-                            });
-                          },
-                        ),
-                        const Text(
-                          'One Way',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                        Radio(
-                          value: true,
-                          groupValue: isRoundTripSelected,
-                          onChanged: (bool? value) {
-                            setState(() {
-                              isRoundTripSelected = value ?? false;
-                              isOneWaySelected = !isRoundTripSelected;
-                            });
-                          },
-                        ),
-                        const Text(
-                          'Round Trip',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                      ],
-                    ),
-                    Row(
-                      children: [
-                        Center(
-                            child: Transform.rotate(
-                          angle: 1,
-                          child: const Icon(
-                            Icons.local_airport,
-                            color: Colors.white, //PLANE
-                            size: 24,
-                          ),
-                        )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
-                          'From ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        DropdownButton<String>(
-                          value: selectedDepartureCity,
-                          items: cities.map((city) {
-                            return DropdownMenuItem<String>(
-                              value: city,
-                              child: Text(
-                                city,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedDepartureCity = value!;
-                            });
-                          },
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.swap_vert),
-                          color: Colors.white,
-                          onPressed: () {
-                            setState(() {
-                              final temp = selectedDepartureCity;
-                              selectedDepartureCity = selectedArrivalCity;
-                              selectedArrivalCity = temp;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-                    Row(
-                      children: [
-                        Center(
-                            child: Transform.rotate(
-                          angle: 1.9,
-                          child: const Icon(
-                            Icons.local_airport,
-                            color: Colors.white, //PLANE
-                            size: 24,
-                          ),
-                        )),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
-                          'To ',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        DropdownButton<String>(
-                          value: selectedArrivalCity,
-                          items: cities.map((city) {
-                            return DropdownMenuItem<String>(
-                              value: city,
-                              child: Text(
-                                city,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                ),
-                              ),
-                            );
-                          }).toList(),
-                          onChanged: (value) {
-                            setState(() {
-                              selectedArrivalCity = value!;
-                            });
-                          },
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 15),
-                    Row(
-                      children: [
-                        const SizedBox(
-                          width: 10,
-                        ),
-                        const Text(
-                          'Departure',
-                          style: TextStyle(
-                            color: Colors.white,
-                            fontSize: 16,
-                          ),
-                        ),
-                        const SizedBox(
-                          width: 5,
-                        ),
-                        IconButton(
-                          icon: const Icon(Icons.calendar_month),
-                          color: Colors.black,
-                          onPressed: () {
-                            _selectDate(context, true);
-                          },
-                        ),
-                        Text(
-                          selectedFromDate != null
-                              ? DateFormat.yMMMd().format(selectedFromDate!)
-                              : '',
-                          style: const TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                      ],
-                    ),
-                    if (isRoundTripSelected)
-                    
-                      Row(
-                        children: [
-                          const SizedBox(
-                            width: 10,
-                          ),
-                          const Text(
-                            'Return',
+                        const Center(
+                          child: Text(
+                            'Flight Selector',
                             style: TextStyle(
                               color: Colors.white,
-                              fontSize: 16,
-                            ),
-                          ),
-                          const SizedBox(
-                            width: 5,
-                          ),
-                          IconButton(
-                            icon: const Icon(Icons.calendar_month),
-                            color: Colors.black,
-                            onPressed: () {
-                              _selectDate(context, false);
-                            },
-                          ),
-                          Text(
-                            selectedToDate != null
-                                ? DateFormat.yMMMd().format(selectedToDate!)
-                                : '',
-                            style: const TextStyle(
-                              color: Colors.white,
+                              fontSize: 18,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                        ],
-                      ),
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Expanded(
-                          child: Align(
-                          alignment: Alignment.bottomCenter,
-                            child: ElevatedButton(
-                              onPressed: _searchFlights,
-                              child: const Text(
-                                "Search Flights",
+                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Radio(
+                              value: true,
+                              groupValue: isOneWaySelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isOneWaySelected = value ?? false;
+                                  isRoundTripSelected = !isOneWaySelected;
+                                });
+                              },
+                            ),
+                            const Text(
+                              'One Way',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            Radio(
+                              value: true,
+                              groupValue: isRoundTripSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  isRoundTripSelected = value ?? false;
+                                  isOneWaySelected = !isRoundTripSelected;
+                                });
+                              },
+                            ),
+                            const Text(
+                              'Round Trip',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Row(
+                          children: [
+                            Center(
+                                child: Transform.rotate(
+                              angle: 1,
+                              child: const Icon(
+                                Icons.local_airport,
+                                color: Colors.white, //PLANE
+                                size: 24,
+                              ),
+                            )),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              'From ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            DropdownButton<String>(
+                              value: selectedDepartureCity,
+                              items: cities.map((city) {
+                                return DropdownMenuItem<String>(
+                                  value: city,
+                                  child: Text(
+                                    city,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedDepartureCity = value!;
+                                });
+                              },
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.swap_vert),
+                              color: Colors.white,
+                              onPressed: () {
+                                setState(() {
+                                  final temp = selectedDepartureCity;
+                                  selectedDepartureCity = selectedArrivalCity;
+                                  selectedArrivalCity = temp;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Center(
+                                child: Transform.rotate(
+                              angle: 1.9,
+                              child: const Icon(
+                                Icons.local_airport,
+                                color: Colors.white, //PLANE
+                                size: 24,
+                              ),
+                            )),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              'To ',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            DropdownButton<String>(
+                              value: selectedArrivalCity,
+                              items: cities.map((city) {
+                                return DropdownMenuItem<String>(
+                                  value: city,
+                                  child: Text(
+                                    city,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                    ),
+                                  ),
+                                );
+                              }).toList(),
+                              onChanged: (value) {
+                                setState(() {
+                                  selectedArrivalCity = value!;
+                                });
+                              },
+                            ),
+                          ],
+                        ),
+                        const SizedBox(height: 15),
+                        Row(
+                          children: [
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            const Text(
+                              'Departure',
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 16,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 5,
+                            ),
+                            IconButton(
+                              icon: const Icon(Icons.calendar_month),
+                              color: Colors.black,
+                              onPressed: () {
+                                _selectDate(context, true);
+                              },
+                            ),
+                            Text(
+                              selectedFromDate != null
+                                  ? DateFormat.yMMMd().format(selectedFromDate!)
+                                  : '',
+                              style: const TextStyle(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (isRoundTripSelected)
+                          Row(
+                            children: [
+                              const SizedBox(
+                                width: 10,
+                              ),
+                              const Text(
+                                'Return',
                                 style: TextStyle(
-                                  color: Colors.black,
+                                  color: Colors.white,
+                                  fontSize: 16,
+                                ),
+                              ),
+                              const SizedBox(
+                                width: 5,
+                              ),
+                              IconButton(
+                                icon: const Icon(Icons.calendar_month),
+                                color: Colors.black,
+                                onPressed: () {
+                                  _selectDate(context, false);
+                                },
+                              ),
+                              Text(
+                                selectedToDate != null
+                                    ? DateFormat.yMMMd().format(selectedToDate!)
+                                    : '',
+                                style: const TextStyle(
+                                  color: Colors.white,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                            ),
+                            ],
                           ),
-                        ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Expanded(
+                              child: Align(
+                                alignment: Alignment.bottomCenter,
+                                child: ElevatedButton(
+                                  onPressed: _searchFlights,
+                                  child: const Text(
+                                    "Search Flights",
+                                    style: TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        )
                       ],
-                    )
-                  ],
+                    ),
                   ),
                 ),
-              ),
-            );
-          }
-        },
-      );
-    },
-  );
-}
-
+              );
+            }
+          },
+        );
+      },
+    );
+  }
 
   Widget buildDropdown({
     required String label,
@@ -425,8 +427,7 @@ class _HomePageState extends State<HomePage> {
       height: MediaQuery.of(context).size.height / 4,
       child: const Center(
         child: Padding(
-          
-          padding: EdgeInsets.fromLTRB(0, 0, 0,20),
+          padding: EdgeInsets.fromLTRB(0, 0, 0, 20),
           child: Text(
             'Latest Booked Ticket',
             style: TextStyle(
@@ -828,7 +829,10 @@ class _HomePageState extends State<HomePage> {
                     ),
                     onTap: () {
                       Navigator.pop(context);
-                      Navigator.pushReplacementNamed(context, '/booked');
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => BookedTicketsPage()));
                     },
                   ),
                   ListTile(
@@ -840,8 +844,20 @@ class _HomePageState extends State<HomePage> {
                       ),
                     ),
                     onTap: () {
-                      Navigator.pop(context);
-                      Navigator.pushReplacementNamed(context, '/home');
+                      dynamic conversationObject = {
+                        'appId': '1130b3f292a0ff1fcbfaadbaa81b21c96',
+                        'withPreChat': true
+                      };
+
+                      KommunicateFlutterPlugin.buildConversation(
+                              conversationObject)
+                          .then((clientConversationId) {
+                        print("Conversation builder success : " +
+                            clientConversationId.toString());
+                      }).catchError((error) {
+                        print(
+                            "Conversation builder error : " + error.toString());
+                      });
                     },
                   ),
                   ListTile(
@@ -855,7 +871,7 @@ class _HomePageState extends State<HomePage> {
                     onTap: () {
                       Navigator.pop(context);
                       Navigator.push(context,
-                          MaterialPageRoute(builder: (_) =>  Profile()));
+                          MaterialPageRoute(builder: (_) => Profile()));
                     },
                   ),
                 ],
