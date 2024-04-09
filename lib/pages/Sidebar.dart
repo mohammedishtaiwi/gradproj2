@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gradproj2/Chatbot/chat_bot.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';

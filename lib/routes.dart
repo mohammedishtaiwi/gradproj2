@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gradproj2/Chatbot/chat_bot.dart';
 
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/edit_profile.dart';
@@ -17,7 +16,6 @@ class Routes {
   static const String signup = '/signup';
   static const String tickets = '/tickets';
   static const String bookedTickets = '/booked';
-  static const String chat = '/chat';
   static const String profile = '/profile';
   static const String editProfile = '/edit';
   static const String ticketsDetailsPage = '/ticketsDetails';
@@ -34,8 +32,7 @@ class Routes {
         return MaterialPageRoute(builder: (_) => const TicketsPage());
       case bookedTickets:
         return MaterialPageRoute(builder: (_) => const BookedTicketsPage());
-      case chat:
-        return MaterialPageRoute(builder: (_) => const Home());
+
       case profile:
         return MaterialPageRoute(builder: (_) => const Profile());
 
