@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
+import 'package:gradproj2/pages/Chat_bot_page.dart';
 import 'package:gradproj2/pages/profile_page.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kommunicate_flutter/kommunicate_flutter.dart';
 
 Drawer buildDrawer(BuildContext context, User? user) {
   final FirebaseFirestore firestore = FirebaseFirestore.instance;
@@ -96,18 +96,9 @@ Drawer buildDrawer(BuildContext context, User? user) {
                     ),
                   ),
                   onTap: () {
-                    dynamic conversationObject = {
-                      'appId': '1130b3f292a0ff1fcbfaadbaa81b21c96',
-                    };
-
-                    KommunicateFlutterPlugin.buildConversation(
-                            conversationObject)
-                        .then((clientConversationId) {
-                      print("Conversation builder success : " +
-                          clientConversationId.toString());
-                    }).catchError((error) {
-                      print("Conversation builder error : " + error.toString());
-                    });
+                    Navigator.pop(context);
+                    Navigator.push(context,
+                        MaterialPageRoute(builder: (_) => const Chat()));
                   },
                 ),
                 ListTile(
