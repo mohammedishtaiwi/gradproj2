@@ -923,10 +923,11 @@ class _HomePageState extends State<HomePage> {
   }
 
   Future<void> _selectDate(BuildContext context, bool isFromDate) async {
+    final DateTime currentDate = DateTime.now();
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
-      firstDate: DateTime(2000),
+      initialDate: currentDate,
+      firstDate: currentDate,
       lastDate: DateTime(2101),
     );
     if (picked != null) {
