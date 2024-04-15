@@ -11,6 +11,8 @@ class Chat extends StatefulWidget {
 }
 
 class _ChatState extends State<Chat> {
+  String selectedAvatarTitle = "Chatbot";
+  String selectedAvatar = "Chatbot";
   final TextEditingController _textController = TextEditingController();
   final List<ChatMessage> _messages = [];
   final FirebaseAuth _auth = FirebaseAuth.instance;
@@ -33,7 +35,7 @@ class _ChatState extends State<Chat> {
         setState(() {
           _messages.add(ChatMessage(
             text: "Welcome back, $displayName!",
-            sender: "Chatbot",
+            sender: selectedAvatar,
           ));
         });
       } catch (e) {
@@ -72,12 +74,49 @@ class _ChatState extends State<Chat> {
           0,
           ChatMessage(
             text: response,
-            sender: "Chatbot",
+            sender: selectedAvatar, // Use selectedAvatar as the sender
           ),
         );
       }
     });
   }
+
+  // void _handleSubmitted(String text) async {
+  //   _textController.clear();
+  //   String response = _getResponseForMessage(text.toLowerCase());
+  //   User? user = _auth.currentUser;
+  //   String displayName = user != null ? user.displayName ?? "User" : "User";
+
+  //   // Fetch user's display name from Firestore
+  //   if (user != null) {
+  //     try {
+  //       DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+  //           .collection('users')
+  //           .doc(user.uid)
+  //           .get();
+  //       displayName = userSnapshot.get('name') ?? displayName;
+  //     } catch (e) {
+  //       print("Error fetching user's display name: $e");
+  //     }
+  //   }
+
+  //   ChatMessage message = ChatMessage(
+  //     text: text,
+  //     sender: displayName,
+  //   );
+  //   setState(() {
+  //     _messages.insert(0, message);
+  //     if (response.isNotEmpty) {
+  //       _messages.insert(
+  //         0,
+  //         ChatMessage(
+  //           text: response,
+  //           sender: "Chatbot",
+  //         ),
+  //       );
+  //     }
+  //   });
+  // }
 
   String _getResponseForMessage(String message) {
     for (String keyword in responses.keys) {
@@ -96,6 +135,22 @@ class _ChatState extends State<Chat> {
       ),
       body: Column(
         children: <Widget>[
+          // Avatars section
+          Container(
+            padding: EdgeInsets.all(8.0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceAround,
+              children: [
+                buildAvatarTile(title: "Sama"),
+                buildAvatarTile(title: "Shatha"),
+                buildAvatarTile(title: "Mohammed"),
+                buildAvatarTile(title: "Shams"),
+                buildAvatarTile(title: "Sewar"),
+              ],
+            ),
+          ),
+          Divider(height: 1.0),
+          // Chat messages section
           Flexible(
             child: ListView.builder(
               reverse: true,
@@ -112,6 +167,35 @@ class _ChatState extends State<Chat> {
       ),
     );
   }
+
+  Widget buildAvatarTile({
+    required String title,
+  }) =>
+      GestureDetector(
+        onTap: () {
+          setState(() {
+            selectedAvatar = title; // Update selected avatar
+          });
+        },
+        child: Padding(
+          padding: const EdgeInsets.all(8.0),
+          child: Column(
+            children: [
+              CircleAvatar(
+                backgroundColor: Colors.blueGrey,
+                backgroundImage: getSelectedAvatarImage(title),
+                foregroundColor: Colors.grey,
+                radius: 24,
+              ),
+              SizedBox(height: 4.0),
+              Text(
+                title,
+                style: TextStyle(fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+      );
 
   Widget _buildTextComposer() {
     return IconTheme(
@@ -154,9 +238,8 @@ class ChatMessage extends StatelessWidget {
         children: <Widget>[
           Container(
             margin: const EdgeInsets.only(right: 16.0),
-            child: CircleAvatar(
-              child: Text(sender[0]),
-            ),
+            child:
+                CircleAvatar(backgroundImage: getSelectedAvatarImage(sender)),
           ),
           Expanded(
             child: Column(
@@ -176,5 +259,23 @@ class ChatMessage extends StatelessWidget {
         ],
       ),
     );
+  }
+}
+
+ImageProvider getSelectedAvatarImage(String title) {
+  switch (title) {
+    case 'Sama':
+      return AssetImage('assets/samaz.jpeg');
+    case 'Shatha':
+      return AssetImage('assets/sha.jpeg');
+    case 'Mohammed':
+      return AssetImage('assets/moh.jpeg');
+    case 'Shams':
+      return AssetImage('assets/shams.jpeg');
+    case 'Sewar':
+      return AssetImage('assets/sewar.jpeg');
+
+    default:
+      return AssetImage('assets/default_profile_picture.png');
   }
 }
