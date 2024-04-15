@@ -16,11 +16,11 @@ Widget buildDividerBox(BuildContext context, String userId) {
           .snapshots(),
       builder: (context, userSnapshot) {
         if (userSnapshot.connectionState == ConnectionState.waiting) {
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         } else if (userSnapshot.hasError) {
           return Text('Error: ${userSnapshot.error}');
         } else if (!userSnapshot.hasData || userSnapshot.data!.data() == null) {
-          return Text('User data not found.');
+          return const Text('User data not found.');
         } else {
           var userData = userSnapshot.data!.data() as Map<String, dynamic>;
           var bookedTickets = userData['bookedTickets'] ?? [];
@@ -34,11 +34,11 @@ Widget buildDividerBox(BuildContext context, String userId) {
               ),
               child: Card(
                 elevation: 10,
-                color: Color.fromARGB(255, 48, 48, 48),
+                color: const Color.fromARGB(255, 48, 48, 48),
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(15),
                 ),
-                child: Stack(
+                child: const Stack(
                   children: [
                     Positioned.fill(
                       child: Center(
@@ -62,11 +62,12 @@ Widget buildDividerBox(BuildContext context, String userId) {
             stream: FirebaseFirestore.instance
                 .collection('Tickets')
                 .where(FieldPath.documentId, whereIn: bookedTickets)
+                // .orderBy('bookingTime', descending: true)
                 .limit(1)
                 .snapshots(),
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.waiting) {
-                return CircularProgressIndicator();
+                return const CircularProgressIndicator();
               } else if (snapshot.hasError) {
                 return Text('Error: ${snapshot.error}');
               } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
@@ -78,11 +79,11 @@ Widget buildDividerBox(BuildContext context, String userId) {
                   ),
                   child: Card(
                     elevation: 10,
-                    color: Color.fromARGB(255, 48, 48, 48),
+                    color: const Color.fromARGB(255, 48, 48, 48),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
-                    child: Stack(
+                    child: const Stack(
                       children: [
                         Positioned.fill(
                           child: Center(
@@ -117,19 +118,19 @@ Widget buildDividerBox(BuildContext context, String userId) {
                   ),
                   child: Card(
                     elevation: 10,
-                    color: Color.fromARGB(255, 62, 62, 62),
+                    color: const Color.fromARGB(255, 62, 62, 62),
                     shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(15),
                     ),
                     child: Padding(
-                      padding: EdgeInsets.all(10),
+                      padding: const EdgeInsets.all(10),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Center(
                             child: Text(
                               formattedFlightTime,
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Colors.white,
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
@@ -140,16 +141,16 @@ Widget buildDividerBox(BuildContext context, String userId) {
                             children: <Widget>[
                               Text(
                                 '${ticketData['departureCity']}', //REPLACE WITH ABBRV
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20)),
@@ -165,7 +166,7 @@ Widget buildDividerBox(BuildContext context, String userId) {
                               ),
                               Expanded(
                                 child: Padding(
-                                  padding: EdgeInsets.all(8.0),
+                                  padding: const EdgeInsets.all(8.0),
                                   child: Stack(
                                     children: <Widget>[
                                       SizedBox(
@@ -182,7 +183,7 @@ Widget buildDividerBox(BuildContext context, String userId) {
                                                   (constraints.constrainWidth() /
                                                           6)
                                                       .floor(),
-                                                  (index) => SizedBox(
+                                                  (index) => const SizedBox(
                                                         height: 1,
                                                         width: 3,
                                                         child: DecoratedBox(
@@ -198,7 +199,7 @@ Widget buildDividerBox(BuildContext context, String userId) {
                                       Center(
                                           child: Transform.rotate(
                                         angle: 1.5,
-                                        child: Icon(
+                                        child: const Icon(
                                           Icons.local_airport,
                                           color: Colors.white, //PLANE
                                           size: 24,
@@ -209,7 +210,7 @@ Widget buildDividerBox(BuildContext context, String userId) {
                                 ),
                               ),
                               Container(
-                                padding: EdgeInsets.all(6),
+                                padding: const EdgeInsets.all(6),
                                 decoration: BoxDecoration(
                                     color: Colors.white, //SECOND CIRCLE
                                     borderRadius: BorderRadius.circular(20)),
@@ -224,12 +225,12 @@ Widget buildDividerBox(BuildContext context, String userId) {
                                   ),
                                 ),
                               ),
-                              SizedBox(
+                              const SizedBox(
                                 width: 10,
                               ),
                               Text(
                                 ' ${ticketData['arrivalCity']}', //REPLACE WITH ABBRV
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.white),
@@ -239,14 +240,14 @@ Widget buildDividerBox(BuildContext context, String userId) {
                           Center(
                             child: Text(
                               '${ticketData['flightDuration']}', // REPLACE WITH FLIGHT TIME
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 10,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.white,
                               ),
                             ),
                           ),
-                          SizedBox(
+                          const SizedBox(
                             height: 10,
                           ),
                           Row(
@@ -254,7 +255,7 @@ Widget buildDividerBox(BuildContext context, String userId) {
                             children: <Widget>[
                               Text(
                                 'Flight Number ${ticketData['flightNumber']}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.white,
                                   fontSize: 16,
                                 ),
@@ -272,7 +273,7 @@ Widget buildDividerBox(BuildContext context, String userId) {
                                     ),
                                   );
                                 },
-                                child: Text(
+                                child: const Text(
                                   'View Ticket >',
                                   style: TextStyle(
                                     color: Colors
