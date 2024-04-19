@@ -81,50 +81,37 @@ class _ChatState extends State<Chat> {
     });
   }
 
-  // void _handleSubmitted(String text) async {
-  //   _textController.clear();
-  //   String response = _getResponseForMessage(text.toLowerCase());
-  //   User? user = _auth.currentUser;
-  //   String displayName = user != null ? user.displayName ?? "User" : "User";
-
-  //   // Fetch user's display name from Firestore
-  //   if (user != null) {
-  //     try {
-  //       DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-  //           .collection('users')
-  //           .doc(user.uid)
-  //           .get();
-  //       displayName = userSnapshot.get('name') ?? displayName;
-  //     } catch (e) {
-  //       print("Error fetching user's display name: $e");
-  //     }
-  //   }
-
-  //   ChatMessage message = ChatMessage(
-  //     text: text,
-  //     sender: displayName,
-  //   );
-  //   setState(() {
-  //     _messages.insert(0, message);
-  //     if (response.isNotEmpty) {
-  //       _messages.insert(
-  //         0,
-  //         ChatMessage(
-  //           text: response,
-  //           sender: "Chatbot",
-  //         ),
-  //       );
-  //     }
-  //   });
-  // }
-
   String _getResponseForMessage(String message) {
-    for (String keyword in responses.keys) {
-      if (message.contains(keyword)) {
-        return responses[keyword]!;
+    String bestResponse = "";
+
+    // Initialize the maximum number of matches
+    int maxMatches = 0;
+
+    // Iterate over each entry in the responses map
+    responses.forEach((query, response) {
+      // Split the query into individual words
+      List<String> words = query.split(':');
+
+      // Get the string before the colon
+      String queryPrefix = words.first.trim();
+
+      // Check if the user message contains the query prefix
+      if (message.toLowerCase().contains(queryPrefix.toLowerCase())) {
+        // Calculate the number of matches
+        int matches = queryPrefix
+            .split(' ')
+            .where((word) => message.toLowerCase().contains(word.toLowerCase()))
+            .length;
+
+        // If the current query has more matches, update the best response
+        if (matches > maxMatches) {
+          maxMatches = matches;
+          bestResponse = response;
+        }
       }
-    }
-    return "";
+    });
+
+    return bestResponse;
   }
 
   @override
