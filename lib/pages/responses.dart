@@ -2217,4 +2217,908 @@ Email: airport1@rawhi.jo
 Website:dnn.primus.com.jo
 
 We wish you a safe journey!""",
+//retail
+  "convenience store":
+      "At Queen Alia International Airport, you'll find a fantastic selection of retail options, including duty-free shops for tax-free purchases. Whether you're looking for luxury goods, local products, electronics, fashion, or souvenirs, QAIA has something for everyone. Our duty-free outlets offer a wide variety of items at attractive prices, allowing you to shop for your favorite brands without worrying about taxes. From fragrances to electronics, cosmetics to confectionery, explore our retail paradise during your time at QAIA.Would you like a list of all the retail stores available?",
+  "i want to make a purchase":
+      "At Queen Alia International Airport, you'll find a fantastic selection of retail options, including duty-free shops for tax-free purchases. Whether you're looking for luxury goods, local products, electronics, fashion, or souvenirs, QAIA has something for everyone. Our duty-free outlets offer a wide variety of items at attractive prices, allowing you to shop for your favorite brands without worrying about taxes. From fragrances to electronics, cosmetics to confectionery, explore our retail paradise during your time at QAIA.Would you like a list of all the retail stores available?",
+  "where to buy gifts":
+      "At Queen Alia International Airport, you'll find a fantastic selection of retail options, including duty-free shops for tax-free purchases. Whether you're looking for luxury goods, local products, electronics, fashion, or souvenirs, QAIA has something for everyone. Our duty-free outlets offer a wide variety of items at attractive prices, allowing you to shop for your favorite brands without worrying about taxes. From fragrances to electronics, cosmetics to confectionery, explore our retail paradise during your time at QAIA.Would you like a list of all the retail stores available?",
+  "where can i buy souvenirs":
+      "At Queen Alia International Airport, you'll find a fantastic selection of retail options, including duty-free shops for tax-free purchases. Whether you're looking for luxury goods, local products, electronics, fashion, or souvenirs, QAIA has something for everyone. Our duty-free outlets offer a wide variety of items at attractive prices, allowing you to shop for your favorite brands without worrying about taxes. From fragrances to electronics, cosmetics to confectionery, explore our retail paradise during your time at QAIA.Would you like a list of all the retail stores available?",
+  "where to go shopping at qaia":
+      "At Queen Alia International Airport, you'll find a fantastic selection of retail options, including duty-free shops for tax-free purchases. Whether you're looking for luxury goods, local products, electronics, fashion, or souvenirs, QAIA has something for everyone. Our duty-free outlets offer a wide variety of items at attractive prices, allowing you to shop for your favorite brands without worrying about taxes. From fragrances to electronics, cosmetics to confectionery, explore our retail paradise during your time at QAIA.Would you like a list of all the retail stores available?",
+  "shopping":
+      "At Queen Alia International Airport, you'll find a fantastic selection of retail options, including duty-free shops for tax-free purchases. Whether you're looking for luxury goods, local products, electronics, fashion, or souvenirs, QAIA has something for everyone. Our duty-free outlets offer a wide variety of items at attractive prices, allowing you to shop for your favorite brands without worrying about taxes. From fragrances to electronics, cosmetics to confectionery, explore our retail paradise during your time at QAIA.Would you like a list of all the retail stores available?",
+  "retail":
+      "At Queen Alia International Airport, you'll find a fantastic selection of retail options, including duty-free shops for tax-free purchases. Whether you're looking for luxury goods, local products, electronics, fashion, or souvenirs, QAIA has something for everyone. Our duty-free outlets offer a wide variety of items at attractive prices, allowing you to shop for your favorite brands without worrying about taxes. From fragrances to electronics, cosmetics to confectionery, explore our retail paradise during your time at QAIA.Would you like a list of all the retail stores available?",
+
+//retail yes
+
+  "yes": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "okay i will": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "why not": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "yes that's alright": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "yes i do": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "exactly": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "of course": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "yep that's ok": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "okay": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+  "ok": """Pharmacies:
+- Rawhi Pharmacy 
+
+Foundations:
+- Jordan River Foundation (JRF)
+- King Hussein Cancer Foundation
+
+Retail:
+- Airportray
+- Amman Duty Free
+- HiGeen
+- Trinitae
+- FNL
+- WHSmith
+
+If you'd like details about a specific option please feel free to ask!""",
+
+//security
+
+  "security check regulations":
+      """Airport International Group aims to make your trip as safe and secure as possible in coordination with various security service providers at QAIA - and in accordance with international, national and airport aviation security procedures and regulations.
+
+As part of safety and security requirements, ask yourself the following questions before checking in for your flight:
+
+1. Do you own this baggage?
+
+2. Has anyone given you anything to carry?
+
+3. Was your baggage packed by anyone else?
+
+4. Could have anyone interfered with your baggage after it was packed? Was it left unattended?
+
+5. Are you carrying any prohibited items or dangerous goods in your baggage? (All checked baggage will be searched automatically to confirm that they do not contain any prohibited items or dangerous goods.)
+
+After stamping your passport, you will pass through the centralized security checkpoint.
+Make sure to follow the instructions below to prepare yourself for screening:
+
+- Place your mobile phone, laptop, keys, camera, walking aid, lighter (only one is allowed per passenger), metal objects and any outer garments (jackets, hats, high heels, boots, gloves, scarves, etc.) in a tray to go through the X-ray machine.
+
+- If the Walk Through Metal Detector (WTMD) sets off an alarm while you are passing, you will be asked to check again whether you have any other metals on your person, and to remove your belt and shoes before going through the WTMD once more. If the WTMD alarm goes off for a second time, a manual search will be conducted. In certain cases, an additional search involving Millimeter Wave Technology (MWT) may be applied.
+
+- You may carry containers of liquids and gels in your carry-on baggage, but each container must not exceed 100mL and all should fit into a 1L security plastic bag (one bag per passenger) or your liquids could be confiscated.
+
+- All males and females must go through the centralized security checkpoint. In some cases, a private search may be requested and conducted. Please feel free to ask.　
+
+- Wheelchairs will be thoroughly searched.
+
+- If you are carrying prescription medications or milk syringes, each item must be in its original container, and you must present the medical prescription. Baby milk must be declared at the security screening point.
+
+* Disclaimer: All items confiscated by the concerned security authority during the security screening process are disposed of according to their procedures and cannot be retrieved by passengers.
+Dangerous goods include: Firearms, Guns, Weapons, Stun Devices, Objects with Sharp Points or Sharp Edges, Workers' Tools, Blunt Instruments, Explosives and Incendiary Substances and Devices, Liquids, Aerosols and Gels.
+
+* Acceptable liquids, aerosols and gels must be in individual containers with a capacity not greater than 100 mL (or its equivalent) and should be contained in one transparent plastic bag of a capacity not exceeding 1 L (or its equivalent). The contents of the plastic bag should fit comfortably, and the bag should be completely closed. Exemptions may be made for medications, baby milk/foods and special dietary requirements.""",
+
+  "advanced security technology at qaia":
+      """Airport International Group aims to make your trip as safe and secure as possible in coordination with various security service providers at QAIA - and in accordance with international, national and airport aviation security procedures and regulations.
+
+As part of safety and security requirements, ask yourself the following questions before checking in for your flight:
+
+1. Do you own this baggage?
+
+2. Has anyone given you anything to carry?
+
+3. Was your baggage packed by anyone else?
+
+4. Could have anyone interfered with your baggage after it was packed? Was it left unattended?
+
+5. Are you carrying any prohibited items or dangerous goods in your baggage? (All checked baggage will be searched automatically to confirm that they do not contain any prohibited items or dangerous goods.)
+
+After stamping your passport, you will pass through the centralized security checkpoint.
+Make sure to follow the instructions below to prepare yourself for screening:
+
+- Place your mobile phone, laptop, keys, camera, walking aid, lighter (only one is allowed per passenger), metal objects and any outer garments (jackets, hats, high heels, boots, gloves, scarves, etc.) in a tray to go through the X-ray machine.
+
+- If the Walk Through Metal Detector (WTMD) sets off an alarm while you are passing, you will be asked to check again whether you have any other metals on your person, and to remove your belt and shoes before going through the WTMD once more. If the WTMD alarm goes off for a second time, a manual search will be conducted. In certain cases, an additional search involving Millimeter Wave Technology (MWT) may be applied.
+
+- You may carry containers of liquids and gels in your carry-on baggage, but each container must not exceed 100mL and all should fit into a 1L security plastic bag (one bag per passenger) or your liquids could be confiscated.
+
+- All males and females must go through the centralized security checkpoint. In some cases, a private search may be requested and conducted. Please feel free to ask.　
+
+- Wheelchairs will be thoroughly searched.
+
+- If you are carrying prescription medications or milk syringes, each item must be in its original container, and you must present the medical prescription. Baby milk must be declared at the security screening point.
+
+* Disclaimer: All items confiscated by the concerned security authority during the security screening process are disposed of according to their procedures and cannot be retrieved by passengers.
+Dangerous goods include: Firearms, Guns, Weapons, Stun Devices, Objects with Sharp Points or Sharp Edges, Workers' Tools, Blunt Instruments, Explosives and Incendiary Substances and Devices, Liquids, Aerosols and Gels.
+
+* Acceptable liquids, aerosols and gels must be in individual containers with a capacity not greater than 100 mL (or its equivalent) and should be contained in one transparent plastic bag of a capacity not exceeding 1 L (or its equivalent). The contents of the plastic bag should fit comfortably, and the bag should be completely closed. Exemptions may be made for medications, baby milk/foods and special dietary requirements.""",
+
+  "check-in security":
+      """Airport International Group aims to make your trip as safe and secure as possible in coordination with various security service providers at QAIA - and in accordance with international, national and airport aviation security procedures and regulations.
+
+As part of safety and security requirements, ask yourself the following questions before checking in for your flight:
+
+1. Do you own this baggage?
+
+2. Has anyone given you anything to carry?
+
+3. Was your baggage packed by anyone else?
+
+4. Could have anyone interfered with your baggage after it was packed? Was it left unattended?
+
+5. Are you carrying any prohibited items or dangerous goods in your baggage? (All checked baggage will be searched automatically to confirm that they do not contain any prohibited items or dangerous goods.)
+
+After stamping your passport, you will pass through the centralized security checkpoint.
+Make sure to follow the instructions below to prepare yourself for screening:
+
+- Place your mobile phone, laptop, keys, camera, walking aid, lighter (only one is allowed per passenger), metal objects and any outer garments (jackets, hats, high heels, boots, gloves, scarves, etc.) in a tray to go through the X-ray machine.
+
+- If the Walk Through Metal Detector (WTMD) sets off an alarm while you are passing, you will be asked to check again whether you have any other metals on your person, and to remove your belt and shoes before going through the WTMD once more. If the WTMD alarm goes off for a second time, a manual search will be conducted. In certain cases, an additional search involving Millimeter Wave Technology (MWT) may be applied.
+
+- You may carry containers of liquids and gels in your carry-on baggage, but each container must not exceed 100mL and all should fit into a 1L security plastic bag (one bag per passenger) or your liquids could be confiscated.
+
+- All males and females must go through the centralized security checkpoint. In some cases, a private search may be requested and conducted. Please feel free to ask.　
+
+- Wheelchairs will be thoroughly searched.
+
+- If you are carrying prescription medications or milk syringes, each item must be in its original container, and you must present the medical prescription. Baby milk must be declared at the security screening point.
+
+* Disclaimer: All items confiscated by the concerned security authority during the security screening process are disposed of according to their procedures and cannot be retrieved by passengers.
+Dangerous goods include: Firearms, Guns, Weapons, Stun Devices, Objects with Sharp Points or Sharp Edges, Workers' Tools, Blunt Instruments, Explosives and Incendiary Substances and Devices, Liquids, Aerosols and Gels.
+
+* Acceptable liquids, aerosols and gels must be in individual containers with a capacity not greater than 100 mL (or its equivalent) and should be contained in one transparent plastic bag of a capacity not exceeding 1 L (or its equivalent). The contents of the plastic bag should fit comfortably, and the bag should be completely closed. Exemptions may be made for medications, baby milk/foods and special dietary requirements.""",
+
+  "passenger security":
+      """Airport International Group aims to make your trip as safe and secure as possible in coordination with various security service providers at QAIA - and in accordance with international, national and airport aviation security procedures and regulations.
+
+As part of safety and security requirements, ask yourself the following questions before checking in for your flight:
+
+1. Do you own this baggage?
+
+2. Has anyone given you anything to carry?
+
+3. Was your baggage packed by anyone else?
+
+4. Could have anyone interfered with your baggage after it was packed? Was it left unattended?
+
+5. Are you carrying any prohibited items or dangerous goods in your baggage? (All checked baggage will be searched automatically to confirm that they do not contain any prohibited items or dangerous goods.)
+
+After stamping your passport, you will pass through the centralized security checkpoint.
+Make sure to follow the instructions below to prepare yourself for screening:
+
+- Place your mobile phone, laptop, keys, camera, walking aid, lighter (only one is allowed per passenger), metal objects and any outer garments (jackets, hats, high heels, boots, gloves, scarves, etc.) in a tray to go through the X-ray machine.
+
+- If the Walk Through Metal Detector (WTMD) sets off an alarm while you are passing, you will be asked to check again whether you have any other metals on your person, and to remove your belt and shoes before going through the WTMD once more. If the WTMD alarm goes off for a second time, a manual search will be conducted. In certain cases, an additional search involving Millimeter Wave Technology (MWT) may be applied.
+
+- You may carry containers of liquids and gels in your carry-on baggage, but each container must not exceed 100mL and all should fit into a 1L security plastic bag (one bag per passenger) or your liquids could be confiscated.
+
+- All males and females must go through the centralized security checkpoint. In some cases, a private search may be requested and conducted. Please feel free to ask.　
+
+- Wheelchairs will be thoroughly searched.
+
+- If you are carrying prescription medications or milk syringes, each item must be in its original container, and you must present the medical prescription. Baby milk must be declared at the security screening point.
+
+* Disclaimer: All items confiscated by the concerned security authority during the security screening process are disposed of according to their procedures and cannot be retrieved by passengers.
+Dangerous goods include: Firearms, Guns, Weapons, Stun Devices, Objects with Sharp Points or Sharp Edges, Workers' Tools, Blunt Instruments, Explosives and Incendiary Substances and Devices, Liquids, Aerosols and Gels.
+
+* Acceptable liquids, aerosols and gels must be in individual containers with a capacity not greater than 100 mL (or its equivalent) and should be contained in one transparent plastic bag of a capacity not exceeding 1 L (or its equivalent). The contents of the plastic bag should fit comfortably, and the bag should be completely closed. Exemptions may be made for medications, baby milk/foods and special dietary requirements.""",
+
+  "security guidelines":
+      """Airport International Group aims to make your trip as safe and secure as possible in coordination with various security service providers at QAIA - and in accordance with international, national and airport aviation security procedures and regulations.
+
+As part of safety and security requirements, ask yourself the following questions before checking in for your flight:
+
+1. Do you own this baggage?
+
+2. Has anyone given you anything to carry?
+
+3. Was your baggage packed by anyone else?
+
+4. Could have anyone interfered with your baggage after it was packed? Was it left unattended?
+
+5. Are you carrying any prohibited items or dangerous goods in your baggage? (All checked baggage will be searched automatically to confirm that they do not contain any prohibited items or dangerous goods.)
+
+After stamping your passport, you will pass through the centralized security checkpoint.
+Make sure to follow the instructions below to prepare yourself for screening:
+
+- Place your mobile phone, laptop, keys, camera, walking aid, lighter (only one is allowed per passenger), metal objects and any outer garments (jackets, hats, high heels, boots, gloves, scarves, etc.) in a tray to go through the X-ray machine.
+
+- If the Walk Through Metal Detector (WTMD) sets off an alarm while you are passing, you will be asked to check again whether you have any other metals on your person, and to remove your belt and shoes before going through the WTMD once more. If the WTMD alarm goes off for a second time, a manual search will be conducted. In certain cases, an additional search involving Millimeter Wave Technology (MWT) may be applied.
+
+- You may carry containers of liquids and gels in your carry-on baggage, but each container must not exceed 100mL and all should fit into a 1L security plastic bag (one bag per passenger) or your liquids could be confiscated.
+
+- All males and females must go through the centralized security checkpoint. In some cases, a private search may be requested and conducted. Please feel free to ask.　
+
+- Wheelchairs will be thoroughly searched.
+
+- If you are carrying prescription medications or milk syringes, each item must be in its original container, and you must present the medical prescription. Baby milk must be declared at the security screening point.
+
+* Disclaimer: All items confiscated by the concerned security authority during the security screening process are disposed of according to their procedures and cannot be retrieved by passengers.
+Dangerous goods include: Firearms, Guns, Weapons, Stun Devices, Objects with Sharp Points or Sharp Edges, Workers' Tools, Blunt Instruments, Explosives and Incendiary Substances and Devices, Liquids, Aerosols and Gels.
+
+* Acceptable liquids, aerosols and gels must be in individual containers with a capacity not greater than 100 mL (or its equivalent) and should be contained in one transparent plastic bag of a capacity not exceeding 1 L (or its equivalent). The contents of the plastic bag should fit comfortably, and the bag should be completely closed. Exemptions may be made for medications, baby milk/foods and special dietary requirements.""",
+
+  "travel security at qaia":
+      """Airport International Group aims to make your trip as safe and secure as possible in coordination with various security service providers at QAIA - and in accordance with international, national and airport aviation security procedures and regulations.
+
+As part of safety and security requirements, ask yourself the following questions before checking in for your flight:
+
+1. Do you own this baggage?
+
+2. Has anyone given you anything to carry?
+
+3. Was your baggage packed by anyone else?
+
+4. Could have anyone interfered with your baggage after it was packed? Was it left unattended?
+
+5. Are you carrying any prohibited items or dangerous goods in your baggage? (All checked baggage will be searched automatically to confirm that they do not contain any prohibited items or dangerous goods.)
+
+After stamping your passport, you will pass through the centralized security checkpoint.
+Make sure to follow the instructions below to prepare yourself for screening:
+
+- Place your mobile phone, laptop, keys, camera, walking aid, lighter (only one is allowed per passenger), metal objects and any outer garments (jackets, hats, high heels, boots, gloves, scarves, etc.) in a tray to go through the X-ray machine.
+
+- If the Walk Through Metal Detector (WTMD) sets off an alarm while you are passing, you will be asked to check again whether you have any other metals on your person, and to remove your belt and shoes before going through the WTMD once more. If the WTMD alarm goes off for a second time, a manual search will be conducted. In certain cases, an additional search involving Millimeter Wave Technology (MWT) may be applied.
+
+- You may carry containers of liquids and gels in your carry-on baggage, but each container must not exceed 100mL and all should fit into a 1L security plastic bag (one bag per passenger) or your liquids could be confiscated.
+
+- All males and females must go through the centralized security checkpoint. In some cases, a private search may be requested and conducted. Please feel free to ask.　
+
+- Wheelchairs will be thoroughly searched.
+
+- If you are carrying prescription medications or milk syringes, each item must be in its original container, and you must present the medical prescription. Baby milk must be declared at the security screening point.
+
+* Disclaimer: All items confiscated by the concerned security authority during the security screening process are disposed of according to their procedures and cannot be retrieved by passengers.
+Dangerous goods include: Firearms, Guns, Weapons, Stun Devices, Objects with Sharp Points or Sharp Edges, Workers' Tools, Blunt Instruments, Explosives and Incendiary Substances and Devices, Liquids, Aerosols and Gels.
+
+* Acceptable liquids, aerosols and gels must be in individual containers with a capacity not greater than 100 mL (or its equivalent) and should be contained in one transparent plastic bag of a capacity not exceeding 1 L (or its equivalent). The contents of the plastic bag should fit comfortably, and the bag should be completely closed. Exemptions may be made for medications, baby milk/foods and special dietary requirements.""",
+
+  "give me some tips or advice for security during travel":
+      """Airport International Group aims to make your trip as safe and secure as possible in coordination with various security service providers at QAIA - and in accordance with international, national and airport aviation security procedures and regulations.
+
+As part of safety and security requirements, ask yourself the following questions before checking in for your flight:
+
+1. Do you own this baggage?
+
+2. Has anyone given you anything to carry?
+
+3. Was your baggage packed by anyone else?
+
+4. Could have anyone interfered with your baggage after it was packed? Was it left unattended?
+
+5. Are you carrying any prohibited items or dangerous goods in your baggage? (All checked baggage will be searched automatically to confirm that they do not contain any prohibited items or dangerous goods.)
+
+After stamping your passport, you will pass through the centralized security checkpoint.
+Make sure to follow the instructions below to prepare yourself for screening:
+
+- Place your mobile phone, laptop, keys, camera, walking aid, lighter (only one is allowed per passenger), metal objects and any outer garments (jackets, hats, high heels, boots, gloves, scarves, etc.) in a tray to go through the X-ray machine.
+
+- If the Walk Through Metal Detector (WTMD) sets off an alarm while you are passing, you will be asked to check again whether you have any other metals on your person, and to remove your belt and shoes before going through the WTMD once more. If the WTMD alarm goes off for a second time, a manual search will be conducted. In certain cases, an additional search involving Millimeter Wave Technology (MWT) may be applied.
+
+- You may carry containers of liquids and gels in your carry-on baggage, but each container must not exceed 100mL and all should fit into a 1L security plastic bag (one bag per passenger) or your liquids could be confiscated.
+
+- All males and females must go through the centralized security checkpoint. In some cases, a private search may be requested and conducted. Please feel free to ask.　
+
+- Wheelchairs will be thoroughly searched.
+
+- If you are carrying prescription medications or milk syringes, each item must be in its original container, and you must present the medical prescription. Baby milk must be declared at the security screening point.
+
+* Disclaimer: All items confiscated by the concerned security authority during the security screening process are disposed of according to their procedures and cannot be retrieved by passengers.
+Dangerous goods include: Firearms, Guns, Weapons, Stun Devices, Objects with Sharp Points or Sharp Edges, Workers' Tools, Blunt Instruments, Explosives and Incendiary Substances and Devices, Liquids, Aerosols and Gels.
+
+* Acceptable liquids, aerosols and gels must be in individual containers with a capacity not greater than 100 mL (or its equivalent) and should be contained in one transparent plastic bag of a capacity not exceeding 1 L (or its equivalent). The contents of the plastic bag should fit comfortably, and the bag should be completely closed. Exemptions may be made for medications, baby milk/foods and special dietary requirements.""",
+
+  "security tips":
+      """Airport International Group aims to make your trip as safe and secure as possible in coordination with various security service providers at QAIA - and in accordance with international, national and airport aviation security procedures and regulations.
+
+As part of safety and security requirements, ask yourself the following questions before checking in for your flight:
+
+1. Do you own this baggage?
+
+2. Has anyone given you anything to carry?
+
+3. Was your baggage packed by anyone else?
+
+4. Could have anyone interfered with your baggage after it was packed? Was it left unattended?
+
+5. Are you carrying any prohibited items or dangerous goods in your baggage? (All checked baggage will be searched automatically to confirm that they do not contain any prohibited items or dangerous goods.)
+
+After stamping your passport, you will pass through the centralized security checkpoint.
+Make sure to follow the instructions below to prepare yourself for screening:
+
+- Place your mobile phone, laptop, keys, camera, walking aid, lighter (only one is allowed per passenger), metal objects and any outer garments (jackets, hats, high heels, boots, gloves, scarves, etc.) in a tray to go through the X-ray machine.
+
+- If the Walk Through Metal Detector (WTMD) sets off an alarm while you are passing, you will be asked to check again whether you have any other metals on your person, and to remove your belt and shoes before going through the WTMD once more. If the WTMD alarm goes off for a second time, a manual search will be conducted. In certain cases, an additional search involving Millimeter Wave Technology (MWT) may be applied.
+
+- You may carry containers of liquids and gels in your carry-on baggage, but each container must not exceed 100mL and all should fit into a 1L security plastic bag (one bag per passenger) or your liquids could be confiscated.
+
+- All males and females must go through the centralized security checkpoint. In some cases, a private search may be requested and conducted. Please feel free to ask.　
+
+- Wheelchairs will be thoroughly searched.
+
+- If you are carrying prescription medications or milk syringes, each item must be in its original container, and you must present the medical prescription. Baby milk must be declared at the security screening point.
+
+* Disclaimer: All items confiscated by the concerned security authority during the security screening process are disposed of according to their procedures and cannot be retrieved by passengers.
+Dangerous goods include: Firearms, Guns, Weapons, Stun Devices, Objects with Sharp Points or Sharp Edges, Workers' Tools, Blunt Instruments, Explosives and Incendiary Substances and Devices, Liquids, Aerosols and Gels.
+
+* Acceptable liquids, aerosols and gels must be in individual containers with a capacity not greater than 100 mL (or its equivalent) and should be contained in one transparent plastic bag of a capacity not exceeding 1 L (or its equivalent). The contents of the plastic bag should fit comfortably, and the bag should be completely closed. Exemptions may be made for medications, baby milk/foods and special dietary requirements.""",
+
+//smart transport app
+
+  "smart transport":
+      "Arriving passengers may book a car via a smart transportation app of their choice or by visiting the booth located at the Arrivals Curbside - Level 1 - Gate 3. For more information, please contact 0790308565.",
+  "smart app":
+      "Arriving passengers may book a car via a smart transportation app of their choice or by visiting the booth located at the Arrivals Curbside - Level 1 - Gate 3. For more information, please contact 0790308565.",
+  "smart transportation application":
+      "Arriving passengers may book a car via a smart transportation app of their choice or by visiting the booth located at the Arrivals Curbside - Level 1 - Gate 3. For more information, please contact 0790308565.",
+
+//telecom
+
+  "cell service":
+      """At Queen Alia Internation Airport there are three telecom services options working 24/7, located at Public Area - Arrivals Level
+
+1) Orange 
+Telephone: +962 7 77700177
+Website: www.orange.jo
+
+2) ZainPublic 
+Telephone: +962 79 010 5917
+Website: https://www.jo.zain.com/
+
+3) Umniah
+Telephone: +962 78 5003254
+Website: www.umniah.com
+
+We wish you a pleasant stay!""",
+
+  "sim card":
+      """At Queen Alia Internation Airport there are three telecom services options working 24/7, located at Public Area - Arrivals Level
+
+1) Orange 
+Telephone: +962 7 77700177
+Website: www.orange.jo
+
+2) ZainPublic 
+Telephone: +962 79 010 5917
+Website: https://www.jo.zain.com/
+
+3) Umniah
+Telephone: +962 78 5003254
+Website: www.umniah.com
+
+We wish you a pleasant stay!""",
+
+  "mobile service":
+      """At Queen Alia Internation Airport there are three telecom services options working 24/7, located at Public Area - Arrivals Level
+
+1) Orange 
+Telephone: +962 7 77700177
+Website: www.orange.jo
+
+2) ZainPublic 
+Telephone: +962 79 010 5917
+Website: https://www.jo.zain.com/
+
+3) Umniah
+Telephone: +962 78 5003254
+Website: www.umniah.com
+
+We wish you a pleasant stay!""",
+
+  "umniah":
+      """At Queen Alia Internation Airport there are three telecom services options working 24/7, located at Public Area - Arrivals Level
+
+1) Orange 
+Telephone: +962 7 77700177
+Website: www.orange.jo
+
+2) ZainPublic 
+Telephone: +962 79 010 5917
+Website: https://www.jo.zain.com/
+
+3) Umniah
+Telephone: +962 78 5003254
+Website: www.umniah.com
+
+We wish you a pleasant stay!""",
+
+  "orange":
+      """At Queen Alia Internation Airport there are three telecom services options working 24/7, located at Public Area - Arrivals Level
+
+1) Orange 
+Telephone: +962 7 77700177
+Website: www.orange.jo
+
+2) ZainPublic 
+Telephone: +962 79 010 5917
+Website: https://www.jo.zain.com/
+
+3) Umniah
+Telephone: +962 78 5003254
+Website: www.umniah.com
+
+We wish you a pleasant stay!""",
+
+  "zain":
+      """At Queen Alia Internation Airport there are three telecom services options working 24/7, located at Public Area - Arrivals Level
+
+1) Orange 
+Telephone: +962 7 77700177
+Website: www.orange.jo
+
+2) ZainPublic 
+Telephone: +962 79 010 5917
+Website: https://www.jo.zain.com/
+
+3) Umniah
+Telephone: +962 78 5003254
+Website: www.umniah.com
+
+We wish you a pleasant stay!""",
+
+  "telecom":
+      """At Queen Alia Internation Airport there are three telecom services options working 24/7, located at Public Area - Arrivals Level
+
+1) Orange 
+Telephone: +962 7 77700177
+Website: www.orange.jo
+
+2) ZainPublic 
+Telephone: +962 79 010 5917
+Website: https://www.jo.zain.com/
+
+3) Umniah
+Telephone: +962 78 5003254
+Website: www.umniah.com
+
+We wish you a pleasant stay!""",
+
+//TimeAtQAIA
+
+  "time to be at the airport":
+      "QAIA recommends that passengers arrive at the airport two to three hours before their scheduled departure time. Before you get to the airport, please make sure that you and your luggage adhere to aviation security regulations, and that you have your passport and airline ticket with you.​If you have any further questions feel free to ask. Safe Travels!",
+  "when do i arrive at qaia for my flight":
+      "QAIA recommends that passengers arrive at the airport two to three hours before their scheduled departure time. Before you get to the airport, please make sure that you and your luggage adhere to aviation security regulations, and that you have your passport and airline ticket with you.​If you have any further questions feel free to ask. Safe Travels!",
+  "how long before my flight should i be at qaia":
+      "QAIA recommends that passengers arrive at the airport two to three hours before their scheduled departure time. Before you get to the airport, please make sure that you and your luggage adhere to aviation security regulations, and that you have your passport and airline ticket with you.​If you have any further questions feel free to ask. Safe Travels!",
+  "what time should i be at the aiport":
+      "QAIA recommends that passengers arrive at the airport two to three hours before their scheduled departure time. Before you get to the airport, please make sure that you and your luggage adhere to aviation security regulations, and that you have your passport and airline ticket with you.​If you have any further questions feel free to ask. Safe Travels!",
+  "what time should i go to the aiport":
+      "QAIA recommends that passengers arrive at the airport two to three hours before their scheduled departure time. Before you get to the airport, please make sure that you and your luggage adhere to aviation security regulations, and that you have your passport and airline ticket with you.​If you have any further questions feel free to ask. Safe Travels!",
+
+//TravelProcedures
+
+  "where do i stay in my transit":
+      """​​​After disembarking your plane, if your luggage is checked all the way through to your next destination, simply follow the signs to the Transit Desk located at the same floor you embarked at (second floor) of the terminal. 
+
+If you need to collect your luggage, proceed to the immigration counters then to the Baggage claim hall. You will then need to go to the Departures area at the third floor to continue your ravel.​
+
+If you need to book a hotel for your transit, a convenient option is the Amman Airport Hotel (Transit Hotel)​
+​Departures – North Pier
+​Telephone: ​+962 6 445 1000
+​Fax: +962 6 445 1029
+​Mobile:​ +962 79 789 8000
+​E-mail: reservation@ammanairporthotel.com
+Website: ​www.ammanairporthotel.com""",
+
+  "transit hotel":
+      """​​​After disembarking your plane, if your luggage is checked all the way through to your next destination, simply follow the signs to the Transit Desk located at the same floor you embarked at (second floor) of the terminal. 
+
+If you need to collect your luggage, proceed to the immigration counters then to the Baggage claim hall. You will then need to go to the Departures area at the third floor to continue your ravel.​
+
+If you need to book a hotel for your transit, a convenient option is the Amman Airport Hotel (Transit Hotel)​
+​Departures – North Pier
+​Telephone: ​+962 6 445 1000
+​Fax: +962 6 445 1029
+​Mobile:​ +962 79 789 8000
+​E-mail: reservation@ammanairporthotel.com
+Website: ​www.ammanairporthotel.com""",
+
+  "are there any rules for transit":
+      """​​​After disembarking your plane, if your luggage is checked all the way through to your next destination, simply follow the signs to the Transit Desk located at the same floor you embarked at (second floor) of the terminal. 
+
+If you need to collect your luggage, proceed to the immigration counters then to the Baggage claim hall. You will then need to go to the Departures area at the third floor to continue your ravel.​
+
+If you need to book a hotel for your transit, a convenient option is the Amman Airport Hotel (Transit Hotel)​
+​Departures – North Pier
+​Telephone: ​+962 6 445 1000
+​Fax: +962 6 445 1029
+​Mobile:​ +962 79 789 8000
+​E-mail: reservation@ammanairporthotel.com
+Website: ​www.ammanairporthotel.com""",
+
+  "rules for transit":
+      """​​​After disembarking your plane, if your luggage is checked all the way through to your next destination, simply follow the signs to the Transit Desk located at the same floor you embarked at (second floor) of the terminal. 
+
+If you need to collect your luggage, proceed to the immigration counters then to the Baggage claim hall. You will then need to go to the Departures area at the third floor to continue your ravel.​
+
+If you need to book a hotel for your transit, a convenient option is the Amman Airport Hotel (Transit Hotel)​
+​Departures – North Pier
+​Telephone: ​+962 6 445 1000
+​Fax: +962 6 445 1029
+​Mobile:​ +962 79 789 8000
+​E-mail: reservation@ammanairporthotel.com
+Website: ​www.ammanairporthotel.com""",
+
+  "transit passengers":
+      """​​​After disembarking your plane, if your luggage is checked all the way through to your next destination, simply follow the signs to the Transit Desk located at the same floor you embarked at (second floor) of the terminal. 
+
+If you need to collect your luggage, proceed to the immigration counters then to the Baggage claim hall. You will then need to go to the Departures area at the third floor to continue your ravel.​
+
+If you need to book a hotel for your transit, a convenient option is the Amman Airport Hotel (Transit Hotel)​
+​Departures – North Pier
+​Telephone: ​+962 6 445 1000
+​Fax: +962 6 445 1029
+​Mobile:​ +962 79 789 8000
+​E-mail: reservation@ammanairporthotel.com
+Website: ​www.ammanairporthotel.com""",
+
+  "transit":
+      """​​​After disembarking your plane, if your luggage is checked all the way through to your next destination, simply follow the signs to the Transit Desk located at the same floor you embarked at (second floor) of the terminal. 
+
+If you need to collect your luggage, proceed to the immigration counters then to the Baggage claim hall. You will then need to go to the Departures area at the third floor to continue your ravel.​
+
+If you need to book a hotel for your transit, a convenient option is the Amman Airport Hotel (Transit Hotel)​
+​Departures – North Pier
+​Telephone: ​+962 6 445 1000
+​Fax: +962 6 445 1029
+​Mobile:​ +962 79 789 8000
+​E-mail: reservation@ammanairporthotel.com
+Website: ​www.ammanairporthotel.com""",
+
+//transit-visa
+
+  "what are the req for a visa":
+      """The fees of entry visa for all nationalities are: 
+
+- JD 40.00 for single entry valid for one month obtained upon arrival at the airport. 
+
+​- JD 60.00 for two entries within a period of three months, and can be obtained at the nearest embassy/consulate.
+
+- JD 120.00 for multiple entries within a period of 6 months and can be obtained at the nearest embassy/consulate.” 
+
+
+Certain nationalities require an entry visa to be obtained prior to travel. For more information please visit: moi.gov.jo/EN/Pages/Restricted_and_Non_Restricted_Countries_Nationalities
+
+It is recommended that you check with the Jordanian diplomatic mission in your country prior to traveling to ensure that you have all the necessary paperwork for your trip.​
+
+​You can obtain an electronic entry visa to Jordan through the Ministry of Interior website or by clicking here: Visa E Applications - Ministry of Interior (moi.gov.jo) ​
+
+*Disclaimer: All information contained in this page are subject to change by the concerned authorities without prior notice, for further information, please contact the Jordanian Diplomatic Mission at your country of residence.""",
+
+  "visa": """The fees of entry visa for all nationalities are: 
+
+- JD 40.00 for single entry valid for one month obtained upon arrival at the airport. 
+
+​- JD 60.00 for two entries within a period of three months, and can be obtained at the nearest embassy/consulate.
+
+- JD 120.00 for multiple entries within a period of 6 months and can be obtained at the nearest embassy/consulate.” 
+
+
+Certain nationalities require an entry visa to be obtained prior to travel. For more information please visit: moi.gov.jo/EN/Pages/Restricted_and_Non_Restricted_Countries_Nationalities
+
+It is recommended that you check with the Jordanian diplomatic mission in your country prior to traveling to ensure that you have all the necessary paperwork for your trip.​
+
+​You can obtain an electronic entry visa to Jordan through the Ministry of Interior website or by clicking here: Visa E Applications - Ministry of Interior (moi.gov.jo) ​
+
+*Disclaimer: All information contained in this page are subject to change by the concerned authorities without prior notice, for further information, please contact the Jordanian Diplomatic Mission at your country of residence.""",
+
+  "requirements for visa": """The fees of entry visa for all nationalities are: 
+
+- JD 40.00 for single entry valid for one month obtained upon arrival at the airport. 
+
+​- JD 60.00 for two entries within a period of three months, and can be obtained at the nearest embassy/consulate.
+
+- JD 120.00 for multiple entries within a period of 6 months and can be obtained at the nearest embassy/consulate.” 
+
+
+Certain nationalities require an entry visa to be obtained prior to travel. For more information please visit: moi.gov.jo/EN/Pages/Restricted_and_Non_Restricted_Countries_Nationalities
+
+It is recommended that you check with the Jordanian diplomatic mission in your country prior to traveling to ensure that you have all the necessary paperwork for your trip.​
+
+​You can obtain an electronic entry visa to Jordan through the Ministry of Interior website or by clicking here: Visa E Applications - Ministry of Interior (moi.gov.jo) ​
+
+*Disclaimer: All information contained in this page are subject to change by the concerned authorities without prior notice, for further information, please contact the Jordanian Diplomatic Mission at your country of residence.""",
+
+  "visa requirements": """The fees of entry visa for all nationalities are: 
+
+- JD 40.00 for single entry valid for one month obtained upon arrival at the airport. 
+
+​- JD 60.00 for two entries within a period of three months, and can be obtained at the nearest embassy/consulate.
+
+- JD 120.00 for multiple entries within a period of 6 months and can be obtained at the nearest embassy/consulate.” 
+
+
+Certain nationalities require an entry visa to be obtained prior to travel. For more information please visit: moi.gov.jo/EN/Pages/Restricted_and_Non_Restricted_Countries_Nationalities
+
+It is recommended that you check with the Jordanian diplomatic mission in your country prior to traveling to ensure that you have all the necessary paperwork for your trip.​
+
+​You can obtain an electronic entry visa to Jordan through the Ministry of Interior website or by clicking here: Visa E Applications - Ministry of Interior (moi.gov.jo) ​
+
+*Disclaimer: All information contained in this page are subject to change by the concerned authorities without prior notice, for further information, please contact the Jordanian Diplomatic Mission at your country of residence.""",
+
+//vip-tikram
+
+  "special pickup":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+  "meet and assist":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+  "tikram":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+  "very important person at qaia":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+  "vip at qaia":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+  "vip experience":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+  "vip pass":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+  "what vip services are avaiable":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+  "are there vip services":
+      """At QAIA, we offer Meet and Assist service: Tikram, for your convenience. You can find these services at various locations:
+
+Curbside - Departures Level
+Public Area - Departures Level - Gate 3
+Reservations Office - Public Area - Departures Level - Gate 5
+Fast Track and Luggage Wrapping Service - Check-In Area - Departures Level
+Passport Control - Arrivals Level
+Baggage Claim Area - Arrivals Level
+                                                                                                                         For more information or assistance, you can contact us at:
+Telephone: +962 6 520 4030
+Mobile: +962 7 9899 7000
+Website: www.tikram.jo
+We operate 24/7 to ensure your needs are met at any time""",
+
+//wrong
+
+  "that is incorrect": "I'm sorry can you repeat your question?",
 };
