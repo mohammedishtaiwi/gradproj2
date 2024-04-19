@@ -2,6 +2,9 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'routes.dart';
 import 'firebase_options.dart';
+import 'package:get/get.dart';
+import 'package:gradproj2/theme/theme_manager.dart';
+import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -16,11 +19,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Login App',
-      initialRoute: Routes.login,
-      onGenerateRoute: Routes.generateRoute,
+    return MultiProvider(
+      providers: [ChangeNotifierProvider(create: (_) => ColorNotifire())],
+      child: const GetMaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'Login App',
+        initialRoute: Routes.login,
+        onGenerateRoute: Routes.generateRoute,
+      ),
     );
   }
 }

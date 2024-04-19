@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:gradproj2/homepage1.dart';
 
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/Chat_bot_page.dart';
@@ -28,7 +29,7 @@ class Routes {
       case login:
         return MaterialPageRoute(builder: (_) => const LoginPage());
       case home:
-        return MaterialPageRoute(builder: (_) => const HomePage());
+        return MaterialPageRoute(builder: (_) => const home1());
       case signup:
         return MaterialPageRoute(builder: (_) => const SignUpPage());
       case tickets:
