@@ -1,19 +1,12 @@
 import 'package:gradproj2/apiwrapper.dart';
 import 'package:gradproj2/bottomnavigationbar.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 import 'package:gradproj2/forgetpasswordscreen.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
-void main() {
-  runApp(
-    const MaterialApp(
-      home: signin(),
-    ),
-  );
-}
 
 // ignore: camel_case_types
 class signin extends StatefulWidget {
@@ -25,24 +18,11 @@ class signin extends StatefulWidget {
 
 // ignore: camel_case_types
 class _signinState extends State<signin> {
-  final email = TextEditingController();
-  final password = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
+  final FirebaseAuth _auth = FirebaseAuth.instance;
   bool value = false;
   bool _isVisible = false;
-
-  //bool _isPasswordEightCharacters = false;
-  //bool _hasPasswordOneNumber = false;
-
-  // onPasswordChanged(String password1) {
-  //   //final numericRegex = RegExp(r'[0-9]');
-  //
-  //   setState(() {
-  //     //_isPasswordEightCharacters = false;
-  //     //if (password1.length >= 8) _isPasswordEightCharacters = true;
-  //
-  //     //_hasPasswordOneNumber = false;
-  //     //if (numericRegex.hasMatch(password1)) _hasPasswordOneNumber = true;
-  //   });
   late ColorNotifire notifire;
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -58,7 +38,7 @@ class _signinState extends State<signin> {
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
-      //resizeToAvoidBottomInset: false,
+      resizeToAvoidBottomInset: false,
       backgroundColor: notifire.backgroundallscreenColor,
       body: Stack(
         children: [
@@ -70,33 +50,13 @@ class _signinState extends State<signin> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(height: 50),
-                  Text(
-                    "Welcome back,",
-                    style: TextStyle(
-                        fontSize: 35,
-                        letterSpacing: 0,
-                        fontFamily: 'Gilroy',
-                        color: notifire.getdarkscolor),
-                  ),
-                  const SizedBox(
-                    height: 5,
-                  ),
-                  Text(
-                    "Percy",
-                    style: TextStyle(
-                        fontSize: 35,
-                        color: notifire.getdarkscolor,
-                        fontWeight: FontWeight.bold,
-                        fontFamily: 'Gilroy'),
-                  ),
                   const SizedBox(
                     height: 50,
                   ),
                   Column(
                     children: [
                       TextField(
-                        controller: email,
+                        controller: _emailController,
                         style: TextStyle(
                             color: notifire.getdarkscolor,
                             fontFamily: "gilroy"),
@@ -129,7 +89,7 @@ class _signinState extends State<signin> {
                         style: TextStyle(
                             color: notifire.getdarkscolor,
                             fontFamily: "gilroy"),
-                        controller: password,
+                        controller: _passwordController,
                         obscureText: _isVisible,
                         textInputAction: TextInputAction.next,
                         decoration: InputDecoration(
@@ -237,89 +197,16 @@ class _signinState extends State<signin> {
                               fontSize: 16,
                               fontFamily: 'Gilroy')),
                       backgroundColor: Colors.blueAccent.shade400,
-                      onPressed: () {
-                        var body = {
-                          "email": email.text,
-                          "password": password.text,
-                        };
-                        apiwrapper.userlogin(body);
-                        Navigator.of(context).push(
-                          MaterialPageRoute(
-                            builder: (BuildContext context) =>
-                                const BottomNav(),
-                          ),
-                        );
+                      onPressed: () async {
+                        await _signInWithEmailAndPassword(context);
                       },
                     ),
                   ),
                   const SizedBox(
                     height: 28,
                   ),
-                  Center(
-                    child: Text(
-                      "Or",
-                      style: TextStyle(
-                          fontFamily: 'Gilroy', color: notifire.greytextColor),
-                    ),
-                  ),
                   const SizedBox(
                     height: 28,
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 30),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        Container(
-                          height: 66,
-                          width: 66,
-                          decoration: const BoxDecoration(),
-                          child: FloatingActionButton(
-                            elevation: 0,
-                            // ignore: sort_child_properties_last
-                            child: SizedBox(
-                              height: 33,
-                              width: 33,
-                              child: Image.asset('assets/g.png'),
-                            ),
-                            backgroundColor: notifire.notificationbackground1,
-                            splashColor: null,
-                            onPressed: () {},
-                          ),
-                        ),
-                        SizedBox(
-                          height: 66,
-                          width: 66,
-                          // ignore: duplicate_ignore
-                          child: FloatingActionButton(
-                            elevation: 0,
-                            // ignore: sort_child_properties_last
-                            child: SizedBox(
-                                height: 33,
-                                width: 33,
-                                child:
-                                    Image.asset('assets/Facebookloogin.png')),
-                            backgroundColor: notifire.notificationbackground1,
-                            onPressed: () {},
-                          ),
-                        ),
-                        SizedBox(
-                          height: 66,
-                          width: 66,
-                          child: FloatingActionButton(
-                            elevation: 0,
-                            // ignore: sort_child_properties_last
-                            child: SizedBox(
-                                height: 33,
-                                width: 33,
-                                child: Image.asset('assets/ia.png',
-                                    color: notifire.apple)),
-                            backgroundColor: notifire.notificationbackground1,
-                            onPressed: () {},
-                          ),
-                        ),
-                      ],
-                    ),
                   ),
                 ],
               ),
@@ -328,23 +215,75 @@ class _signinState extends State<signin> {
         ],
       ),
     );
-// callLoginApi() {
-//   final service = ApiServices();
-//   service.Apiservice(
-//     {
-//       "email": email.text,
-//       "password": password.text,
-//     },
-//   ).then(
-//     (value) {
-//       if (value.error != null) {
-//         print("get data >>>>>> " + value.error!);
-//       } else {
-//         print(value.token!);
-//         //push
-//       }
-//     },
-//   );
-// }
+  }
+
+  Future<void> _signInWithEmailAndPassword(BuildContext context) async {
+    try {
+      UserCredential userCredential = await _auth.signInWithEmailAndPassword(
+        email: _emailController.text,
+        password: _passwordController.text,
+      );
+
+      User? user = userCredential.user;
+
+      if (user != null && user.emailVerified) {
+        Navigator.of(context).push(
+          MaterialPageRoute(
+            builder: (BuildContext context) => const BottomNav(),
+          ),
+        );
+      } else if (user != null && !user.emailVerified) {
+        showDialog(
+          context: context,
+          builder: (BuildContext context) {
+            return AlertDialog(
+              title: const Text('Email not verified'),
+              content: const Text(
+                  'Your email is not verified. Please check your email and verify your account before logging in.'),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            );
+          },
+        );
+      } else {
+        print(
+            'Failed to sign in: User not found or other authentication error.');
+      }
+    } catch (e) {
+      print('Failed to sign in: $e');
+      showModalBottomSheet(
+        context: context,
+        builder: (BuildContext context) {
+          return Container(
+            padding: const EdgeInsets.all(16.0),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              children: <Widget>[
+                const Text(
+                  'Error: Invalid username or password',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+                const SizedBox(height: 20),
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('OK'),
+                ),
+              ],
+            ),
+          );
+        },
+      );
+    }
   }
 }

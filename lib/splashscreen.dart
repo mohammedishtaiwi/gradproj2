@@ -85,7 +85,7 @@ class _splashscreenState extends State<splashscreen> {
           ),
           const Center(
             child: Text(
-              "gradproj2",
+              "qAIa",
               style: TextStyle(
                   fontFamily: 'Gilroy',
                   fontWeight: FontWeight.w600,

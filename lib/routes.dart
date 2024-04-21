@@ -8,7 +8,6 @@ import 'package:gradproj2/pages/profile_page.dart';
 import 'package:gradproj2/pages/ticket_details_page.dart';
 // import 'package:gradproj2/pages/profile_page.dart';
 import 'pages/login_page.dart';
-import 'pages/home_page.dart';
 import 'pages/signup_page.dart';
 import 'pages/tickets.dart'; // Import the new Tickets page file
 
