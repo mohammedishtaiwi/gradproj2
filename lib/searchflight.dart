@@ -1,14 +1,12 @@
 // ignore_for_file: camel_case_types, sort_child_properties_last
 
 import 'package:flutter/material.dart';
-import 'package:gradproj2/searchflightmulticity.dart';
 import 'package:gradproj2/searchflightoneday.dart';
 import 'package:gradproj2/searchflightroundtrip.dart';
 import 'package:gradproj2/selectflightfilterandshort.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-
 import 'homepage1.dart';
 
 class searchflight extends StatefulWidget {
@@ -227,15 +225,15 @@ class _searchflightState extends State<searchflight>
                           fontFamily: 'Gilroy'),
                     ),
                   ),
-                  Tab(
-                    child: Text(
-                      "Multi-city",
-                      style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w400,
-                          fontFamily: 'Gilroy'),
-                    ),
-                  ),
+                  // Tab(
+                  //   child: Text(
+                  //     "Multi-city",
+                  //     style: TextStyle(
+                  //         fontSize: 16,
+                  //         fontWeight: FontWeight.w400,
+                  //         fontFamily: 'Gilroy'),
+                  //   ),
+                  // ),
                 ],
               ),
             ),
@@ -246,7 +244,7 @@ class _searchflightState extends State<searchflight>
                 children: [
                   const roundtrip(),
                   const oneday(),
-                  const multicity()
+                  //const multicity()
                 ],
               ),
             ),

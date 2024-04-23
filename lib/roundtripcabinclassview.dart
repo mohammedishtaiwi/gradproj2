@@ -36,7 +36,7 @@ class _roundtripcabinclassState extends State<roundtripcabinclass> {
       backgroundColor: notifire.notificationbackground,
       body: Center(
         child: Container(
-          height: 200,
+          height: 130,
           width: double.infinity,
           decoration: BoxDecoration(
               color: notifire.splashscreenprimeryColor,
@@ -95,34 +95,6 @@ class _roundtripcabinclassState extends State<roundtripcabinclass> {
                     setState(() {
                       _character = value;
                     });
-                  },
-                ),
-              ),
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 16),
-                child: Divider(color: notifire.notificationbackground),
-              ),
-              Theme(
-                data: ThemeData(unselectedWidgetColor: notifire.greytextColor),
-                child: RadioListTile<SingingCharacter>(
-                  dense: true,
-                  title: Text(
-                    'Premium',
-                    style: TextStyle(
-                        fontFamily: "gilroy",
-                        color: notifire.getdarkscolor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 16),
-                  ),
-                  value: SingingCharacter.Premium,
-                  controlAffinity: ListTileControlAffinity.trailing,
-                  groupValue: _character,
-                  onChanged: (SingingCharacter? value) {
-                    setState(
-                      () {
-                        _character = value;
-                      },
-                    );
                   },
                 ),
               ),

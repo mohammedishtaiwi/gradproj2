@@ -81,7 +81,7 @@ class _signupState extends State<signup> {
                   height: 10,
                 ),
                 Text(
-                  "Enter your information below to get\nstarted your trips",
+                  "Enter your information below to get\nstarted on your trips",
                   style: TextStyle(
                       fontSize: 18,
                       color: notifire.greytextColor,
@@ -268,80 +268,6 @@ class _signupState extends State<signup> {
                       };
                       apiwrapper.datapost(body);
                     },
-                  ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Center(
-                  child: Text(
-                    "Or",
-                    style: TextStyle(
-                        fontFamily: 'Gilroy', color: notifire.greytextColor),
-                  ),
-                ),
-                const SizedBox(
-                  height: 25,
-                ),
-                Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 30),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                        height: 66,
-                        width: 66,
-                        decoration: const BoxDecoration(),
-                        child: FloatingActionButton(
-                          elevation: 0,
-                          heroTag: 'Google login',
-                          // ignore: sized_box_for_whitespace
-                          child: Container(
-                              height: 33,
-                              width: 33,
-                              child: Image.asset('assets/g.png')),
-                          backgroundColor: notifire.notificationbackground1,
-                          splashColor: null,
-                          onPressed: () {},
-                        ),
-                      ),
-                      // ignore: sized_box_for_whitespace
-                      Container(
-                        height: 66,
-                        width: 66,
-                        // ignore: duplicate_ignore
-                        child: FloatingActionButton(
-                          elevation: 0,
-                          heroTag: 'facebook login',
-                          // ignore: sized_box_for_whitespace
-                          child: Container(
-                              height: 33,
-                              width: 33,
-                              child: Image.asset('assets/Facebookloogin.png')),
-                          backgroundColor: notifire.notificationbackground1,
-                          onPressed: () {},
-                        ),
-                      ),
-                      // ignore: sized_box_for_whitespace
-                      Container(
-                        height: 66,
-                        width: 66,
-                        child: FloatingActionButton(
-                          elevation: 0,
-                          heroTag: 'apple login',
-                          // ignore: sized_box_for_whitespace
-                          child: Container(
-                              height: 33,
-                              width: 33,
-                              child: Image.asset(
-                                'assets/ia.png',
-                                color: notifire.apple,
-                              )),
-                          backgroundColor: notifire.notificationbackground1,
-                          onPressed: () {},
-                        ),
-                      ),
-                    ],
                   ),
                 ),
               ],

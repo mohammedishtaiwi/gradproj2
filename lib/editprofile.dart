@@ -366,7 +366,7 @@ class _editprofileState extends State<editprofile> {
                         initialDate: DateTime.now(),
                         firstDate: firstdate,
                         //DateTime.now() - not to allow to choose before today.
-                        lastDate: lastdate,
+                        lastDate: DateTime.now(),
                       );
                       if (selectedDate != null) {
                         // ignore: avoid_print

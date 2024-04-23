@@ -221,8 +221,7 @@ class _roundtripState extends State<roundtrip>
                   DateTime? selectedDate = await showDatePicker(
                     context: context,
                     initialDate: DateTime.now(),
-                    firstDate: firstdate,
-                    //DateTime.now() - not to allow to choose before today.
+                    firstDate: DateTime.now(),
                     lastDate: lastdate,
                   );
                   if (selectedDate != null) {
@@ -250,7 +249,7 @@ class _roundtripState extends State<roundtrip>
                     ),
                   ),
                   suffixIcon: Image.asset("assets/calendar07.png", scale: 3.5),
-                  hintText: 'DATE OF BIRTH',
+                  hintText: 'DATE',
                   hintStyle: TextStyle(
                       fontFamily: "gilroy", color: notifire.getdarkscolor),
                   border: OutlineInputBorder(
