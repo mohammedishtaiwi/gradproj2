@@ -53,11 +53,11 @@ class _homeState extends State<home> with SingleTickerProviderStateMixin {
               Align(
                 alignment: Alignment.centerLeft,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
                   child: Row(
                     children: [
                       SizedBox(
-                        width: 170,
+                        width: 350,
                         //color: Colors.red,
                         //height: 30,
                         //padding: EdgeInsets.only(left: 12),

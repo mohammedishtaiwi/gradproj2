@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'editprofile.dart';
 
 // ignore: camel_case_types
 class profilemain extends StatefulWidget {
@@ -37,6 +36,5 @@ class _profilemainState extends State<profilemain> {
     return Scaffold(
       backgroundColor: notifire.backgroundallscreenColor,
     );
-    editprofile();
   }
 }

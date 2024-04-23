@@ -180,7 +180,11 @@ class _roundtripState extends State<roundtrip>
                       ),
                       child: InkWell(
                           borderRadius: BorderRadius.circular(50.0),
-                          onTap: () {},
+                          // onTap: () {setState(() {
+                          //         final temp = selectedDepartureCity;
+                          //         selectedDepartureCity = selectedArrivalCity;
+                          //         selectedArrivalCity = temp;
+                          //       });},
                           child: Image.asset('assets/Group 615.png')),
                     ),
                   ),

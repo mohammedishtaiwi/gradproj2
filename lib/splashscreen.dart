@@ -1,7 +1,7 @@
 // ignore_for_file: camel_case_types
 
 import 'dart:async';
-
+import 'homepage.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj2/onboardingscreen.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
@@ -39,7 +39,7 @@ class _splashscreenState extends State<splashscreen> {
       const Duration(seconds: 3),
       () => Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (BuildContext context) => const onboarding(),
+          builder: (BuildContext context) => const home(),
         ),
       ),
     ).cancel();
@@ -60,7 +60,7 @@ class _splashscreenState extends State<splashscreen> {
       const Duration(seconds: 3),
       () => Navigator.of(context).pushReplacement(
         MaterialPageRoute(
-          builder: (BuildContext context) => const onboarding(),
+          builder: (BuildContext context) => const home(),
         ),
       ),
     );

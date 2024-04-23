@@ -137,32 +137,32 @@ class _signinState extends State<signin> {
                       // ignore: avoid_unnecessary_containers
                       Row(
                         children: [
-                          Checkbox(
-                            side: const BorderSide(color: Colors.grey),
-                            shape: const RoundedRectangleBorder(
-                                borderRadius:
-                                    BorderRadius.all(Radius.circular(5))),
-                            // ignore: unnecessary_this
-                            value: this.value,
-                            onChanged: (bool? value) {
-                              setState(() {
-                                this.value = value!;
-                              });
-                            },
-                          ),
-                          const Text(
-                            "RememberMe",
-                            style: TextStyle(
-                                color: Colors.grey,
-                                fontWeight: FontWeight.w400,
-                                fontSize: 12,
-                                fontFamily: 'Gilroy'),
-                          ),
+                          // Checkbox(
+                          //   side: const BorderSide(color: Colors.grey),
+                          //   shape: const RoundedRectangleBorder(
+                          //       borderRadius:
+                          //           BorderRadius.all(Radius.circular(5))),
+                          //   // ignore: unnecessary_this
+                          //   value: this.value,
+                          //   onChanged: (bool? value) {
+                          //     setState(() {
+                          //       this.value = value!;
+                          //     });
+                          //   },
+                          // ),
+                          // const Text(
+                          //   "RememberMe",
+                          //   style: TextStyle(
+                          //       color: Colors.grey,
+                          //       fontWeight: FontWeight.w400,
+                          //       fontSize: 12,
+                          //       fontFamily: 'Gilroy'),
+                          // ),
                         ],
                       ),
                       TextButton(
                         child: Text(
-                          "Forgetpassword?",
+                          "Forgot Password?",
                           style: TextStyle(
                               fontSize: 13,
                               decoration: TextDecoration.underline,
