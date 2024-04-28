@@ -82,6 +82,9 @@ class _searchflightState extends State<searchflight>
 
   Widget buildDividerBox(BuildContext context, String userId) {
     return Positioned(
+      top: 1 / 3 * MediaQuery.of(context).size.height - 140,
+      left: 5,
+      right: 5,
       child: StreamBuilder<DocumentSnapshot>(
         stream: FirebaseFirestore.instance
             .collection('users')
@@ -101,6 +104,7 @@ class _searchflightState extends State<searchflight>
 
             if (bookedTickets.isEmpty) {
               return Container(
+                height: 130.0,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: Colors.transparent,
@@ -135,6 +139,7 @@ class _searchflightState extends State<searchflight>
               stream: FirebaseFirestore.instance
                   .collection('Tickets')
                   .where(FieldPath.documentId, whereIn: bookedTickets)
+                  // .orderBy('bookingTime', descending: true)
                   .limit(1)
                   .snapshots(),
               builder: (context, snapshot) {
@@ -144,9 +149,10 @@ class _searchflightState extends State<searchflight>
                   return Text('Error: ${snapshot.error}');
                 } else if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return Container(
-                    height: 200.0,
+                    height: 130.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
+                      color: Colors.transparent,
                     ),
                     child: Card(
                       elevation: 10,
@@ -161,7 +167,7 @@ class _searchflightState extends State<searchflight>
                               child: Text(
                                 'No Flights Have Been Booked',
                                 style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: Colors.white,
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -185,14 +191,16 @@ class _searchflightState extends State<searchflight>
                     height: 140.0,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(20),
+                      color: Colors.transparent,
                     ),
                     child: Card(
-                      color: Color.fromARGB(255, 255, 255, 255),
+                      elevation: 10,
+                      color: const Color.fromARGB(255, 62, 62, 62),
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(15),
                       ),
                       child: Padding(
-                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        padding: const EdgeInsets.all(10),
                         child: Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
@@ -200,7 +208,7 @@ class _searchflightState extends State<searchflight>
                               child: Text(
                                 formattedFlightTime,
                                 style: const TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: Colors.white,
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -213,7 +221,7 @@ class _searchflightState extends State<searchflight>
                                   style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 0, 0, 0)),
+                                      color: Colors.white),
                                 ),
                                 const SizedBox(
                                   width: 10,
@@ -221,79 +229,77 @@ class _searchflightState extends State<searchflight>
                                 Container(
                                   padding: const EdgeInsets.all(6),
                                   decoration: BoxDecoration(
-                                      color: const Color.fromARGB(255, 0, 0, 0),
+                                      color: Colors.white,
                                       borderRadius: BorderRadius.circular(20)),
                                   child: SizedBox(
                                     height: 8,
                                     width: 8,
                                     child: DecoratedBox(
                                       decoration: BoxDecoration(
-                                          color: const Color.fromARGB(255, 255,
-                                              255, 255), //DOT IN CIRCLE
+                                          color: Colors.black, //DOT IN CIRCLE
                                           borderRadius:
                                               BorderRadius.circular(5)),
                                     ),
                                   ),
                                 ),
                                 Expanded(
-                                  child: Stack(
-                                    children: <Widget>[
-                                      SizedBox(
-                                        height: 24,
-                                        child: LayoutBuilder(
-                                          builder: (context, constraints) {
-                                            return Flex(
-                                              direction: Axis.horizontal,
-                                              mainAxisSize: MainAxisSize.max,
-                                              mainAxisAlignment:
-                                                  MainAxisAlignment
-                                                      .spaceBetween,
-                                              children: List.generate(
-                                                  (constraints.constrainWidth() /
-                                                          6)
-                                                      .floor(),
-                                                  (index) => const SizedBox(
-                                                        height: 1,
-                                                        width: 3,
-                                                        child: DecoratedBox(
-                                                          decoration: BoxDecoration(
-                                                              color: Color.fromARGB(
-                                                                  255,
-                                                                  0,
-                                                                  0,
-                                                                  0)), // DASHED LINE
-                                                        ),
-                                                      )),
-                                            );
-                                          },
+                                  child: Padding(
+                                    padding: const EdgeInsets.all(8.0),
+                                    child: Stack(
+                                      children: <Widget>[
+                                        SizedBox(
+                                          height: 24,
+                                          child: LayoutBuilder(
+                                            builder: (context, constraints) {
+                                              return Flex(
+                                                direction: Axis.horizontal,
+                                                mainAxisSize: MainAxisSize.max,
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: List.generate(
+                                                    (constraints.constrainWidth() /
+                                                            6)
+                                                        .floor(),
+                                                    (index) => const SizedBox(
+                                                          height: 1,
+                                                          width: 3,
+                                                          child: DecoratedBox(
+                                                            decoration:
+                                                                BoxDecoration(
+                                                                    color: Colors
+                                                                        .white), // DASHED LINE
+                                                          ),
+                                                        )),
+                                              );
+                                            },
+                                          ),
                                         ),
-                                      ),
-                                      Center(
-                                          child: Transform.rotate(
-                                        angle: 1.5,
-                                        child: const Icon(
-                                          Icons.local_airport,
-                                          color: Color.fromARGB(
-                                              255, 0, 0, 0), //PLANE
-                                          size: 24,
-                                        ),
-                                      ))
-                                    ],
+                                        Center(
+                                            child: Transform.rotate(
+                                          angle: 1.5,
+                                          child: const Icon(
+                                            Icons.local_airport,
+                                            color: Colors.white, //PLANE
+                                            size: 24,
+                                          ),
+                                        ))
+                                      ],
+                                    ),
                                   ),
                                 ),
                                 Container(
                                   padding: const EdgeInsets.all(6),
                                   decoration: BoxDecoration(
-                                      color: const Color.fromARGB(
-                                          255, 0, 0, 0), //SECOND CIRCLE
+                                      color: Colors.white, //SECOND CIRCLE
                                       borderRadius: BorderRadius.circular(20)),
                                   child: SizedBox(
                                     height: 8,
                                     width: 8,
                                     child: DecoratedBox(
                                       decoration: BoxDecoration(
-                                          color: const Color.fromARGB(255, 255,
-                                              255, 255), //SECOND DOT IN CIRCLE
+                                          color: Colors
+                                              .black, //SECOND DOT IN CIRCLE
                                           borderRadius:
                                               BorderRadius.circular(5)),
                                     ),
@@ -307,7 +313,7 @@ class _searchflightState extends State<searchflight>
                                   style: const TextStyle(
                                       fontSize: 18,
                                       fontWeight: FontWeight.bold,
-                                      color: Color.fromARGB(255, 0, 0, 0)),
+                                      color: Colors.white),
                                 )
                               ],
                             ),
@@ -317,7 +323,7 @@ class _searchflightState extends State<searchflight>
                                 style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
-                                  color: Color.fromARGB(255, 0, 0, 0),
+                                  color: Colors.white,
                                 ),
                               ),
                             ),
@@ -328,9 +334,9 @@ class _searchflightState extends State<searchflight>
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: <Widget>[
                                 Text(
-                                  'Flight Number:  ${ticketData['flightNumber']}',
+                                  'Flight Number ${ticketData['flightNumber']}',
                                   style: const TextStyle(
-                                    color: Color.fromARGB(255, 0, 0, 0),
+                                    color: Colors.white,
                                     fontSize: 16,
                                   ),
                                 ),
@@ -409,7 +415,7 @@ class _searchflightState extends State<searchflight>
                   child: Padding(
                     padding: const EdgeInsets.all(16.0),
                     child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.center,
                       children: [
                         const Center(
                           child: Text(
