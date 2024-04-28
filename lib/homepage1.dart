@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/editprofile.dart';
 import 'package:gradproj2/notificationmain.dart';
-import 'package:gradproj2/profilepage.dart';
+import 'package:gradproj2/searchflight.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'searchflightroundtrip.dart';
-import 'searchflightoneday.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
 
 // ignore: camel_case_types
 class home1 extends StatefulWidget {
@@ -18,46 +18,14 @@ class home1 extends StatefulWidget {
 
 // ignore: camel_case_types
 class _home1State extends State<home1> with TickerProviderStateMixin {
-  late TabController _tabController;
   bool show = false;
   late ColorNotifire notifire;
 
   @override
   void initState() {
     super.initState();
-    _tabController = TabController(length: 2, vsync: this);
     getdarkmodepreviousstate();
   }
-
-  List<List1> imagess = [
-    List1(image: "assets/planehomehigh.png", name: "Flight"),
-    List1(image: "assets/hotelhommepagehigh.png", name: "Hotel"),
-    List1(image: "assets/cabhomepagehigh.png", name: "Cab"),
-  ];
-  List<String> items = [
-    'England',
-    'USA',
-    'India',
-    'Pakistan',
-    'Canada',
-    'Germany',
-    'Afghanistan',
-    'South Africa',
-  ];
-
-  String? selectedValue;
-
-  List<List2> popularplace = [
-    List2(
-        image1:
-            "https://images.unsplash.com/photo-1665049628888-c80b95a107d1?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=987&q=80"),
-    List2(
-        image1:
-            "https://media.cntraveler.com/photos/5cc2336031a2ae73ce6fb4df/master/w_4000,h_2667,c_limit/New-York_GettyImages-688899871.jpg"),
-    List2(
-        image1:
-            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSz1-beyvRXZ5BAncq7fLvfxVSzuux-gYaeT91aX7UpfN7JwILtx9-G8Ze6dPnSAhq8eD4&usqp=CAU"),
-  ];
 
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
@@ -187,135 +155,87 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
           ),
           body: Padding(
             padding: const EdgeInsets.all(10),
-            child: Column(
-              children: [
-                Row(
-                  children: [
-                    Text(
-                      "Welcome, UserName", // GET THE LOGGED IN USERNAME
-                      style: TextStyle(
-                          color: notifire.getdarkscolor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 17,
-                          fontFamily: 'Gilroy'),
-                    ),
-                  ],
-                ),
-                Row(
-                  children: [
-                    Text(
-                      "Search flight",
-                      style: TextStyle(
-                          color: notifire.getdarkscolor,
-                          fontWeight: FontWeight.w400,
-                          fontSize: 22,
-                          fontFamily: 'Gilroy'),
-                    ),
-                  ],
-                ),
-                Container(
-                  //height: kToolbarHeight + 4,
-                  padding: const EdgeInsets.only(top: 10),
-                  decoration: const BoxDecoration(
-                    color: Colors.transparent,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(8.0),
-                      topRight: Radius.circular(8.0),
-                      bottomLeft: Radius.circular(8.0),
-                      bottomRight: Radius.circular(8.0),
-                    ),
+            child: Column(children: [
+              FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                future: getUser(),
+                builder: (BuildContext context,
+                    AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                        snapshot) {
+                  if (snapshot.connectionState == ConnectionState.done) {
+                    if (snapshot.hasData) {
+                      return Row(
+                        children: [
+                          Text(
+                            "Welcome, ${snapshot.data!['name']}",
+                            style: TextStyle(
+                                color: notifire.getdarkscolor,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17,
+                                fontFamily: 'Gilroy'),
+                          ),
+                        ],
+                      );
+                    } else {
+                      return Row(
+                        children: [
+                          Text(
+                            "Welcome, User",
+                            style: TextStyle(
+                                color: notifire.getdarkscolor,
+                                fontWeight: FontWeight.w400,
+                                fontSize: 17,
+                                fontFamily: 'Gilroy'),
+                          ),
+                        ],
+                      );
+                    }
+                  } else {
+                    return CircularProgressIndicator();
+                  }
+                },
+              ),
+              Row(
+                children: [
+                  Text(
+                    "Search flight",
+                    style: TextStyle(
+                        color: notifire.getdarkscolor,
+                        fontWeight: FontWeight.w400,
+                        fontSize: 22,
+                        fontFamily: 'Gilroy'),
                   ),
-                  child: TabBar(
-                    // ignore: avoid_types_as_parameter_names
-                    onTap: (bool) async {
-                      show = !show;
-                    },
-                    controller: _tabController,
-                    indicator: const UnderlineTabIndicator(
-                      borderSide:
-                          BorderSide(color: Color(0xff1F75EC), width: 2),
-                      insets: EdgeInsets.fromLTRB(0, 0, 0, 45),
-                    ),
-                    labelColor: const Color(0xff1F75EC),
-                    unselectedLabelColor: Colors.grey,
-                    splashBorderRadius: BorderRadius.circular(10),
-                    tabs: const [
-                      Tab(
-                        child: Text(
-                          "Round trip",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Gilroy'),
-                        ),
-                      ),
-                      Tab(
-                        child: Text(
-                          "One way",
-                          style: TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.w400,
-                              fontFamily: 'Gilroy'),
-                        ),
-                      ),
-                    ],
+                ],
+              ),
+              Container(
+                //height: kToolbarHeight + 4,
+                padding: const EdgeInsets.only(top: 10),
+                decoration: const BoxDecoration(
+                  color: Colors.transparent,
+                  borderRadius: BorderRadius.only(
+                    topLeft: Radius.circular(8.0),
+                    topRight: Radius.circular(8.0),
+                    bottomLeft: Radius.circular(8.0),
+                    bottomRight: Radius.circular(8.0),
                   ),
                 ),
-                Expanded(
-                  child: TabBarView(
-                    controller: _tabController,
-                    children: [const roundtrip(), const oneday()],
-                  ),
-                ),
-              ],
-            ),
+              ),
+              Expanded(
+                child: searchflight(),
+              ),
+            ]),
           ),
         ));
   }
 }
 
-class List1 {
-  String? image;
-  String? name;
+Future<DocumentSnapshot<Map<String, dynamic>>> getUser() async {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final User? user = _auth.currentUser;
+  final String uid = user!.uid;
 
-  List1({this.image, this.name});
-}
+  final DocumentReference<Map<String, dynamic>> userDoc =
+      FirebaseFirestore.instance.collection('users').doc(uid);
+  final DocumentSnapshot<Map<String, dynamic>> doc = await userDoc.get();
 
-class List2 {
-  String? image1;
-
-  //String? name1;
-
-  List2({
-    this.image1,
-    //this.name1
-  });
-}
-
-class List3 {
-  String? image3;
-  String? name3;
-
-  List3({this.image3, this.name3});
-}
-
-class List4 {
-  String? image4;
-  String? name4;
-
-  List4({this.image4, this.name4});
-}
-
-class List5 {
-  String? image5;
-  String? name5;
-
-  List5({this.image5, this.name5});
-}
-
-class List6 {
-  String? image6;
-  String? name6;
-
-  List6({this.image6, this.name6});
+  return doc;
 }

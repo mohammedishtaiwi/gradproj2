@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj2/pages/ticket_details_page.dart';
+import 'package:gradproj2/tripsdetailsdetailpage.dart';
 
 class BookedTicketsPage extends StatelessWidget {
   const BookedTicketsPage({Key? key}) : super(key: key);
@@ -92,7 +93,7 @@ class BookedTicketsPage extends StatelessWidget {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => TicketDetailsPage(
+                            builder: (_) => tripsdetailpage(
                               ticketData: ticketData,
                               documentID: snapshot.data!.docs[index].id,
                             ),

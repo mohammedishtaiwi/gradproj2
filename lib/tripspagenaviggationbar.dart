@@ -1,10 +1,10 @@
 // ignore_for_file: camel_case_types
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:gradproj2/pages/ticket_details_page.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -109,7 +109,10 @@ class _tripspageofnavigationbarState extends State<tripspageofnavigationbar> {
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (_) => tripsdetailpage(),
+                            builder: (_) => tripsdetailpage(
+                              ticketData: ticketData,
+                              documentID: snapshot.data!.docs[index].id,
+                            ),
                           ),
                         );
                       },
@@ -442,5 +445,111 @@ class _tripspageofnavigationbarState extends State<tripspageofnavigationbar> {
         ),
       ),
     );
+  }
+
+  Future<void> _bookTicket(BuildContext context,
+      Map<String, dynamic> ticketData, String documentID) async {
+    try {
+      print('Booking document with $documentID');
+
+      final DateTime now = DateTime.now();
+      final Timestamp timestamp = Timestamp.fromDate(now);
+
+      await FirebaseFirestore.instance
+          .collection('Tickets')
+          .doc(documentID)
+          .update({
+        'booked': true,
+        'bookingTime': timestamp,
+      });
+
+      final currentUser = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .update({
+        'bookedTickets': FieldValue.arrayUnion([documentID]),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Ticket booked successfully!'),
+        ),
+      );
+
+      Navigator.pop(context);
+    } catch (e) {
+      print('Error booking ticket: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to book the ticket. Please try again.'),
+        ),
+      );
+    }
+  }
+
+  Future<void> _undoBooking(BuildContext context, String documentID) async {
+    try {
+      print('Undoing booking for document with $documentID');
+
+      final QuerySnapshot snapshot = await FirebaseFirestore.instance
+          .collection('Tickets')
+          .where('booked', isEqualTo: true)
+          .get();
+
+      if (snapshot.docs.length == 1) {
+        // If only one ticket is booked, clear the array
+        final currentUser = FirebaseAuth.instance.currentUser;
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser!.uid)
+            .update({
+          'bookedTickets': FieldValue.delete(),
+        });
+      }
+      // Otherwise, update the specific ticket document
+      if (snapshot.docs.isNotEmpty) {
+        final batch = FirebaseFirestore.instance.batch();
+        for (var doc in snapshot.docs) {
+          batch.update(doc.reference, {
+            'booked': false,
+            'bookingTime': null,
+          });
+        }
+        await batch.commit();
+      }
+
+      // Remove the undone ticket from the user's bookedTickets array
+      final currentUser = FirebaseAuth.instance.currentUser;
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser!.uid)
+          .update({
+        'bookedTickets': FieldValue.arrayRemove([documentID]),
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Booking undone successfully!'),
+        ),
+      );
+
+      Navigator.pop(context);
+    } catch (e) {
+      print('Error undoing booking: $e');
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Failed to undo booking. Please try again.'),
+        ),
+      );
+    }
+  }
+
+  String _formatFlightTime(Timestamp flightTime) {
+    DateTime dateTime = flightTime.toDate();
+
+    String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
+
+    return formattedTime;
   }
 }

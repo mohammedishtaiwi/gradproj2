@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'ticket_details_page.dart';
 import 'package:intl/intl.dart';
 
@@ -96,7 +97,7 @@ class TicketsPage extends StatelessWidget {
                     Navigator.push(
                       context,
                       MaterialPageRoute(
-                        builder: (_) => TicketDetailsPage(
+                        builder: (_) => tripsdetailpage(
                           ticketData: data,
                           documentID: document.id,
                         ),

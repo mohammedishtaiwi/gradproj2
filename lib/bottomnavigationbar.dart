@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:gradproj2/explorepageofnavigationbar.dart';
 import 'package:gradproj2/homepage1.dart';
+import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/pages/Chat_bot_page.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
-import 'package:gradproj2/tripspagenaviggationbar.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -26,10 +25,10 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
     });
   }
 
-  List<Widget> myChildren = const [
+  List<Widget> d = const [
     home1(),
     Chat(),
-    tripspageofnavigationbar(),
+    BookedTicketsPage(),
   ];
 
   late ColorNotifire notifire;
@@ -51,7 +50,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
       body: TabBarView(
         physics: const NeverScrollableScrollPhysics(),
         controller: tabController,
-        children: myChildren,
+        children: d,
       ),
       bottomNavigationBar: BottomAppBar(
         color: notifire.bottomnavigationbarbacground,
@@ -91,7 +90,7 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
               iconMargin: EdgeInsets.only(bottom: 3, top: 5),
               icon: Image.asset("assets/tripselected.png", scale: 24),
               child: Text(
-                'Trips',
+                'Bookings',
                 style: TextStyle(fontSize: 12, fontFamily: 'Gilroy'),
               ),
             ),
