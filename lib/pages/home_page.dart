@@ -3,7 +3,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gradproj2/pages/tickets.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:intl/intl.dart';
-import 'Sidebar.dart';
 import 'latest_ticket_hp.dart';
 
 class HomePage extends StatefulWidget {
@@ -66,7 +65,6 @@ class _HomePageState extends State<HomePage> {
           }),
         ],
       ),
-      drawer: buildDrawer(context, currentUser),
       body: Stack(
         children: [
           Column(
