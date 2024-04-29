@@ -48,7 +48,6 @@ class _EditProfilePageState extends State<EditProfilePage> {
 
   Future<void> _saveChanges(BuildContext context) async {
     try {
-      // Upload new profile picture if it's different from the current one
       if (_profilePictureUrl != widget.profileImageUrl) {
         final Reference storageReference = FirebaseStorage.instance
             .ref()

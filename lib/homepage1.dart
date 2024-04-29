@@ -40,6 +40,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
+
     return WillPopScope(
         onWillPop: () async {
           return false;
@@ -60,20 +61,55 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                     onTap: () {
                       Navigator.of(context).push(
                         MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const editprofile(),
+                          builder: (BuildContext context) => const editprofile(
+                            profileImageUrl: '',
+                            currentName: '',
+                            currentUsername: '',
+                          ),
                         ),
                       );
                     },
-                    child: const SizedBox(
-                      height: 52,
-                      width: 52,
-                      child: CircleAvatar(
-                        //backgroundColor: Colors.greenAccent[400],
-                        backgroundImage:
-                            AssetImage('assets/circleavtarimage.png'),
-                        radius: 25,
-                      ),
+                    child:
+                        FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      future: getUser(),
+                      builder: (BuildContext context,
+                          AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
+                              snapshot) {
+                        if (snapshot.connectionState == ConnectionState.done) {
+                          if (snapshot.hasData) {
+                            final data = snapshot.data!.data();
+                            final String profileImageUrl =
+                                data?['profileImageUrl'] ?? '';
+
+                            return SizedBox(
+                              height: 52,
+                              width: 52,
+                              child: CircleAvatar(
+                                radius: 25,
+                                backgroundImage: profileImageUrl != null
+                                    ? NetworkImage(profileImageUrl)
+                                    : const AssetImage(
+                                            'assets/placeholder_image.png')
+                                        as ImageProvider<Object>?,
+                              ),
+                            );
+                          } else {
+                            // Display default avatar image if data is not available
+                            return SizedBox(
+                              height: 52,
+                              width: 52,
+                              child: CircleAvatar(
+                                backgroundImage:
+                                    AssetImage('assets/default_avatar.png'),
+                                radius: 25,
+                              ),
+                            );
+                          }
+                        } else {
+                          // Display a loading indicator while fetching data
+                          return CircularProgressIndicator();
+                        }
+                      },
                     ),
                   ),
                   Column(
@@ -156,12 +192,12 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
           body: Padding(
             padding: const EdgeInsets.all(10),
             child: Column(children: [
-              FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                future: getUser(),
+              StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                stream: getUserStream(),
                 builder: (BuildContext context,
                     AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
                         snapshot) {
-                  if (snapshot.connectionState == ConnectionState.done) {
+                  if (snapshot.connectionState == ConnectionState.active) {
                     if (snapshot.hasData) {
                       return Row(
                         children: [
@@ -231,11 +267,41 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
 Future<DocumentSnapshot<Map<String, dynamic>>> getUser() async {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final User? user = _auth.currentUser;
-  final String uid = user!.uid;
 
-  final DocumentReference<Map<String, dynamic>> userDoc =
-      FirebaseFirestore.instance.collection('users').doc(uid);
-  final DocumentSnapshot<Map<String, dynamic>> doc = await userDoc.get();
+  if (user != null) {
+    final String uid = user.uid;
 
-  return doc;
+    final DocumentReference<Map<String, dynamic>> userDoc =
+        FirebaseFirestore.instance.collection('users').doc(uid);
+
+    final DocumentSnapshot<Map<String, dynamic>> doc = await userDoc.get();
+
+    return doc;
+  } else {
+    // Handle case where user is not authenticated
+    throw FirebaseAuthException(
+      code: 'user-not-authenticated',
+      message: 'User is not authenticated.',
+    );
+  }
+}
+
+Stream<DocumentSnapshot<Map<String, dynamic>>> getUserStream() {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final User? user = _auth.currentUser;
+
+  if (user != null) {
+    final String uid = user.uid;
+
+    final DocumentReference<Map<String, dynamic>> userDoc =
+        FirebaseFirestore.instance.collection('users').doc(uid);
+
+    return userDoc.snapshots();
+  } else {
+    // Handle case where user is not authenticated
+    throw FirebaseAuthException(
+      code: 'user-not-authenticated',
+      message: 'User is not authenticated.',
+    );
+  }
 }

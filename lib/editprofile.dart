@@ -1,5 +1,4 @@
 import 'dart:io';
-
 import 'package:flutter/material.dart';
 import 'package:gradproj2/homepage1.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
@@ -7,10 +6,22 @@ import 'package:image_picker/image_picker.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:image_picker/image_picker.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 
 // ignore: camel_case_types
 class editprofile extends StatefulWidget {
-  const editprofile({Key? key}) : super(key: key);
+  final String profileImageUrl;
+  final String currentName;
+  final String currentUsername;
+  const editprofile(
+      {Key? key,
+      required this.profileImageUrl,
+      required this.currentName,
+      required this.currentUsername})
+      : super(key: key);
 
   @override
   State<editprofile> createState() => _editprofileState();
@@ -18,6 +29,13 @@ class editprofile extends StatefulWidget {
 
 // ignore: camel_case_types
 class _editprofileState extends State<editprofile> {
+  final FirebaseAuth _auth = FirebaseAuth.instance;
+  final FirebaseFirestore _firestore = FirebaseFirestore.instance;
+  late User? _user;
+
+  late String _newName;
+  late String _newUsername;
+  late String _profilePictureUrl = 'assets/default_profile_picture.png';
   final firstname = TextEditingController();
   final middlename = TextEditingController();
   final lastname = TextEditingController();
@@ -71,6 +89,16 @@ class _editprofileState extends State<editprofile> {
     // TODO: implement initState
     selectedValue = items.first;
     selectedValue2 = items2.first;
+    _user = _auth.currentUser;
+    _newName = widget.currentName;
+    _newUsername = widget.currentUsername;
+    _profilePictureUrl = widget.profileImageUrl.isNotEmpty
+        ? widget.profileImageUrl
+        : 'assets/default_profile_picture.png';
+
+    if (_profilePictureUrl == 'assets/default_profile_picture.png') {
+      _fetchProfilePicture();
+    }
     super.initState();
   }
 
@@ -83,6 +111,56 @@ class _editprofileState extends State<editprofile> {
       notifire.setIsDark = false;
     } else {
       notifire.setIsDark = previusstate;
+    }
+  }
+
+  Future<void> _saveChanges(BuildContext context) async {
+    try {
+      // Upload new profile picture if it's different from the current one
+      if (_profilePictureUrl != widget.profileImageUrl) {
+        final Reference storageReference = FirebaseStorage.instance
+            .ref()
+            .child('profile_pictures')
+            .child('${_user?.uid}.jpg');
+
+        final UploadTask uploadTask =
+            storageReference.putFile(File(_profilePictureUrl));
+        await uploadTask.whenComplete(() async {
+          String downloadUrl = await storageReference.getDownloadURL();
+
+          await _firestore
+              .collection('users')
+              .doc(_user?.uid)
+              .update({'profileImageUrl': downloadUrl});
+        });
+      }
+
+      // Update name if it's different from the current one
+      if (_newName != widget.currentName) {
+        await _user?.updateDisplayName(_newName);
+        await _firestore
+            .collection('users')
+            .doc(_user?.uid)
+            .update({'name': _newName});
+      }
+
+      // Update username if it's different from the current one
+      if (_newUsername != widget.currentUsername) {
+        await _firestore
+            .collection('users')
+            .doc(_user?.uid)
+            .update({'username': _newUsername});
+      }
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully')),
+      );
+
+      Navigator.pop(context);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update profile: $error')),
+      );
     }
   }
 
@@ -161,45 +239,35 @@ class _editprofileState extends State<editprofile> {
             ),
             backgroundColor: Colors.blueAccent.shade400,
             onPressed: () {
-              // Navigator.of(context).push(
-              //   MaterialPageRoute(
-              //     builder: (BuildContext context) => const contactinfo(),
-              //   ),
-              // );
+              _saveChanges(context);
             },
           ),
         ),
       ),
       body: SingleChildScrollView(
         child: Column(
-          //crossAxisAlignment: CrossAxisAlignment.start,
-          //mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 8.0),
               child: Center(
                 child: Stack(
                   children: [
-                    //Container(height:140,color: Colors.blue),
-                    // Container(height:140,color: Colors.blue),
-                    Container(
-                      height: 113,
-                      width: 113,
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        image: const DecorationImage(
-                            image: AssetImage(
-                              "assets/editprofile.png",
-                            ),
-                            scale: 0.1),
-                        borderRadius: BorderRadius.circular(100),
+                    GestureDetector(
+                      onTap: _pickImage,
+                      child: CircleAvatar(
+                        radius: 50,
+                        backgroundImage: _profilePictureUrl.isNotEmpty
+                            ? NetworkImage(_profilePictureUrl)
+                            : const AssetImage(
+                                    'assets/default_profile_picture.png')
+                                as ImageProvider<Object>?,
                       ),
                     ),
                     Positioned(
                       bottom: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: () {},
+                        onTap: _pickImage,
                         child: Container(
                           height: 43,
                           width: 43,
@@ -225,6 +293,11 @@ class _editprofileState extends State<editprofile> {
               child: Column(
                 children: [
                   TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _newName = value;
+                      });
+                    },
                     controller: firstname,
                     style: TextStyle(
                         color: notifire.getdarkscolor, fontFamily: "gilroy"),
@@ -242,58 +315,8 @@ class _editprofileState extends State<editprofile> {
                       hintStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
-                      hintText: 'Enter Your First Name',
+                      hintText: widget.currentName,
                       labelText: "FIRST NAME",
-                      labelStyle: TextStyle(
-                          color: notifire.getdarkscolor, fontFamily: "gilroy"),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  TextField(
-                    controller: middlename,
-                    style: TextStyle(
-                        color: notifire.getdarkscolor, fontFamily: "gilroy"),
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: notifire.getgreycolor,
-                        ),
-                      ),
-                      hintStyle: TextStyle(
-                          color: notifire.getdarkscolor, fontFamily: "gilroy"),
-                      fillColor: Colors.white,
-                      hintText: 'Enter Your Middle Name',
-                      labelText: "MIDDLE NAME",
-                      labelStyle: TextStyle(
-                          color: notifire.getdarkscolor, fontFamily: "gilroy"),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  TextField(
-                    controller: lastname,
-                    style: TextStyle(
-                        color: notifire.getdarkscolor, fontFamily: "gilroy"),
-                    keyboardType: TextInputType.emailAddress,
-                    textInputAction: TextInputAction.next,
-                    decoration: InputDecoration(
-                      border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12)),
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: notifire.getgreycolor,
-                        ),
-                      ),
-                      hintStyle: TextStyle(
-                          color: notifire.getdarkscolor, fontFamily: "gilroy"),
-                      fillColor: Colors.white,
-                      hintText: 'Enter Your Last Name',
-                      labelText: "LAST NAME",
                       labelStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                     ),
@@ -461,6 +484,11 @@ class _editprofileState extends State<editprofile> {
                   ),
                   const SizedBox(height: 24),
                   TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _newUsername = value;
+                      });
+                    },
                     controller: email,
                     style: TextStyle(
                         color: notifire.getdarkscolor, fontFamily: "gilroy"),
@@ -493,88 +521,29 @@ class _editprofileState extends State<editprofile> {
       ),
     );
   }
-}
-// Widget imageProfile() {
-//   return Center(
-//     child: Stack(children: <Widget>[
-//       CircleAvatar(
-//         radius: 80.0,
-//         backgroundImage: _imageFile == null
-//             ? AssetImage("assets/profile.jpeg")
-//             : FileImage(File(_imageFile.path)),
-//       ),
-//       Positioned(
-//         bottom: 20.0,
-//         right: 20.0,
-//         child: InkWell(
-//           onTap: () {
-//             showModalBottomSheet(
-//               context: context,
-//               builder: ((builder) => bottomSheet()),
-//             );
-//           },
-//           child: Icon(
-//             Icons.camera_alt,
-//             color: Colors.teal,
-//             size: 28.0,
-//           ),
-//         ),
-//       ),
-//     ]),
-//   );
-// }
 
-// Widget bottomSheet() {
-//   return Container(
-//     height: 100.0,
-//     //width: MediaQuery.of(context).size.width,
-//     margin: EdgeInsets.symmetric(
-//       horizontal: 20,
-//       vertical: 20,
-//     ),
-//     child: Column(
-//       children: <Widget>[
-//         Text(
-//           "Choose Profile photo",
-//           style: TextStyle(
-//             fontSize: 20.0,
-//           ),
-//         ),
-//         SizedBox(
-//           height: 20,
-//         ),
-//         Row(mainAxisAlignment: MainAxisAlignment.center, children: <Widget>[
-//           FlatButton.icon(
-//             icon: Icon(Icons.camera),
-//             onPressed: () {
-//               takePhoto(ImageSource.camera);
-//             },
-//             label: Text("Camera"),
-//           ),
-//           FlatButton.icon(
-//             icon: Icon(Icons.image),
-//             onPressed: () {
-//               takePhoto(ImageSource.gallery);
-//             },
-//             label: Text("Gallery"),
-//           ),
-//         ])
-//       ],
-//     ),
-//   );
-// }
-//
-// void takePhoto(ImageSource source) async {
-//   final pickedFile = await _picker.getImage(
-//     source: source,
-//   );
-//   setState(() {
-//     _imageFile = pickedFile;
-//   });
-// }
-//
-// class _imageFile {
-// }
-//
-// void setState(Null Function() param0) {
-// }
+  Future<void> _pickImage() async {
+    final picker = ImagePicker();
+    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+
+    if (pickedFile != null) {
+      setState(() {
+        _profilePictureUrl = pickedFile.path;
+      });
+    }
+  }
+
+  Future<void> _fetchProfilePicture() async {
+    try {
+      final userData =
+          await _firestore.collection('users').doc(_user?.uid).get();
+      final profileImageUrl = userData.data()?['profileImageUrl'];
+      setState(() {
+        _profilePictureUrl =
+            profileImageUrl ?? 'assets/default_profile_picture.png';
+      });
+    } catch (error) {
+      print('Failed to fetch profile picture');
+    }
+  }
+}
