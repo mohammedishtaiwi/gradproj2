@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/filtershortdetailpage.dart';
-import 'package:gradproj2/paymentmethod.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 enum SingingCharacter { card, paypal, applepay, googlepay, citybank }
 
@@ -30,10 +31,11 @@ class _paymentinfopageState extends State<paymentinfopage> {
   void initState() {
     // TODO: implement initState
     super.initState();
+    //fetchTotalAmount();
   }
 
   late ColorNotifire notifire;
-
+  int totalAmount = 0;
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();
     bool? previusstate = prefs.getBool("setIsDark");
@@ -97,7 +99,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
           ),
         ),
         title: Text(
-          "Payment info",
+          "Checkout",
           style: TextStyle(
               color: notifire.getdarkscolor,
               fontWeight: FontWeight.w400,
@@ -113,7 +115,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
           height: 56,
           child: FloatingActionButton.extended(
             label: const Text(
-              "SUBMIT",
+              "PAY NOW",
               style: TextStyle(
                   fontWeight: FontWeight.w600,
                   fontSize: 16,
@@ -125,11 +127,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
             ),
             backgroundColor: Colors.blueAccent.shade400,
             onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const paymethodpage(),
-                ),
-              );
+              // NAVIGATE
             },
           ),
         ),
@@ -361,147 +359,69 @@ class _paymentinfopageState extends State<paymentinfopage> {
                   ),
                 ),
               ),
-              const SizedBox(height: 16),
-              Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                child: Container(
-                  height: 60,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        _selectedgooglepay == true
-                            ? BoxShadow(
-                                color: Colors.black12.withOpacity(0.1),
-                                blurRadius: 7,
-                                spreadRadius: 2,
-                                offset: const Offset(0, 5),
-                              )
-                            : const BoxShadow()
-                      ],
-                      color: notifire.notificationbackground,
-                      borderRadius: BorderRadius.circular(16)),
-                  child: Center(
-                    child: Theme(
-                      data: ThemeData(
-                        unselectedWidgetColor: notifire.greytextColor,
-                      ),
-                      child: RadioListTile<SingingCharacter>(
-                        value: SingingCharacter.googlepay,
-                        controlAffinity: ListTileControlAffinity.trailing,
-                        secondary: Padding(
-                          padding: const EdgeInsets.only(left: 21, top: 2),
-                          child: SizedBox(
-                            height: 20,
-                            width: 20,
-                            child: Image.asset("assets/g.png"),
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                        visualDensity:
-                            const VisualDensity(horizontal: 0, vertical: 0),
-                        groupValue: _character,
-                        onChanged: (SingingCharacter? value) {
-                          setState(() {
-                            _character = value!;
-                            _selectedgooglepay = !_selectedgooglepay;
-                            _selectedapplepay = false;
-                            _selectedcitybank = false;
-                            _selectedcard = false;
-                          });
-                        },
-                        title: Text(
-                          "Google pay",
-                          style: TextStyle(
-                              color: notifire.getdarkscolor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Gilroy'),
-                        ),
-                      ),
+              const SizedBox(height: 10),
+              const Divider(thickness: 1.5),
+              const SizedBox(height: 10),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(
+                    'Total Amount',
+                    style: TextStyle(
+                      color: notifire.getdarkscolor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      // fontFamily: 'Gilroy'
                     ),
                   ),
-                ),
-              ),
-              const SizedBox(
-                height: 32,
-              ),
-              Text(
-                "Net banking",
-                style: TextStyle(
-                    color: notifire.getdarkscolor,
-                    fontWeight: FontWeight.w600,
-                    fontSize: 18,
-                    fontFamily: 'Gilroy'),
-              ),
-              const SizedBox(height: 16),
-              Card(
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                    borderRadius: BorderRadius.circular(16)),
-                child: Container(
-                  height: 60,
-                  width: double.infinity,
-                  decoration: BoxDecoration(
-                      boxShadow: [
-                        _selectedcitybank == true
-                            ? BoxShadow(
-                                color: Colors.black12.withOpacity(0.1),
-                                blurRadius: 7,
-                                spreadRadius: 2,
-                                offset: const Offset(0, 5),
-                              )
-                            : const BoxShadow()
-                      ],
-                      color: notifire.notificationbackground,
-                      borderRadius: BorderRadius.circular(16)),
-                  child: Center(
-                    child: Theme(
-                      data: ThemeData(
-                        unselectedWidgetColor: notifire.greytextColor,
-                      ),
-                      child: RadioListTile<SingingCharacter>(
-                        value: SingingCharacter.citybank,
-                        controlAffinity: ListTileControlAffinity.trailing,
-                        secondary: Padding(
-                          padding: const EdgeInsets.only(left: 21, top: 1),
-                          child: SizedBox(
-                            height: 22,
-                            width: 24,
-                            child: Image.asset("assets/citybank.png"),
-                          ),
-                        ),
-                        contentPadding: EdgeInsets.zero,
-                        visualDensity:
-                            const VisualDensity(horizontal: 0, vertical: 0),
-                        groupValue: _character,
-                        onChanged: (SingingCharacter? value) {
-                          setState(() {
-                            _character = value!;
-                            _selectedcitybank = !_selectedcitybank;
-                            _selectedgooglepay = false;
-                            _selectedcard = false;
-                            _selectedapplepay = false;
-                          });
-                        },
-                        title: Text(
-                          "City Bank",
-                          style: TextStyle(
-                              color: notifire.getdarkscolor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w600,
-                              fontFamily: 'Gilroy'),
-                        ),
-                      ),
+                  Text(
+                    '$totalAmount',
+                    style: TextStyle(
+                      color: notifire.getdarkscolor,
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
                     ),
                   ),
-                ),
+                ],
               ),
             ],
           ),
         ),
       ),
     );
+  }
+
+  Future<void> fetchTotalAmount() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userSnapshot.exists) {
+          List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
+
+          int total = 0;
+          for (String ticketId in bookedTickets) {
+            DocumentSnapshot ticketSnapshot = await FirebaseFirestore.instance
+                .collection('Flights')
+                .doc(ticketId)
+                .get();
+
+            if (ticketSnapshot.exists) {
+              total += int.parse(ticketSnapshot['Ticket_crown_price'] ?? '0');
+            }
+          }
+
+          setState(() {
+            totalAmount = total;
+          });
+        }
+      } catch (error) {
+        print('Error fetching total amount: $error');
+      }
+    }
   }
 }

@@ -31,6 +31,8 @@ class _searchflightState extends State<searchflight>
   DateTime? selectedToDate;
   bool isOneWaySelected = true;
   bool isRoundTripSelected = false;
+  bool EconomyClassSelected = false;
+  bool CrownClassSelected = true;
   @override
   void initState() {
     super.initState();
@@ -192,7 +194,7 @@ class _searchflightState extends State<searchflight>
                       ),
                       child: Card(
                         elevation: 10,
-                        color: const Color.fromARGB(255, 62, 62, 62),
+                        color: Color.fromARGB(255, 68, 85, 93),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(15),
                         ),
@@ -357,8 +359,8 @@ class _searchflightState extends State<searchflight>
                                     child: const Text(
                                       'View Ticket >',
                                       style: TextStyle(
-                                        color: Colors
-                                            .blue, // You can change the color as needed
+                                        color: Color.fromARGB(255, 106, 160,
+                                            225), // You can change the color as needed
                                         fontSize: 14,
                                         fontWeight: FontWeight.bold,
                                       ),
@@ -412,27 +414,21 @@ class _searchflightState extends State<searchflight>
               List<String> cities = snapshot.data!;
 
               return Column(children: [
+                const SizedBox(
+                  height: 10,
+                ),
                 Container(
                   decoration: BoxDecoration(
                     borderRadius: BorderRadius.circular(20),
                     color: Color.fromARGB(
-                        255, 255, 255, 255), // Change the color to blue grey
+                        255, 228, 231, 235), // Change the color to blue grey
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.only(left: 25.0, right: 25.0),
+                    padding: const EdgeInsets.only(
+                        left: 13.0, right: 13.0, top: 5, bottom: 10),
                     child: Column(
                       mainAxisAlignment: MainAxisAlignment.center,
                       children: [
-                        const Center(
-                          child: Text(
-                            'Flight Selector',
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
@@ -538,7 +534,7 @@ class _searchflightState extends State<searchflight>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        // const SizedBox(height: 5),
                         Row(
                           children: [
                             Center(
@@ -594,21 +590,15 @@ class _searchflightState extends State<searchflight>
                             ),
                           ],
                         ),
-                        const SizedBox(height: 5),
+                        // const SizedBox(height: 5),
                         Row(
                           children: [
-                            const SizedBox(
-                              width: 10,
-                            ),
                             const Text(
                               'Departure',
                               style: TextStyle(
                                 color: Color.fromARGB(255, 0, 0, 0),
                                 fontSize: 16,
                               ),
-                            ),
-                            const SizedBox(
-                              width: 5,
                             ),
                             IconButton(
                               icon: const Icon(Icons.calendar_month),
@@ -631,18 +621,12 @@ class _searchflightState extends State<searchflight>
                         if (isRoundTripSelected)
                           Row(
                             children: [
-                              const SizedBox(
-                                width: 10,
-                              ),
                               const Text(
                                 'Return',
                                 style: TextStyle(
                                   color: Color.fromARGB(255, 0, 0, 0),
                                   fontSize: 16,
                                 ),
-                              ),
-                              const SizedBox(
-                                width: 5,
                               ),
                               IconButton(
                                 icon: const Icon(Icons.calendar_month),
@@ -662,6 +646,52 @@ class _searchflightState extends State<searchflight>
                               ),
                             ],
                           ),
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            const Text(
+                              'Class',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 16,
+                              ),
+                            ),
+                            Radio(
+                              value: true,
+                              groupValue: EconomyClassSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  EconomyClassSelected = value ?? false;
+                                  CrownClassSelected = !EconomyClassSelected;
+                                });
+                              },
+                            ),
+                            const Text(
+                              'Economy',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 16,
+                              ),
+                            ),
+                            Radio(
+                              value: true,
+                              groupValue: CrownClassSelected,
+                              onChanged: (bool? value) {
+                                setState(() {
+                                  CrownClassSelected = value ?? false;
+                                  EconomyClassSelected = !CrownClassSelected;
+                                });
+                              },
+                            ),
+                            const Text(
+                              'Crown',
+                              style: TextStyle(
+                                color: Color.fromARGB(255, 0, 0, 0),
+                                fontSize: 16,
+                              ),
+                            ),
+                          ],
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [

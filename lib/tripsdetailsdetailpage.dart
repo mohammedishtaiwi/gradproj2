@@ -409,7 +409,38 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                     ),
                                     const SizedBox(height: 7),
                                     Text(
-                                      'Buisness',
+                                      'Crown',
+                                      style: TextStyle(
+                                          color: notifire.getdarkscolor,
+                                          fontWeight: FontWeight.w600,
+                                          fontSize: 16,
+                                          fontFamily: 'Gilroy'),
+                                    ),
+                                  ],
+                                ),
+                              ],
+                            ),
+                            const SizedBox(height: 8),
+                            const Divider(thickness: 1),
+                            const SizedBox(height: 8),
+                            //   if (widget.ticketData['Flight_status'] == "Crown Class")
+                            Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    Text(
+                                      'Ticket Price',
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          fontSize: 13,
+                                          color: Color(0xff768089),
+                                          fontFamily: 'Gilroy'),
+                                    ),
+                                    Text(
+                                      '${widget.ticketData['Ticket_crown_price']}',
                                       style: TextStyle(
                                           color: notifire.getdarkscolor,
                                           fontWeight: FontWeight.w600,
@@ -439,7 +470,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   _undoBooking(context, widget.documentID);
                                 },
                                 child: const Text(
-                                  'Undo Booking',
+                                  'Cancel Booking',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontWeight: FontWeight.bold,

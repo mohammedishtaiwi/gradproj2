@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:gradproj2/homepage.dart';
+
 import 'package:gradproj2/homepage1.dart';
 
 class NotificationPage extends StatefulWidget {
@@ -127,13 +127,92 @@ class _NotificationPageState extends State<NotificationPage> {
                   );
                 }
 
+                // return ListView.builder(
+                //   itemCount: snapshot.data!.length,
+                //   itemBuilder: (context, index) {
+                //     var flightData = snapshot.data![index];
+                //     return GestureDetector(
+                //       onTap: () {
+                //         // Navigator.push(
+                //         //   context,
+                //         //   MaterialPageRoute(
+                //         //     builder: (context) => tripsdetailpage(
+                //         //       ticketData:
+                //         //           flightData, // Pass flightData as ticketData parameter
+                //         //       documentID: flightData['Flight_ID'],
+                //         //     ),
+                //         //   ),
+                //         // );
+                //       },
+                //       child: Container(
+                //         margin:
+                //             EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                //         padding: EdgeInsets.all(16),
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(12),
+                //           color: Colors.grey[200],
+                //         ),
+                //         child: Column(
+                //           crossAxisAlignment: CrossAxisAlignment.start,
+                //           children: [
+                //             Text(
+                //               'Flight Number: ${flightData['Flight_ID']}',
+                //               style: TextStyle(fontWeight: FontWeight.bold),
+                //             ),
+                //             SizedBox(height: 8),
+                //             Text('Status: ${flightData['Flight_status']}'),
+                //           ],
+                //         ),
+                //       ),
+                //     );
+                //   },
+                // );
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var flightData = snapshot.data![index];
-                    return ListTile(
-                      title: Text('Flight Number: ${flightData['Flight_ID']}'),
-                      subtitle: Text('Status: ${flightData['Flight_status']}'),
+                    return GestureDetector(
+                      onTap: () {
+                        // Navigate to trip detail page
+                      },
+                      child: Container(
+                        margin:
+                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(12),
+                          color: Colors.grey[200], // Background color
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.grey.withOpacity(0.5),
+                              spreadRadius: 2,
+                              blurRadius: 5,
+                              offset: Offset(0, 3),
+                            ),
+                          ],
+                        ),
+                        child: Padding(
+                          padding: EdgeInsets.all(16),
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                'Flight Number: ${flightData['Flight_ID']}',
+                                style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 18,
+                                ),
+                              ),
+                              SizedBox(height: 8),
+                              Text(
+                                'Status: ${flightData['Flight_status']}',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ),
                     );
                   },
                 );

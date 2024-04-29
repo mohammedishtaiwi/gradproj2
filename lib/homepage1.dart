@@ -126,7 +126,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                         children: [
                           const Icon(
                             Icons.location_on_rounded,
-                            color: Color(0xff1F75EC),
+                            color: Color.fromARGB(255, 106, 160, 225),
                           ),
                           const SizedBox(
                             width: 5,
@@ -209,6 +209,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                                 fontSize: 17,
                                 fontFamily: 'Gilroy'),
                           ),
+                          const SizedBox(height: 20),
                         ],
                       );
                     } else {
@@ -222,6 +223,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                                 fontSize: 17,
                                 fontFamily: 'Gilroy'),
                           ),
+                          const SizedBox(height: 20),
                         ],
                       );
                     }
@@ -230,23 +232,24 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                   }
                 },
               ),
-              Row(
-                children: [
-                  Text(
-                    "Search flight",
-                    style: TextStyle(
-                        color: notifire.getdarkscolor,
-                        fontWeight: FontWeight.w400,
-                        fontSize: 22,
-                        fontFamily: 'Gilroy'),
-                  ),
-                ],
-              ),
+              // Row(
+              //   children: [
+              //     Text(
+              //       "Search flight",
+              //       style: TextStyle(
+              //           color: notifire.getdarkscolor,
+              //           fontWeight: FontWeight.w400,
+              //           fontSize: 22,
+              //           fontFamily: 'Gilroy'),
+              //     ),
+              //   ],
+              // ),
+
               Container(
                 //height: kToolbarHeight + 4,
-                padding: const EdgeInsets.only(top: 10),
+                padding: const EdgeInsets.only(top: 0),
                 decoration: const BoxDecoration(
-                  color: Colors.transparent,
+                  color: Color.fromARGB(0, 138, 135, 135),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8.0),
                     topRight: Radius.circular(8.0),
