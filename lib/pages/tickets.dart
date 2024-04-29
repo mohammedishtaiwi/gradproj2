@@ -26,11 +26,11 @@ class TicketsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Tickets')),
+        title: const Center(child: Text('Flights')),
       ),
       body: Center(
         child: StreamBuilder(
-          stream: FirebaseFirestore.instance.collection('Tickets').snapshots(),
+          stream: FirebaseFirestore.instance.collection('Flights').snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
             if (snapshot.hasError) {
@@ -50,23 +50,23 @@ class TicketsPage extends StatelessWidget {
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
 
-              bool isRoundTrip = data['isroundtrip'] ?? false;
-              bool isOneWay = data['isoneway'] ?? false;
+              bool isRoundTrip = data['two_way'] ?? false;
+              bool isOneWay = data['one_way'] ?? false;
 
-              bool isMatchingCities = data['departureCity'] == departureCity &&
-                  data['arrivalCity'] == arrivalCity;
+              bool isMatchingCities = data['Dep_city'] == departureCity &&
+                  data['Arr_city'] == arrivalCity;
               bool isMatchingDate = false;
 
               if (isOneWay && selectedFromDate != null) {
-                DateTime flightDate = data['flightDate'].toDate();
+                DateTime flightDate = data['Dep_date_time'].toDate();
                 isMatchingDate = flightDate.year == selectedFromDate!.year &&
                     flightDate.month == selectedFromDate!.month &&
                     flightDate.day == selectedFromDate!.day;
               } else if (isRoundTrip &&
                   selectedFromDate != null &&
                   selectedToDate != null) {
-                DateTime flightDate = data['flightDate'].toDate();
-                DateTime returnDate = data['ReturnDate'].toDate();
+                DateTime flightDate = data['Dep_date_time'].toDate();
+                DateTime returnDate = data['Return_dep_date_time'].toDate();
                 isMatchingDate = (flightDate.year == selectedFromDate!.year &&
                         flightDate.month == selectedFromDate!.month &&
                         flightDate.day == selectedFromDate!.day) &&
@@ -127,7 +127,7 @@ class TicketsPage extends StatelessWidget {
                               Row(
                                 children: <Widget>[
                                   Text(
-                                    '${data['departureCity']}', //REPLACE WITH ABBRV
+                                    '${data['Dep_city']}',
                                     style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -222,7 +222,7 @@ class TicketsPage extends StatelessWidget {
                                     width: 16,
                                   ),
                                   Text(
-                                    ' ${data['arrivalCity']}', //REPLACE WITH ABBRV
+                                    ' ${data['Arr_city']}',
                                     style: const TextStyle(
                                         fontSize: 18,
                                         fontWeight: FontWeight.bold,
@@ -240,12 +240,12 @@ class TicketsPage extends StatelessWidget {
                                   SizedBox(
                                       width: 100,
                                       child: Text(
-                                        '${data['departureCity']}',
+                                        '${data['Dep_city']}',
                                         style: const TextStyle(
                                             fontSize: 12, color: Colors.white),
                                       )),
                                   Text(
-                                    '${data['flightDuration']}', // REPLACE WITH FLIGHT TIME
+                                    '${data['Flight_duration']}',
                                     style: const TextStyle(
                                         fontSize: 13,
                                         fontWeight: FontWeight.bold,
@@ -254,7 +254,7 @@ class TicketsPage extends StatelessWidget {
                                   SizedBox(
                                       width: 100,
                                       child: Text(
-                                        '${data['arrivalCity']}',
+                                        '${data['Arr_city']}',
                                         textAlign: TextAlign.end,
                                         style: const TextStyle(
                                             fontSize: 12, color: Colors.white),
@@ -269,15 +269,20 @@ class TicketsPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    '${data['departureTime']}', //REPLACE WITH DEPARTURE TIME
-
+                                    data['Arr_date_time'] != null
+                                        ? extractTimeFromTimestamp(
+                                            data['Arr_date_time'])
+                                        : '',
                                     style: const TextStyle(
                                         fontSize: 18,
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold),
                                   ),
                                   Text(
-                                    '${data['arrivalTime']}', //REPLACE WITH ARRIVAL TIME
+                                    data['Dep_date_time'] != null
+                                        ? extractTimeFromTimestamp(
+                                            data['Dep_date_time'])
+                                        : '',
                                     style: const TextStyle(
                                         fontSize: 18,
                                         color: Colors.black,
@@ -291,14 +296,14 @@ class TicketsPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: <Widget>[
                                   Text(
-                                    _formatFlightTime(data['flightDate']),
+                                    _formatFlightTime(data['Dep_date_time']),
                                     style: const TextStyle(
                                         fontSize: 12, color: Colors.white),
                                   ),
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        "Flight No: ${data['flightNumber']}",
+                                        "Flight No: ${data['Flight_ID']}",
                                         style: const TextStyle(
                                             fontSize: 12, color: Colors.white),
                                       ),
@@ -397,24 +402,25 @@ class TicketsPage extends StatelessWidget {
                                 width: 16,
                               ),
                               Text(
-                                '${data['Airline']}',
+                                '${data['Airline_Name']}',
                                 style: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w500,
                                   color: Colors.white,
                                 ),
                               ),
-                              Expanded(
-                                child: Text(
-                                  '${data['ticketPrice']}',
-                                  textAlign: TextAlign.end,
-                                  style: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                  ),
-                                ),
-                              ),
+                              // CHANGE ACCORDING TO CLASS CHOSEN
+                              // Expanded(
+                              //   child: Text(
+                              //     '${data['ticketPrice']}',
+                              //     textAlign: TextAlign.end,
+                              //     style: const TextStyle(
+                              //       fontSize: 18,
+                              //       fontWeight: FontWeight.bold,
+                              //       color: Colors.black,
+                              //     ),
+                              //   ),
+                              // ),
                             ],
                           ),
                         ),
@@ -428,6 +434,12 @@ class TicketsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String extractTimeFromTimestamp(Timestamp flightTime) {
+    DateTime dateTime = flightTime.toDate();
+    String formattedTime = DateFormat.jm().format(dateTime);
+    return formattedTime;
   }
 
   String _formatFlightTime(Timestamp flightTime) {

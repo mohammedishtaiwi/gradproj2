@@ -155,6 +155,34 @@ class _ChatState extends State<Chat> {
     );
   }
 
+  // Widget buildAvatarTile({
+  //   required String title,
+  // }) =>
+  //     GestureDetector(
+  //       onTap: () {
+  //         setState(() {
+  //           selectedAvatar = title; // Update selected avatar
+  //         });
+  //       },
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(8.0),
+  //         child: Column(
+  //           children: [
+  //             CircleAvatar(
+  //               backgroundColor: Colors.blueGrey,
+  //               backgroundImage: getSelectedAvatarImage(title),
+  //               foregroundColor: Colors.grey,
+  //               radius: 24,
+  //             ),
+  //             SizedBox(height: 4.0),
+  //             Text(
+  //               title,
+  //               style: TextStyle(fontWeight: FontWeight.bold),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     );
   Widget buildAvatarTile({
     required String title,
   }) =>
@@ -168,11 +196,22 @@ class _ChatState extends State<Chat> {
           padding: const EdgeInsets.all(8.0),
           child: Column(
             children: [
-              CircleAvatar(
-                backgroundColor: Colors.blueGrey,
-                backgroundImage: getSelectedAvatarImage(title),
-                foregroundColor: Colors.grey,
-                radius: 24,
+              Container(
+                decoration: BoxDecoration(
+                  shape: BoxShape.circle,
+                  border: Border.all(
+                    color: selectedAvatar == title
+                        ? Color.fromARGB(255, 31, 120, 193)
+                        : Colors.transparent,
+                    width: 3.0,
+                  ),
+                ),
+                child: CircleAvatar(
+                  backgroundColor: Colors.blueGrey,
+                  backgroundImage: getSelectedAvatarImage(title),
+                  foregroundColor: Colors.grey,
+                  radius: 24,
+                ),
               ),
               SizedBox(height: 4.0),
               Text(

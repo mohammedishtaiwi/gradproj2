@@ -130,7 +130,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           Text(
-                            '${widget.ticketData['departureCity']}',
+                            '${widget.ticketData['Dep_city']}',
                             style: TextStyle(
                                 fontSize: 24,
                                 color: notifire.getdarkscolor,
@@ -145,17 +145,17 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   child:
                                       Image.asset('assets/selectflight.png')),
                               Text(
-                                '${widget.ticketData['flightDuration']}',
+                                '${widget.ticketData['Flight_duration']}',
                                 style: TextStyle(
                                     fontSize: 12,
-                                    fontWeight: FontWeight.w400,
+                                    fontWeight: FontWeight.bold,
                                     color: Colors.grey,
                                     fontFamily: 'Gilroy'),
                               ),
                             ],
                           ),
                           Text(
-                            '${widget.ticketData['arrivalCity']}',
+                            '${widget.ticketData['Arr_city']}',
                             style: TextStyle(
                                 fontSize: 24,
                                 color: notifire.getdarkscolor,
@@ -185,11 +185,31 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   'Date',
                                   style: TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.bold,
                                       color: Color(0xff768089)),
                                 ),
                                 Text(
-                                  '${_formatFlightTime(widget.ticketData['flightDate'])}',
+                                  '${_formatFlightTime(widget.ticketData['Dep_date_time'])}',
+                                  style: TextStyle(
+                                      color: notifire.getdarkscolor,
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w600,
+                                      fontFamily: 'Gilroy'),
+                                ),
+                              ],
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children: [
+                                const Text(
+                                  'Time',
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Color(0xff768089)),
+                                ),
+                                Text(
+                                  '${extractTimeFromTimestamp(widget.ticketData['Dep_date_time'])}',
                                   style: TextStyle(
                                       color: notifire.getdarkscolor,
                                       fontSize: 16,
@@ -205,24 +225,108 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
                                 const Text(
-                                  'Price',
+                                  'Flight Status',
                                   style: TextStyle(
                                       fontSize: 14,
-                                      fontWeight: FontWeight.w400,
+                                      fontWeight: FontWeight.bold,
                                       fontFamily: 'Gilroy',
                                       color: Color(0xff768089)),
                                 ),
                                 Text(
-                                  '${widget.ticketData['ticketPrice']}',
+                                  '${widget.ticketData['Flight_status']}'
+                                      .toUpperCase(),
                                   style: TextStyle(
                                       fontSize: 16,
                                       color: notifire.getdarkscolor,
-                                      fontWeight: FontWeight.w600,
+                                      fontWeight: FontWeight.bold,
                                       fontFamily: 'Gilroy'),
                                 ),
                               ],
                             ),
-                            const SizedBox(height: 32),
+                            if (widget.ticketData['Flight_status'] == "Delayed")
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Updated Departure',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Gilroy',
+                                          color: Color(0xff768089),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 7),
+                                      Text(
+                                        _formatFlightTime(widget
+                                            .ticketData['New_dep_date_time']),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: notifire.getdarkscolor,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'Gilroy',
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        extractTimeFromTimestamp(widget
+                                            .ticketData['New_dep_date_time']),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: notifire.getdarkscolor,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'Gilroy',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 7),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Updated Arrival',
+                                        style: TextStyle(
+                                          fontSize: 14,
+                                          fontWeight: FontWeight.bold,
+                                          fontFamily: 'Gilroy',
+                                          color: Color(0xff768089),
+                                        ),
+                                      ),
+                                      const SizedBox(height: 7),
+                                      Text(
+                                        _formatFlightTime(widget
+                                            .ticketData['New_arr_date_time']),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: notifire.getdarkscolor,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'Gilroy',
+                                        ),
+                                      ),
+                                      const SizedBox(width: 10),
+                                      Text(
+                                        extractTimeFromTimestamp(widget
+                                            .ticketData['New_arr_date_time']),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: notifire.getdarkscolor,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: 'Gilroy',
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            const SizedBox(height: 8),
+                            const Divider(thickness: 1),
+                            const SizedBox(height: 8),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.spaceBetween,
                               children: [
@@ -232,14 +336,14 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                     const Text(
                                       'Gate',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 12,
                                           color: Color(0xff768089),
                                           fontFamily: 'Gilroy'),
                                     ),
                                     const SizedBox(height: 7),
                                     Text(
-                                      'B7',
+                                      'B7', // STATIC VALUE
                                       style: TextStyle(
                                           color: notifire.getdarkscolor,
                                           fontWeight: FontWeight.w600,
@@ -254,14 +358,14 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                     const Text(
                                       'Flight number',
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 12,
                                           color: Color(0xff768089),
                                           fontFamily: 'Gilroy'),
                                     ),
                                     const SizedBox(height: 7),
                                     Text(
-                                      'EY71',
+                                      '${widget.ticketData['Flight_ID']}',
                                       style: TextStyle(
                                           color: notifire.getdarkscolor,
                                           fontWeight: FontWeight.w600,
@@ -274,9 +378,9 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      'Seat',
+                                      'Seat', // STATIC VALUE
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 12,
                                           color: Color(0xff768089),
                                           fontFamily: 'Gilroy'),
@@ -296,9 +400,9 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   crossAxisAlignment: CrossAxisAlignment.start,
                                   children: [
                                     const Text(
-                                      'Class',
+                                      'Class', // STATIC VALUE
                                       style: TextStyle(
-                                          fontWeight: FontWeight.w400,
+                                          fontWeight: FontWeight.bold,
                                           fontSize: 12,
                                           color: Color(0xff768089),
                                           fontFamily: 'Gilroy'),
@@ -365,7 +469,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
       final Timestamp timestamp = Timestamp.fromDate(now);
 
       await FirebaseFirestore.instance
-          .collection('Tickets')
+          .collection('Flights')
           .doc(documentID)
           .update({
         'booked': true,
@@ -402,7 +506,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
       print('Undoing booking for document with $documentID');
 
       final QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('Tickets')
+          .collection('Flights')
           .where('booked', isEqualTo: true)
           .get();
 
@@ -459,6 +563,12 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
 
     String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
 
+    return formattedTime;
+  }
+
+  String extractTimeFromTimestamp(Timestamp flightTime) {
+    DateTime dateTime = flightTime.toDate();
+    String formattedTime = DateFormat.jm().format(dateTime);
     return formattedTime;
   }
 }

@@ -2,7 +2,9 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj2/pages/ticket_details_page.dart';
+import 'package:gradproj2/theme/colors.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
+import 'package:intl/intl.dart';
 
 class BookedTicketsPage extends StatelessWidget {
   const BookedTicketsPage({Key? key}) : super(key: key);
@@ -59,7 +61,7 @@ class BookedTicketsPage extends StatelessWidget {
 
             return StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
-                  .collection('Tickets')
+                  .collection('Flights')
                   .where(FieldPath.documentId, whereIn: bookedTickets)
                   .snapshots(),
               builder: (BuildContext context,
@@ -122,7 +124,7 @@ class BookedTicketsPage extends StatelessWidget {
                                   Row(
                                     children: <Widget>[
                                       Text(
-                                        '${ticketData['departureCity']}', //REPLACE WITH ABBRV
+                                        '${ticketData['Dep_city']}',
                                         style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
@@ -223,7 +225,7 @@ class BookedTicketsPage extends StatelessWidget {
                                         width: 16,
                                       ),
                                       Text(
-                                        ' ${ticketData['arrivalCity']}', //REPLACE WITH ABBRV
+                                        ' ${ticketData['Arr_city']}',
                                         style: const TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
@@ -241,13 +243,13 @@ class BookedTicketsPage extends StatelessWidget {
                                       SizedBox(
                                           width: 100,
                                           child: Text(
-                                            '${ticketData['departureCity']}',
+                                            '${ticketData['Dep_city']}',
                                             style: const TextStyle(
                                                 fontSize: 12,
                                                 color: Colors.white),
                                           )),
-                                      const Text(
-                                        "6H 30M", // REPLACE WITH FLIGHT TIME
+                                      Text(
+                                        '${ticketData['Flight_duration']}',
                                         style: TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold,
@@ -256,7 +258,7 @@ class BookedTicketsPage extends StatelessWidget {
                                       SizedBox(
                                           width: 100,
                                           child: Text(
-                                            '${ticketData['arrivalCity']}',
+                                            '${ticketData['Arr_city']}',
                                             textAlign: TextAlign.end,
                                             style: const TextStyle(
                                                 fontSize: 12,
@@ -267,20 +269,25 @@ class BookedTicketsPage extends StatelessWidget {
                                   const SizedBox(
                                     height: 16,
                                   ),
-                                  const Row(
+                                  Row(
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
                                       Text(
-                                        '8:30 AM', //REPLACE WITH DEPARTURE TIME
-
+                                        ticketData['Arr_date_time'] != null
+                                            ? extractTimeFromTimestamp(
+                                                ticketData['Arr_date_time'])
+                                            : '',
                                         style: TextStyle(
                                             fontSize: 18,
                                             color: Colors.black,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       Text(
-                                        "02:30 PM", //REPLACE WITH ARRIVAL TIME
+                                        ticketData['Dep_date_time'] != null
+                                            ? extractTimeFromTimestamp(
+                                                ticketData['Dep_date_time'])
+                                            : '',
                                         style: TextStyle(
                                             fontSize: 18,
                                             color: Colors.black,
@@ -293,8 +300,9 @@ class BookedTicketsPage extends StatelessWidget {
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: <Widget>[
-                                      const Text(
-                                        "1 May 2020", //REPLACE WITH DATE
+                                      Text(
+                                        _formatFlightTime(
+                                            ticketData['Dep_date_time']),
                                         style: TextStyle(
                                             fontSize: 12, color: Colors.white),
                                       ),
@@ -307,13 +315,36 @@ class BookedTicketsPage extends StatelessWidget {
                                                 color: Colors.white),
                                           ),
                                           Text(
-                                            '${ticketData['flightNumber']}',
+                                            '${ticketData['Flight_ID']}',
                                             style: const TextStyle(
                                                 fontSize: 12,
                                                 fontWeight: FontWeight.bold,
                                                 color: Colors.white),
                                           ),
                                         ],
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(height: 12),
+                                  Row(
+                                    mainAxisAlignment:
+                                        MainAxisAlignment.spaceBetween,
+                                    children: [
+                                      const Text(
+                                        'Flight Status',
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.black),
+                                      ),
+                                      Text(
+                                        '${ticketData['Flight_status']}'
+                                            .toUpperCase(),
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -401,19 +432,20 @@ class BookedTicketsPage extends StatelessWidget {
                                   const SizedBox(
                                     width: 16,
                                   ),
-                                  Text('${ticketData['Airline']}',
+                                  Text('${ticketData['Airline_Name']}',
                                       style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.white)),
-                                  Expanded(
-                                      child: Text(
-                                          '${ticketData['ticketPrice']}',
-                                          textAlign: TextAlign.end,
-                                          style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black))),
+                                  // MUST BE CHANGED DEPENDING ON CLASS CHOSEN
+                                  // Expanded(
+                                  //     child: Text(
+                                  //         '${ticketData['ticketPrice']}',
+                                  //         textAlign: TextAlign.end,
+                                  //         style: const TextStyle(
+                                  //             fontSize: 18,
+                                  //             fontWeight: FontWeight.bold,
+                                  //             color: Colors.black))),
                                 ],
                               ),
                             ),
@@ -429,5 +461,17 @@ class BookedTicketsPage extends StatelessWidget {
         ),
       ),
     );
+  }
+
+  String _formatFlightTime(Timestamp flightTime) {
+    DateTime dateTime = flightTime.toDate();
+    String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
+    return formattedTime;
+  }
+
+  String extractTimeFromTimestamp(Timestamp flightTime) {
+    DateTime dateTime = flightTime.toDate();
+    String formattedTime = DateFormat.jm().format(dateTime);
+    return formattedTime;
   }
 }

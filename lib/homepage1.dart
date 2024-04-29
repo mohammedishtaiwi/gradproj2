@@ -125,7 +125,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                       Navigator.of(context).push(
                         MaterialPageRoute(
                           builder: (BuildContext context) =>
-                              const notification(),
+                              const NotificationPage(),
                         ),
                       );
                     },
