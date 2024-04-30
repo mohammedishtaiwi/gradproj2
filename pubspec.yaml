@@ -91,7 +91,7 @@ flutter:
     - assets/shams.jpeg
     - assets/sewar.jpeg
     - assets/
-    # - android/app/src/main/assets/applozic-settings.json
+    - android/app/src/main/assets/applozic-settings.json
   #   - images/a_dot_ham.jpeg
 
   # An image asset can refer to one or more resolution-specific "variants", see

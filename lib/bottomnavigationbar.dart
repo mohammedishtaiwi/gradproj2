@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/homepage1.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
-import 'package:gradproj2/pages/Chat_bot_page.dart';
+import 'package:gradproj2/pages/chat_bot.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';

@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 
 // ignore: camel_case_types
@@ -316,7 +315,7 @@ class _editprofileState extends State<editprofile> {
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
                       hintText: widget.currentName,
-                      labelText: "FIRST NAME",
+                      labelText: "NAME",
                       labelStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                     ),

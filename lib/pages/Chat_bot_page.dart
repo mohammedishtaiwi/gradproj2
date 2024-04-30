@@ -155,34 +155,6 @@ class _ChatState extends State<Chat> {
     );
   }
 
-  // Widget buildAvatarTile({
-  //   required String title,
-  // }) =>
-  //     GestureDetector(
-  //       onTap: () {
-  //         setState(() {
-  //           selectedAvatar = title; // Update selected avatar
-  //         });
-  //       },
-  //       child: Padding(
-  //         padding: const EdgeInsets.all(8.0),
-  //         child: Column(
-  //           children: [
-  //             CircleAvatar(
-  //               backgroundColor: Colors.blueGrey,
-  //               backgroundImage: getSelectedAvatarImage(title),
-  //               foregroundColor: Colors.grey,
-  //               radius: 24,
-  //             ),
-  //             SizedBox(height: 4.0),
-  //             Text(
-  //               title,
-  //               style: TextStyle(fontWeight: FontWeight.bold),
-  //             ),
-  //           ],
-  //         ),
-  //       ),
-  //     );
   Widget buildAvatarTile({
     required String title,
   }) =>
