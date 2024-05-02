@@ -22,6 +22,7 @@ class TicketsPage extends StatelessWidget {
   })  : isRoundTripSelected = isRoundTrip ?? true,
         isOneWaySelected = !(isRoundTrip ?? true),
         super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -44,11 +45,12 @@ class TicketsPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
-
             List<DocumentSnapshot> filteredFlights =
                 snapshot.data!.docs.where((document) {
               Map<String, dynamic> data =
                   document.data() as Map<String, dynamic>;
+
+              bool isNotCancelled = data['Flight_status'] != "Cancelled";
 
               bool isRoundTrip = data['two_way'] ?? false;
               bool isOneWay = data['one_way'] ?? false;
@@ -74,8 +76,10 @@ class TicketsPage extends StatelessWidget {
                         returnDate.month == selectedToDate!.month &&
                         returnDate.day == selectedToDate!.day);
               }
-              return (isRoundTrip && isRoundTripSelected ||
-                      isOneWay && isOneWaySelected) &&
+
+              return isNotCancelled &&
+                  ((isRoundTrip && isRoundTripSelected) ||
+                      (isOneWay && isOneWaySelected)) &&
                   isMatchingCities &&
                   isMatchingDate;
             }).toList();
@@ -147,7 +151,7 @@ class TicketsPage extends StatelessWidget {
                                       width: 8,
                                       child: DecoratedBox(
                                         decoration: BoxDecoration(
-                                            color: Colors.black, //DOT IN CIRCLE
+                                            color: Colors.black,
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                       ),
@@ -203,7 +207,7 @@ class TicketsPage extends StatelessWidget {
                                   Container(
                                     padding: const EdgeInsets.all(6),
                                     decoration: BoxDecoration(
-                                        color: Colors.white, //SECOND CIRCLE
+                                        color: Colors.white,
                                         borderRadius:
                                             BorderRadius.circular(20)),
                                     child: SizedBox(
@@ -211,8 +215,7 @@ class TicketsPage extends StatelessWidget {
                                       width: 8,
                                       child: DecoratedBox(
                                         decoration: BoxDecoration(
-                                            color: Colors
-                                                .black, //SECOND DO TIN CIRCLE
+                                            color: Colors.black,
                                             borderRadius:
                                                 BorderRadius.circular(5)),
                                       ),
@@ -264,32 +267,97 @@ class TicketsPage extends StatelessWidget {
                               const SizedBox(
                                 height: 16,
                               ),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    data['Arr_date_time'] != null
-                                        ? extractTimeFromTimestamp(
-                                            data['Arr_date_time'])
-                                        : '',
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                  Text(
-                                    data['Dep_date_time'] != null
-                                        ? extractTimeFromTimestamp(
-                                            data['Dep_date_time'])
-                                        : '',
-                                    style: const TextStyle(
-                                        fontSize: 18,
-                                        color: Colors.black,
-                                        fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
+                              if (data['Flight_status'] == 'Delayed')
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          data['New_dep_date_time'] != null
+                                              ? extractTimeFromTimestamp(
+                                                  data['New_dep_date_time'])
+                                              : '',
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          data['New_arr_date_time'] != null
+                                              ? extractTimeFromTimestamp(
+                                                  data['New_arr_date_time'])
+                                              : '',
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                  ],
+                                ),
+                              if (data['Flight_status'] == 'On Time')
+                                Column(
+                                  children: [
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          data['Dep_date_time'] != null
+                                              ? extractTimeFromTimestamp(
+                                                  data['Dep_date_time'])
+                                              : '',
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                        Text(
+                                          data['Arr_date_time'] != null
+                                              ? extractTimeFromTimestamp(
+                                                  data['Arr_date_time'])
+                                              : '',
+                                          style: const TextStyle(
+                                              fontSize: 18,
+                                              color: Colors.black,
+                                              fontWeight: FontWeight.bold),
+                                        ),
+                                      ],
+                                    ),
+                                    const SizedBox(height: 12),
+                                  ],
+                                ),
+                              // Row(
+                              //   mainAxisAlignment:
+                              //       MainAxisAlignment.spaceBetween,
+                              //   children: <Widget>[
+                              //     Text(
+                              //       data['Arr_date_time'] != null
+                              //           ? extractTimeFromTimestamp(
+                              //               data['Arr_date_time'])
+                              //           : '',
+                              //       style: const TextStyle(
+                              //           fontSize: 18,
+                              //           color: Colors.black,
+                              //           fontWeight: FontWeight.bold),
+                              //     ),
+                              //     Text(
+                              //       data['Dep_date_time'] != null
+                              //           ? extractTimeFromTimestamp(
+                              //               data['Dep_date_time'])
+                              //           : '',
+                              //       style: const TextStyle(
+                              //           fontSize: 18,
+                              //           color: Colors.black,
+                              //           fontWeight: FontWeight.bold),
+                              //     ),
+                              //   ],
+                              // ),
+
                               const SizedBox(height: 12),
                               Row(
                                 mainAxisAlignment:
@@ -300,14 +368,10 @@ class TicketsPage extends StatelessWidget {
                                     style: const TextStyle(
                                         fontSize: 12, color: Colors.white),
                                   ),
-                                  Row(
-                                    children: <Widget>[
-                                      Text(
-                                        "Flight No: ${data['Flight_ID']}",
-                                        style: const TextStyle(
-                                            fontSize: 12, color: Colors.white),
-                                      ),
-                                    ],
+                                  Text(
+                                    "Flight No: ${data['Flight_ID']}",
+                                    style: const TextStyle(
+                                        fontSize: 12, color: Colors.white),
                                   ),
                                 ],
                               ),
@@ -409,18 +473,17 @@ class TicketsPage extends StatelessWidget {
                                   color: Colors.white,
                                 ),
                               ),
-                              // CHANGE ACCORDING TO CLASS CHOSEN
-                              // Expanded(
-                              //   child: Text(
-                              //     '${data['ticketPrice']}',
-                              //     textAlign: TextAlign.end,
-                              //     style: const TextStyle(
-                              //       fontSize: 18,
-                              //       fontWeight: FontWeight.bold,
-                              //       color: Colors.black,
-                              //     ),
-                              //   ),
-                              // ),
+                              Expanded(
+                                child: Text(
+                                  '${data['Ticket_crown_price']} JOD',
+                                  textAlign: TextAlign.end,
+                                  style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                              ),
                             ],
                           ),
                         ),

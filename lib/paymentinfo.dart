@@ -31,7 +31,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
   void initState() {
     // TODO: implement initState
     super.initState();
-    //fetchTotalAmount();
+    fetchTotalAmount();
   }
 
   late ColorNotifire notifire;
@@ -375,7 +375,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
                     ),
                   ),
                   Text(
-                    '$totalAmount',
+                    '$totalAmount JOD',
                     style: TextStyle(
                       color: notifire.getdarkscolor,
                       fontWeight: FontWeight.w600,
@@ -411,7 +411,12 @@ class _paymentinfopageState extends State<paymentinfopage> {
                 .get();
 
             if (ticketSnapshot.exists) {
-              total += int.parse(ticketSnapshot['Ticket_crown_price'] ?? '0');
+              var ticketPrice = ticketSnapshot['Ticket_crown_price'];
+              if (ticketPrice is int) {
+                total += ticketPrice;
+              } else if (ticketPrice is num) {
+                total += ticketPrice.toInt();
+              }
             }
           }
 

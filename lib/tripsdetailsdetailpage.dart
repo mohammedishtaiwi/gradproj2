@@ -440,7 +440,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                           fontFamily: 'Gilroy'),
                                     ),
                                     Text(
-                                      '${widget.ticketData['Ticket_crown_price']}',
+                                      '${widget.ticketData['Ticket_crown_price']} JOD',
                                       style: TextStyle(
                                           color: notifire.getdarkscolor,
                                           fontWeight: FontWeight.w600,
@@ -460,7 +460,9 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                 },
                                 child: const Text('Book'),
                               ),
-                            if (isTicketBooked)
+                            if (isTicketBooked &&
+                                widget.ticketData['Flight_status'] !=
+                                    "Cancelled")
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor:

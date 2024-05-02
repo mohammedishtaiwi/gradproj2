@@ -262,36 +262,85 @@ class BookedTicketsPage extends StatelessWidget {
                                         const SizedBox(
                                           height: 5,
                                         ),
-                                        Row(
-                                          mainAxisAlignment:
-                                              MainAxisAlignment.spaceBetween,
-                                          children: <Widget>[
-                                            Text(
-                                              ticketData['Arr_date_time'] !=
-                                                      null
-                                                  ? extractTimeFromTimestamp(
-                                                      ticketData[
-                                                          'Arr_date_time'])
-                                                  : '',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                            Text(
-                                              ticketData['Dep_date_time'] !=
-                                                      null
-                                                  ? extractTimeFromTimestamp(
-                                                      ticketData[
-                                                          'Dep_date_time'])
-                                                  : '',
-                                              style: TextStyle(
-                                                  fontSize: 18,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold),
-                                            ),
-                                          ],
-                                        ),
+                                        if (ticketData['Flight_status'] ==
+                                            'Delayed')
+                                          Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Text(
+                                                    ticketData['New_dep_date_time'] !=
+                                                            null
+                                                        ? extractTimeFromTimestamp(
+                                                            ticketData[
+                                                                'New_dep_date_time'])
+                                                        : '',
+                                                    style: const TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                    ticketData['New_arr_date_time'] !=
+                                                            null
+                                                        ? extractTimeFromTimestamp(
+                                                            ticketData[
+                                                                'New_arr_date_time'])
+                                                        : '',
+                                                    style: const TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
+                                              const SizedBox(height: 12),
+                                            ],
+                                          ),
+                                        if (ticketData['Flight_status'] !=
+                                            'Delayed')
+                                          Column(
+                                            children: [
+                                              Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment
+                                                        .spaceBetween,
+                                                children: <Widget>[
+                                                  Text(
+                                                    ticketData['Dep_date_time'] !=
+                                                            null
+                                                        ? extractTimeFromTimestamp(
+                                                            ticketData[
+                                                                'Dep_date_time'])
+                                                        : '',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                  Text(
+                                                    ticketData['Arr_date_time'] !=
+                                                            null
+                                                        ? extractTimeFromTimestamp(
+                                                            ticketData[
+                                                                'Arr_date_time'])
+                                                        : '',
+                                                    style: TextStyle(
+                                                        fontSize: 18,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
+                                              ),
+                                            ],
+                                          ),
                                         const SizedBox(height: 12),
                                         Row(
                                           mainAxisAlignment:
@@ -447,7 +496,7 @@ class BookedTicketsPage extends StatelessWidget {
                                         // MUST BE CHANGED DEPENDING ON CLASS CHOSEN
                                         Expanded(
                                             child: Text(
-                                                '${ticketData['Ticket_crown_price']}',
+                                                '${ticketData['Ticket_crown_price']} JOD',
                                                 textAlign: TextAlign.end,
                                                 style: const TextStyle(
                                                     fontSize: 18,
