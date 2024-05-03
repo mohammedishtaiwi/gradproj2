@@ -65,6 +65,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                             profileImageUrl: '',
                             currentName: '',
                             currentUsername: '',
+                            currentPass: '',
                           ),
                         ),
                       );
@@ -244,7 +245,9 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
               //     ),
               //   ],
               // ),
-
+              const SizedBox(height: 4),
+              const Divider(thickness: 1),
+              const SizedBox(height: 4),
               Container(
                 //height: kToolbarHeight + 4,
                 padding: const EdgeInsets.only(top: 0),

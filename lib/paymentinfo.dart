@@ -100,11 +100,11 @@ class _paymentinfopageState extends State<paymentinfopage> {
         ),
         title: Text(
           "Checkout",
-          style: TextStyle(
-              color: notifire.getdarkscolor,
-              fontWeight: FontWeight.w400,
-              fontFamily: 'Gilroy',
-              fontSize: 18),
+          // style: TextStyle(
+          //     color: notifire.getdarkscolor,
+          //     fontWeight: FontWeight.w400,
+          //     fontFamily: 'Gilroy',
+          //     fontSize: 18),
         ),
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,

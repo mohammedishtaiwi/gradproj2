@@ -21,7 +21,7 @@ class _signinState extends State<signin> {
   final TextEditingController _passwordController = TextEditingController();
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool value = false;
-  bool _isVisible = false;
+  bool _isVisible = true;
   late ColorNotifire notifire;
   getdarkmodepreviousstate() async {
     final prefs = await SharedPreferences.getInstance();

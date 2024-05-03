@@ -21,7 +21,7 @@ class BookedTicketsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Booked Tickets')),
+        title: const Text('Booked Tickets'),
       ),
       body: Center(
         child: StreamBuilder<DocumentSnapshot>(
@@ -82,6 +82,7 @@ class BookedTicketsPage extends StatelessWidget {
                     child: Text('No booked tickets available.'),
                   );
                 }
+
                 return SingleChildScrollView(
                   child: Column(
                     children: [
@@ -93,7 +94,9 @@ class BookedTicketsPage extends StatelessWidget {
                         itemBuilder: (BuildContext context, int index) {
                           var ticketData = snapshot.data!.docs[index].data()
                               as Map<String, dynamic>;
-
+                          // if ((ticketData['Arr_date_time'] as Timestamp)
+                          //     .toDate()
+                          //     .isAfter(DateTime.now()))
                           return GestureDetector(
                             onTap: () {
                               Navigator.push(

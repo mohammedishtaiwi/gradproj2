@@ -15,11 +15,13 @@ class editprofile extends StatefulWidget {
   final String profileImageUrl;
   final String currentName;
   final String currentUsername;
+  final String currentPass;
   const editprofile(
       {Key? key,
       required this.profileImageUrl,
       required this.currentName,
-      required this.currentUsername})
+      required this.currentUsername,
+      required this.currentPass})
       : super(key: key);
 
   @override
@@ -31,21 +33,23 @@ class _editprofileState extends State<editprofile> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _firestore = FirebaseFirestore.instance;
   late User? _user;
-
+  bool _isVisible = true;
   late String _newName;
   late String _newUsername;
+  late String _newPassword;
   late String _profilePictureUrl = 'assets/default_profile_picture.png';
   final firstname = TextEditingController();
   final middlename = TextEditingController();
   final lastname = TextEditingController();
-  final gender = TextEditingController();
-  final nationality = TextEditingController();
+  // final gender = TextEditingController();
+  // final nationality = TextEditingController();
   // ignore: non_constant_identifier_names
-  final date_of_birth = TextEditingController();
+  //final date_of_birth = TextEditingController();
   final email = TextEditingController();
-  final firstdate = DateTime(1900, 1);
-  final lastdate = DateTime(2050, 12);
-  DateTime selectedDate = DateTime.now();
+  // final firstdate = DateTime(1900, 1);
+  // final lastdate = DateTime(2050, 12);
+  // DateTime selectedDate = DateTime.now();
+  final passwordController = TextEditingController();
 
   bool load = false;
   late File imgFile;
@@ -58,45 +62,49 @@ class _editprofileState extends State<editprofile> {
   //
   // }
 
-  List<String> items = [
-    'MALE',
-    'FEMALE',
-  ];
+  // List<String> items = [
+  //   'MALE',
+  //   'FEMALE',
+  // ];
 
-  List<String> items2 = [
-    'England',
-    'USA',
-    'India',
-    'Pakistan',
-    'Canada',
-    'Germany',
-    'Afghanistan',
-    'South Africa',
-    'Dubai'
-        'Paris'
-        'Ireland'
-        'Sri Lanka'
-        'Australia'
-        'Singapore'
-  ];
+  // List<String> items2 = [
+  //   'England',
+  //   'USA',
+  //   'India',
+  //   'Pakistan',
+  //   'Canada',
+  //   'Germany',
+  //   'Afghanistan',
+  //   'South Africa',
+  //   'Dubai'
+  //       'Paris'
+  //       'Ireland'
+  //       'Sri Lanka'
+  //       'Australia'
+  //       'Singapore'
+  // ];
 
-  String? selectedValue;
-  String? selectedValue2;
+  // String? selectedValue;
+  // String? selectedValue2;
 
   @override
   void initState() {
     // TODO: implement initState
-    selectedValue = items.first;
-    selectedValue2 = items2.first;
+    // selectedValue = items.first;
+    // selectedValue2 = items2.first;
     _user = _auth.currentUser;
     _newName = widget.currentName;
     _newUsername = widget.currentUsername;
+    _newPassword = widget.currentPass;
     _profilePictureUrl = widget.profileImageUrl.isNotEmpty
         ? widget.profileImageUrl
         : 'assets/default_profile_picture.png';
 
     if (_profilePictureUrl == 'assets/default_profile_picture.png') {
       _fetchProfilePicture();
+    }
+    if (_user != null) {
+      _fetchUserData(_user!.uid);
     }
     super.initState();
   }
@@ -134,7 +142,6 @@ class _editprofileState extends State<editprofile> {
         });
       }
 
-      // Update name if it's different from the current one
       if (_newName != widget.currentName) {
         await _user?.updateDisplayName(_newName);
         await _firestore
@@ -143,14 +150,19 @@ class _editprofileState extends State<editprofile> {
             .update({'name': _newName});
       }
 
-      // Update username if it's different from the current one
       if (_newUsername != widget.currentUsername) {
         await _firestore
             .collection('users')
             .doc(_user?.uid)
             .update({'username': _newUsername});
       }
-
+      if (_newPassword.isNotEmpty && _newPassword != widget.currentPass) {
+        //  await _user?.updatePassword(_newPassword);
+        await _firestore
+            .collection('users')
+            .doc(_user?.uid)
+            .update({'password': _newPassword});
+      }
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile updated successfully')),
       );
@@ -291,6 +303,7 @@ class _editprofileState extends State<editprofile> {
               padding: const EdgeInsets.symmetric(vertical: 34, horizontal: 24),
               child: Column(
                 children: [
+                  const SizedBox(height: 24),
                   TextField(
                     onChanged: (value) {
                       setState(() {
@@ -314,172 +327,11 @@ class _editprofileState extends State<editprofile> {
                       hintStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
-                      hintText: widget.currentName,
+                      hintText: "Enter New Username",
                       labelText: "NAME",
                       labelStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                     ),
-                  ),
-                  const SizedBox(height: 24),
-                  FormField<String>(
-                    builder: (FormFieldState<String> state) {
-                      return InputDecorator(
-                        decoration: InputDecoration(
-                          label: Text(
-                            'GENDER',
-                            style: TextStyle(
-                                fontFamily: "gilroy",
-                                color: notifire.getdarkscolor),
-                          ),
-                          errorStyle: const TextStyle(
-                              color: Colors.redAccent, fontSize: 16.0),
-                          hintText: 'Select Your Country',
-                          hintStyle: TextStyle(
-                              fontFamily: "gilroy",
-                              color: notifire.getdarkscolor),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: notifire.getgreycolor,
-                            ),
-                          ),
-                        ),
-                        //isEmpty: _SelectedValue! == '',
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: selectedValue,
-                            isDense: true,
-                            isExpanded: true,
-                            dropdownColor: notifire.notificationbackground,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedValue = newValue;
-                                state.didChange(newValue);
-                              });
-                            },
-                            items: items.map((String items) {
-                              return DropdownMenuItem<String>(
-                                value: items,
-                                child: Text(
-                                  items,
-                                  style: TextStyle(
-                                      fontFamily: "gilroy",
-                                      color: notifire.greytextColor),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      );
-                    },
-                  ),
-                  const SizedBox(height: 24),
-                  TextField(
-                    style: TextStyle(
-                        fontFamily: "gilroy", color: notifire.getdarkscolor),
-                    controller: date_of_birth,
-                    readOnly: true,
-                    onTap: () async {
-                      DateTime? selectedDate = await showDatePicker(
-                        context: context,
-                        initialDate: DateTime.now(),
-                        firstDate: firstdate,
-                        //DateTime.now() - not to allow to choose before today.
-                        lastDate: DateTime.now(),
-                      );
-                      if (selectedDate != null) {
-                        // ignore: avoid_print
-                        print(selectedDate);
-                        String formattedDate =
-                            DateFormat.yMd().format(selectedDate);
-                        // ignore: avoid_print
-                        print(formattedDate);
-                        setState(
-                          () {
-                            date_of_birth.text = formattedDate;
-                          },
-                        );
-                      } else {
-                        // ignore: avoid_print
-                        print("Date is not selected");
-                      }
-                    },
-                    decoration: InputDecoration(
-                      enabledBorder: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
-                          color: notifire.getgreycolor,
-                        ),
-                      ),
-                      suffixIcon:
-                          Image.asset("assets/calendar07.png", scale: 3.5),
-                      hintText: 'DATE OF BIRTH',
-                      hintStyle: TextStyle(
-                          fontFamily: "gilroy", color: notifire.getdarkscolor),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide:
-                            const BorderSide(color: Colors.black, width: 5.0),
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 24),
-                  FormField<String>(
-                    builder: (FormFieldState<String> state) {
-                      return InputDecorator(
-                        decoration: InputDecoration(
-                          label: Text('NATIONALITY',
-                              style: TextStyle(
-                                  fontFamily: "gilroy",
-                                  color: notifire.getdarkscolor)),
-                          //labelText: "items",
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: notifire.getgreycolor,
-                            ),
-                          ),
-                          errorStyle: const TextStyle(
-                              color: Colors.redAccent, fontSize: 16.0),
-                          hintText: 'Select Your Country',
-                          hintStyle: TextStyle(
-                              fontFamily: "gilroy",
-                              color: notifire.getdarkscolor),
-                          border: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                          ),
-                        ),
-                        //isEmpty: _SelectedValue! == '',
-                        child: DropdownButtonHideUnderline(
-                          child: DropdownButton<String>(
-                            value: selectedValue2,
-                            isDense: true,
-                            isExpanded: true,
-                            dropdownColor: notifire.notificationbackground,
-                            onChanged: (String? newValue) {
-                              setState(() {
-                                selectedValue2 = newValue;
-                                state.didChange(newValue);
-                              });
-                            },
-                            items: items2.map((String items) {
-                              return DropdownMenuItem<String>(
-                                value: items,
-                                child: Text(
-                                  items,
-                                  style: TextStyle(
-                                      color: notifire.greytextColor,
-                                      fontFamily: "gilroy"),
-                                ),
-                              );
-                            }).toList(),
-                          ),
-                        ),
-                      );
-                    },
                   ),
                   const SizedBox(height: 24),
                   TextField(
@@ -505,10 +357,55 @@ class _editprofileState extends State<editprofile> {
                       hintStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
-                      hintText: 'Enter Your Email',
+                      hintText: 'Enter New Email',
                       labelText: "EMAIL",
                       labelStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
+                    ),
+                  ),
+                  const SizedBox(height: 24),
+                  TextField(
+                    onChanged: (value) {
+                      setState(() {
+                        _newPassword = value;
+                      });
+                    },
+                    style: TextStyle(
+                        color: notifire.getdarkscolor, fontFamily: "gilroy"),
+                    controller: passwordController,
+                    obscureText: _isVisible,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isVisible = !_isVisible;
+                          });
+                        },
+                        icon: _isVisible
+                            ? const Icon(
+                                Icons.visibility_off_outlined,
+                                color: Colors.grey,
+                              )
+                            : const Icon(
+                                Icons.visibility_outlined,
+                                color: Colors.grey,
+                              ),
+                      ),
+                      hintText: 'Enter New Password',
+                      hintStyle: TextStyle(
+                          color: notifire.getdarkscolor, fontFamily: "gilroy"),
+                      labelText: "PASSWORD",
+                      labelStyle: TextStyle(
+                          color: notifire.getdarkscolor, fontFamily: "gilroy"),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: notifire.getgreycolor,
+                        ),
+                      ),
                     ),
                   ),
                   const SizedBox(height: 100),
@@ -543,6 +440,25 @@ class _editprofileState extends State<editprofile> {
       });
     } catch (error) {
       print('Failed to fetch profile picture');
+    }
+  }
+
+  Future<void> _fetchUserData(String userId) async {
+    try {
+      final userData = await _firestore.collection('users').doc(userId).get();
+      final fetchedEmail = userData.data()?['username'];
+      final fetchedName = userData.data()?['name'];
+      final fetchedPassword = userData.data()?['password'];
+
+      email.text = fetchedEmail ?? '';
+      firstname.text = fetchedName ?? '';
+      passwordController.text = fetchedPassword ?? '';
+      setState(() {
+        _newUsername = fetchedEmail ?? '';
+        _newName = fetchedName ?? '';
+      });
+    } catch (error) {
+      print('Failed to fetch user data: $error');
     }
   }
 }
