@@ -1,5 +1,7 @@
 // ignore_for_file: camel_case_types, sort_child_properties_last
 
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:gradproj2/tripspagenaviggationbar.dart';
@@ -210,7 +212,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                       color: Color(0xff768089)),
                                 ),
                                 Text(
-                                  '${extractTimeFromTimestamp(widget.ticketData['Dep_date_time'])}',
+                                  extractTimeFromTimestamp(
+                                      widget.ticketData['Dep_date_time']),
                                   style: TextStyle(
                                       color: notifire.getdarkscolor,
                                       fontSize: 16,
@@ -546,6 +549,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
 
   Future<void> _undoBooking(BuildContext context, String documentID) async {
     try {
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
+
       print('Undoing booking for document with $documentID');
 
       final QuerySnapshot snapshot = await FirebaseFirestore.instance
@@ -563,13 +568,25 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
           'bookedTickets': FieldValue.delete(),
         });
       }
+
       // Otherwise, update the specific ticket document
       if (snapshot.docs.isNotEmpty) {
         final batch = FirebaseFirestore.instance.batch();
         for (var doc in snapshot.docs) {
+          var fcmData = doc.data() as Map<String, dynamic>;
+          log("$fcmData");
+          var tokens = fcmData["fcm"] as List<dynamic>;
+          List<dynamic> bookedTokens = tokens;
+          if (tokens.isNotEmpty) {
+            if (bookedTokens.contains(fcmToken)) {
+              bookedTokens.remove(fcmToken);
+            }
+          }
+          // bookedTokens.add();
           batch.update(doc.reference, {
             'booked': false,
             'bookingTime': null,
+            "fcm": bookedTokens,
           });
         }
         await batch.commit();

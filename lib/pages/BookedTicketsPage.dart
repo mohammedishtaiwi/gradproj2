@@ -21,6 +21,7 @@ class BookedTicketsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        automaticallyImplyLeading: false,
         title: const Text('Booked Tickets'),
       ),
       body: Center(

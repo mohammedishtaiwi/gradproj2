@@ -19,7 +19,6 @@ class _NotificationPageState extends State<NotificationPage> {
   @override
   void initState() {
     super.initState();
-    _firebaseMessaging.requestPermission();
     _firebaseMessaging.getToken().then((token) {
       setState(() {
         _token = token;

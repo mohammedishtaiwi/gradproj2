@@ -7,6 +7,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 // ignore: camel_case_types
 class home1 extends StatefulWidget {
@@ -20,11 +21,13 @@ class home1 extends StatefulWidget {
 class _home1State extends State<home1> with TickerProviderStateMixin {
   bool show = false;
   late ColorNotifire notifire;
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
 
   @override
   void initState() {
     super.initState();
     getdarkmodepreviousstate();
+    _firebaseMessaging.requestPermission();
   }
 
   getdarkmodepreviousstate() async {
