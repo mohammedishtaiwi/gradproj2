@@ -8,6 +8,7 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'homepage1.dart';
 
@@ -496,34 +497,43 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
   Future<void> _bookTicket(BuildContext context,
       Map<String, dynamic> ticketData, String documentID) async {
     try {
-      print('Booking document with $documentID');
+      // Get the FCM token of the user's device
+      String? fcmToken = await FirebaseMessaging.instance.getToken();
 
-      final DateTime now = DateTime.now();
-      final Timestamp timestamp = Timestamp.fromDate(now);
+      if (fcmToken != null) {
+        // Update the flight document to include the FCM token
+        await FirebaseFirestore.instance
+            .collection('Flights')
+            .doc(documentID)
+            .update({
+          'booked': true,
+          'bookingTime': FieldValue.serverTimestamp(),
+          'fcm': FieldValue.arrayUnion([fcmToken]),
+        });
 
-      await FirebaseFirestore.instance
-          .collection('Flights')
-          .doc(documentID)
-          .update({
-        'booked': true,
-        'bookingTime': timestamp,
-      });
+        // Update the user document to include the booked flight ID
+        final currentUser = FirebaseAuth.instance.currentUser;
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser!.uid)
+            .update({
+          'bookedTickets': FieldValue.arrayUnion([documentID]),
+        });
 
-      final currentUser = FirebaseAuth.instance.currentUser;
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUser!.uid)
-          .update({
-        'bookedTickets': FieldValue.arrayUnion([documentID]),
-      });
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Ticket booked successfully!'),
+          ),
+        );
 
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Ticket booked successfully!'),
-        ),
-      );
-
-      Navigator.pop(context);
+        Navigator.pop(context);
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to get FCM token. Please try again.'),
+          ),
+        );
+      }
     } catch (e) {
       print('Error booking ticket: $e');
       ScaffoldMessenger.of(context).showSnackBar(
