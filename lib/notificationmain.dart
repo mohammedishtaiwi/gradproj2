@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_messaging/firebase_messaging.dart';
 
 import 'package:gradproj2/homepage1.dart';
 
@@ -12,6 +13,21 @@ class NotificationPage extends StatefulWidget {
 }
 
 class _NotificationPageState extends State<NotificationPage> {
+  final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
+  String? _token;
+
+  @override
+  void initState() {
+    super.initState();
+    _firebaseMessaging.getToken().then((token) {
+      setState(() {
+        _token = token;
+
+        // print(_token);
+      });
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser;
@@ -127,46 +143,6 @@ class _NotificationPageState extends State<NotificationPage> {
                   );
                 }
 
-                // return ListView.builder(
-                //   itemCount: snapshot.data!.length,
-                //   itemBuilder: (context, index) {
-                //     var flightData = snapshot.data![index];
-                //     return GestureDetector(
-                //       onTap: () {
-                //         // Navigator.push(
-                //         //   context,
-                //         //   MaterialPageRoute(
-                //         //     builder: (context) => tripsdetailpage(
-                //         //       ticketData:
-                //         //           flightData, // Pass flightData as ticketData parameter
-                //         //       documentID: flightData['Flight_ID'],
-                //         //     ),
-                //         //   ),
-                //         // );
-                //       },
-                //       child: Container(
-                //         margin:
-                //             EdgeInsets.symmetric(vertical: 8, horizontal: 16),
-                //         padding: EdgeInsets.all(16),
-                //         decoration: BoxDecoration(
-                //           borderRadius: BorderRadius.circular(12),
-                //           color: Colors.grey[200],
-                //         ),
-                //         child: Column(
-                //           crossAxisAlignment: CrossAxisAlignment.start,
-                //           children: [
-                //             Text(
-                //               'Flight Number: ${flightData['Flight_ID']}',
-                //               style: TextStyle(fontWeight: FontWeight.bold),
-                //             ),
-                //             SizedBox(height: 8),
-                //             Text('Status: ${flightData['Flight_status']}'),
-                //           ],
-                //         ),
-                //       ),
-                //     );
-                //   },
-                // );
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
@@ -241,9 +217,34 @@ class _NotificationPageState extends State<NotificationPage> {
           'Flight_ID': flightData['Flight_ID'],
           'Flight_status': flightData['Flight_status'],
         });
+
+        // Send push notification
+        _sendNotification();
       }
     });
 
     return bookedFlights;
+  }
+
+  void _sendNotification() {
+    print('test succesful');
+    // if (_token != null) {
+    //   try {
+    //     // Send notification using FirebaseMessaging
+    //     FirebaseMessaging.instance.sendMessage(
+    //       // Create a message
+    //       data: {
+    //         'title': 'Flight Update',
+    //         'body': 'One or more of your flights has been updated.',
+    //       },
+    //       // Set the recipient token
+    //       to: _token,
+    //     );
+    //   } catch (e) {
+    //     print('Error sending notification: $e');
+    //   }
+    // } else {
+    //   print('FCM token is null. Unable to send notification.');
+    // }
   }
 }

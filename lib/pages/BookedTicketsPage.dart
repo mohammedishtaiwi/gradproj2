@@ -21,16 +21,8 @@ class BookedTicketsPage extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
-        title: const Center(
-            child: Text(
-          'Booked Tickets',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 18,
-            fontFamily: 'Gilroy',
-          ),
-        )),
         automaticallyImplyLeading: false,
+        title: const Text('Booked Tickets'),
       ),
       body: Center(
         child: StreamBuilder<DocumentSnapshot>(
