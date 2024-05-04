@@ -86,7 +86,7 @@ class _NotificationPageState extends State<NotificationPage> {
         title: Text(
           "Flight Status Updates",
           style: TextStyle(
-            fontWeight: FontWeight.w400,
+            fontWeight: FontWeight.w500,
             fontSize: 18,
             fontFamily: 'Gilroy',
           ),

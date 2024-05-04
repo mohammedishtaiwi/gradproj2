@@ -91,6 +91,8 @@ class _ChatState extends State<Chat> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100.0),
                         ),
+                        hintText: 'Type Here...',
+                        hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
                   ),

@@ -74,53 +74,63 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
         return Scaffold(
           backgroundColor: notifire.backgroundallscreenColor,
           appBar: AppBar(
-            elevation: 0,
-            centerTitle: true,
-            backgroundColor: notifire.backgroundallscreenColor,
-            automaticallyImplyLeading: false,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 12),
-              child: GestureDetector(
-                onTap: () {
-                  Navigator.of(context).pop(
-                    MaterialPageRoute(
-                      builder: (BuildContext context) =>
-                          const tripspageofnavigationbar(),
-                    ),
-                  );
-                },
-                child: Padding(
-                  padding: const EdgeInsets.only(bottom: 4, top: 8),
-                  child: Container(
-                    height: 48,
-                    width: 48,
-                    decoration: BoxDecoration(
-                        border:
-                            Border.all(color: notifire.backbuttonborderColor),
-                        borderRadius: BorderRadius.circular(16)),
-                    child: Center(
-                      child: IconButton(
-                        icon: Icon(
-                          Icons.arrow_back_ios_new_outlined,
-                          color: notifire.backbuttoniconColor,
-                        ),
-                        iconSize: 14,
-                        color: Colors.black,
-                        onPressed: () {
-                          Navigator.of(context).pop(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) => const home1(),
-                            ),
-                          );
-                        },
-                      ),
-                    ),
-                    alignment: Alignment.center,
-                  ),
-                ),
+            title: const Text(
+              'Ticket Details',
+              style: TextStyle(
+                fontWeight: FontWeight.w500,
+                fontSize: 18,
+                fontFamily: 'Gilroy',
               ),
             ),
+            automaticallyImplyLeading: true,
+            centerTitle: true,
+            // elevation: 0,
+            // centerTitle: true,
+            // backgroundColor: notifire.backgroundallscreenColor,
+            // automaticallyImplyLeading: true,
+            // // leading: Padding(
+            // //   padding: const EdgeInsets.only(left: 12),
+            // //   child: GestureDetector(
+            // //     onTap: () {
+            // //       Navigator.of(context).pop(
+            // //         MaterialPageRoute(
+            // //           builder: (BuildContext context) =>
+            // //               const tripspageofnavigationbar(),
+            // //         ),
+            // //       );
+            // //   },
+            //     // child: Padding(
+            //     //   padding: const EdgeInsets.only(bottom: 4, top: 8),
+            //     //   child: Container(
+            //     //     height: 48,
+            //     //     width: 48,
+            //     //     decoration: BoxDecoration(
+            //     //         border:
+            //     //             Border.all(color: notifire.backbuttonborderColor),
+            //     //         borderRadius: BorderRadius.circular(16)),
+            //     //     child: Center(
+            //     //       child: IconButton(
+            //     //         icon: Icon(
+            //     //           Icons.arrow_back_ios_new_outlined,
+            //     //           color: notifire.backbuttoniconColor,
+            //     //         ),
+            //     //         iconSize: 14,
+            //     //         color: Colors.black,
+            //     //         onPressed: () {
+            //     //           Navigator.of(context).pop(
+            //     //             MaterialPageRoute(
+            //     //               builder: (BuildContext context) => const home1(),
+            //     //             ),
+            //     //           );
+            //     //         },
+            //     //       ),
+            //     //     ),
+            //        // alignment: Alignment.center,
           ),
+          //   ),
+          // ),
+          //   ),
+          // ),
           body: SingleChildScrollView(
             child: Padding(
               padding: const EdgeInsets.symmetric(vertical: 34),

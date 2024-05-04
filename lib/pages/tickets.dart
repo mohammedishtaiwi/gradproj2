@@ -27,7 +27,15 @@ class TicketsPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Center(child: Text('Flights')),
+        title: const Text(
+          'Flights Available',
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
+            fontFamily: 'Gilroy',
+          ),
+        ),
+        centerTitle: true,
       ),
       body: Center(
         child: StreamBuilder(
@@ -297,6 +305,25 @@ class TicketsPage extends StatelessWidget {
                                       ],
                                     ),
                                     const SizedBox(height: 12),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          _formatFlightTime(
+                                              data['New_dep_date_time']),
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                        Text(
+                                          "Flight No: ${data['Flight_ID']}",
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
                                   ],
                                 ),
                               if (data['Flight_status'] == 'On Time')
@@ -329,52 +356,26 @@ class TicketsPage extends StatelessWidget {
                                       ],
                                     ),
                                     const SizedBox(height: 12),
+                                    Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.spaceBetween,
+                                      children: <Widget>[
+                                        Text(
+                                          _formatFlightTime(
+                                              data['Dep_date_time']),
+                                          style: const TextStyle(
+                                              fontSize: 12,
+                                              color: Colors.white),
+                                        ),
+                                      ],
+                                    ),
+                                    Text(
+                                      "Flight No: ${data['Flight_ID']}",
+                                      style: const TextStyle(
+                                          fontSize: 12, color: Colors.white),
+                                    ),
                                   ],
                                 ),
-                              // Row(
-                              //   mainAxisAlignment:
-                              //       MainAxisAlignment.spaceBetween,
-                              //   children: <Widget>[
-                              //     Text(
-                              //       data['Arr_date_time'] != null
-                              //           ? extractTimeFromTimestamp(
-                              //               data['Arr_date_time'])
-                              //           : '',
-                              //       style: const TextStyle(
-                              //           fontSize: 18,
-                              //           color: Colors.black,
-                              //           fontWeight: FontWeight.bold),
-                              //     ),
-                              //     Text(
-                              //       data['Dep_date_time'] != null
-                              //           ? extractTimeFromTimestamp(
-                              //               data['Dep_date_time'])
-                              //           : '',
-                              //       style: const TextStyle(
-                              //           fontSize: 18,
-                              //           color: Colors.black,
-                              //           fontWeight: FontWeight.bold),
-                              //     ),
-                              //   ],
-                              // ),
-
-                              const SizedBox(height: 12),
-                              Row(
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: <Widget>[
-                                  Text(
-                                    _formatFlightTime(data['Dep_date_time']),
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.white),
-                                  ),
-                                  Text(
-                                    "Flight No: ${data['Flight_ID']}",
-                                    style: const TextStyle(
-                                        fontSize: 12, color: Colors.white),
-                                  ),
-                                ],
-                              ),
                             ],
                           ),
                         ),

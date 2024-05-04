@@ -55,43 +55,8 @@ class _editprofileState extends State<editprofile> {
   late File imgFile;
   final imagepicker = ImagePicker();
 
-  // Widget displayimage() {
-  //   if (imgFile == null){
-  //     return Text("No Image selected");
-  //   }
-  //
-  // }
-
-  // List<String> items = [
-  //   'MALE',
-  //   'FEMALE',
-  // ];
-
-  // List<String> items2 = [
-  //   'England',
-  //   'USA',
-  //   'India',
-  //   'Pakistan',
-  //   'Canada',
-  //   'Germany',
-  //   'Afghanistan',
-  //   'South Africa',
-  //   'Dubai'
-  //       'Paris'
-  //       'Ireland'
-  //       'Sri Lanka'
-  //       'Australia'
-  //       'Singapore'
-  // ];
-
-  // String? selectedValue;
-  // String? selectedValue2;
-
   @override
   void initState() {
-    // TODO: implement initState
-    // selectedValue = items.first;
-    // selectedValue2 = items2.first;
     _user = _auth.currentUser;
     _newName = widget.currentName;
     _newUsername = widget.currentUsername;
@@ -181,78 +146,61 @@ class _editprofileState extends State<editprofile> {
     return Scaffold(
       backgroundColor: notifire.backgroundallscreenColor,
       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: notifire.backgroundallscreenColor,
-        automaticallyImplyLeading: false,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const home1(),
-                ),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 4, top: 8),
-              child: Container(
-                height: 48,
-                width: 48,
-                decoration: BoxDecoration(
-                    border: Border.all(color: notifire.backbuttonborderColor),
-                    borderRadius: BorderRadius.circular(16)),
-                alignment: Alignment.center,
-                child: Center(
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back_ios_new_outlined,
-                      color: notifire.backbuttoniconColor,
-                    ),
-                    iconSize: 14,
-                    color: Colors.black,
-                    onPressed: () {
-                      Navigator.of(context).pop(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) => const home1(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-              ),
-            ),
+        title: const Text(
+          'Edit Profile',
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
+            fontFamily: 'Gilroy',
           ),
         ),
-        title: Text(
-          "Edit Profile",
-          style: TextStyle(
-              color: notifire.getdarkscolor,
-              fontWeight: FontWeight.w600,
-              fontSize: 18),
-        ),
+        automaticallyImplyLeading: true,
+        centerTitle: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
         padding: const EdgeInsets.only(left: 24, right: 24),
-        child: SizedBox(
-          width: double.infinity,
-          height: 56,
-          child: FloatingActionButton.extended(
-            label: const Text(
-              "SAVE CHANGES",
-              style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.end,
+          children: [
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: FloatingActionButton.extended(
+                label: const Text(
+                  "Save Changes",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                ),
+                onPressed: () {
+                  _saveChanges(context);
+                },
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: Colors.blueAccent.shade400,
+              ),
             ),
-            elevation: 0,
-            shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(12),
+            SizedBox(height: 16),
+            SizedBox(
+              width: double.infinity,
+              height: 56,
+              child: FloatingActionButton.extended(
+                label: const Text(
+                  "Log Out",
+                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                ),
+                onPressed: () {
+                  _signOut(context);
+                },
+                elevation: 0,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(12),
+                ),
+                backgroundColor: Colors.blueAccent.shade400,
+              ),
             ),
-            backgroundColor: Colors.blueAccent.shade400,
-            onPressed: () {
-              _saveChanges(context);
-            },
-          ),
+          ],
         ),
       ),
       body: SingleChildScrollView(
@@ -460,5 +408,10 @@ class _editprofileState extends State<editprofile> {
     } catch (error) {
       print('Failed to fetch user data: $error');
     }
+  }
+
+  Future<void> _signOut(BuildContext context) async {
+    await _auth.signOut();
+    Navigator.pushReplacementNamed(context, '/');
   }
 }
