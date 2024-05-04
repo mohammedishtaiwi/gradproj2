@@ -121,7 +121,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                             fontFamily: "gilroy",
                             fontSize: 12,
                             color: notifire.getdarkscolor,
-                            fontWeight: FontWeight.w400),
+                            fontWeight: FontWeight.w500),
                       ),
                       Row(
                         children: [

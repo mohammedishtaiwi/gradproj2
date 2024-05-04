@@ -52,60 +52,16 @@ class _paymentinfopageState extends State<paymentinfopage> {
     return Scaffold(
       backgroundColor: notifire.backgroundallscreenColor,
       appBar: AppBar(
-        elevation: 0,
-        centerTitle: true,
-        backgroundColor: notifire.backgroundallscreenColor,
-        automaticallyImplyLeading: false,
-        leading: Padding(
-          padding: const EdgeInsets.only(left: 12),
-          child: GestureDetector(
-            onTap: () {
-              Navigator.of(context).pop(
-                MaterialPageRoute(
-                  builder: (BuildContext context) => const filtershortdetail(),
-                ),
-              );
-            },
-            child: Padding(
-              padding: const EdgeInsets.only(bottom: 4, top: 8),
-              child: Container(
-                height: 48,
-                width: 48,
-                decoration: BoxDecoration(
-                    border: Border.all(color: notifire.backbuttonborderColor),
-                    borderRadius: BorderRadius.circular(16)),
-                // ignore: sort_child_properties_last
-                child: Center(
-                  child: IconButton(
-                    icon: Icon(
-                      Icons.arrow_back_ios_new_outlined,
-                      color: notifire.backbuttoniconColor,
-                    ),
-                    iconSize: 14,
-                    color: Colors.black,
-                    onPressed: () {
-                      Navigator.of(context).pop(
-                        MaterialPageRoute(
-                          builder: (BuildContext context) =>
-                              const filtershortdetail(),
-                        ),
-                      );
-                    },
-                  ),
-                ),
-                alignment: Alignment.center,
-              ),
-            ),
+        title: const Text(
+          'Checkout',
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
+            fontFamily: 'Gilroy',
           ),
         ),
-        title: Text(
-          "Checkout",
-          // style: TextStyle(
-          //     color: notifire.getdarkscolor,
-          //     fontWeight: FontWeight.w400,
-          //     fontFamily: 'Gilroy',
-          //     fontSize: 18),
-        ),
+        automaticallyImplyLeading: true,
+        centerTitle: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(

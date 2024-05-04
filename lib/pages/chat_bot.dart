@@ -37,7 +37,16 @@ class _ChatState extends State<Chat> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: const Text('AiAvatar QAIA'),
+        title: const Center(
+            child: Text(
+          'AI Avatar',
+          style: TextStyle(
+            fontWeight: FontWeight.w500,
+            fontSize: 18,
+            fontFamily: 'Gilroy',
+          ),
+        )),
+        automaticallyImplyLeading: false,
       ),
       body: Container(
         color: Colors.white, //this is the color of the background
@@ -90,6 +99,8 @@ class _ChatState extends State<Chat> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100.0),
                         ),
+                        hintText: 'Type Here...',
+                        hintStyle: TextStyle(color: Colors.grey),
                       ),
                     ),
                   ),
