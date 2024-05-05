@@ -83,7 +83,7 @@ class _NotificationPageState extends State<NotificationPage> {
           ),
         ),
         automaticallyImplyLeading: false,
-        title: Text(
+        title: const Text(
           "Flight Status Updates",
           style: TextStyle(
             fontWeight: FontWeight.w500,

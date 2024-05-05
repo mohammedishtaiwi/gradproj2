@@ -146,16 +146,56 @@ class _editprofileState extends State<editprofile> {
     return Scaffold(
       backgroundColor: notifire.backgroundallscreenColor,
       appBar: AppBar(
-        title: const Text(
-          'Edit Profile',
+        elevation: 0,
+        centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const home1(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 4, top: 8),
+              child: Container(
+                height: 48,
+                width: 48,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Center(
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                    ),
+                    iconSize: 14,
+                    color: Colors.black,
+                    onPressed: () {
+                      Navigator.of(context).pop(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) => const home1(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                alignment: Alignment.center,
+              ),
+            ),
+          ),
+        ),
+        automaticallyImplyLeading: true,
+        title: Text(
+          "Edit Profile",
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 18,
             fontFamily: 'Gilroy',
           ),
-        ),
-        automaticallyImplyLeading: true,
-        centerTitle: true,
+        ), //
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
