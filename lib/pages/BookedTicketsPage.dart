@@ -97,9 +97,8 @@ class BookedTicketsPage extends StatelessWidget {
                   child: Column(
                     children: [
                       ListView.builder(
-                        shrinkWrap:
-                            true, // Ensure the ListView takes only the necessary space
-                        physics: NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
                         itemCount: snapshot.data!.docs.length,
                         itemBuilder: (BuildContext context, int index) {
                           var ticketData = snapshot.data!.docs[index].data()
@@ -108,7 +107,7 @@ class BookedTicketsPage extends StatelessWidget {
                               .toDate()
                               .isBefore(DateTime.now())) {
                             return Container();
-                          } else
+                          } else {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -132,152 +131,54 @@ class BookedTicketsPage extends StatelessWidget {
                                   mainAxisSize: MainAxisSize.min,
                                   children: <Widget>[
                                     Container(
-                                      padding: const EdgeInsets.all(16),
+                                      padding: const EdgeInsets.only(
+                                          top: 16, left: 16, right: 16),
                                       decoration: const BoxDecoration(
-                                          color: Colors.blueGrey,
+                                          color: Color.fromARGB(
+                                              255, 216, 230, 238),
                                           borderRadius: BorderRadius.only(
                                               topLeft: Radius.circular(24),
                                               topRight: Radius.circular(24))),
                                       child: Column(
                                         children: <Widget>[
                                           Row(
-                                            children: <Widget>[
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceBetween,
+                                            children: [
                                               Text(
                                                 '${ticketData['Dep_city']}',
                                                 style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontFamily: 'Gilroy'),
                                               ),
-                                              const SizedBox(
-                                                width: 16,
-                                              ),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(6),
-                                                decoration: BoxDecoration(
-                                                    color: Colors.white,
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                child: SizedBox(
-                                                  height:
-                                                      8, // Your card content here
-
-                                                  width: 8,
-                                                  child: DecoratedBox(
-                                                    decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .black, //DOT IN CIRCLE
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5)),
+                                              Column(
+                                                children: [
+                                                  SizedBox(
+                                                      height: 35,
+                                                      width: 112,
+                                                      child: Image.asset(
+                                                          'assets/selectflight.png')),
+                                                  Text(
+                                                    '${ticketData['Flight_duration']}',
+                                                    style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Color.fromARGB(
+                                                            255, 129, 129, 129),
+                                                        fontFamily: 'Gilroy'),
                                                   ),
-                                                ),
-                                              ),
-                                              Expanded(
-                                                child: Padding(
-                                                  padding:
-                                                      const EdgeInsets.all(8.0),
-                                                  child: Stack(
-                                                    children: <Widget>[
-                                                      SizedBox(
-                                                        height: 24,
-                                                        child: LayoutBuilder(
-                                                          builder: (context,
-                                                              constraints) {
-                                                            return Flex(
-                                                              direction: Axis
-                                                                  .horizontal,
-                                                              mainAxisSize:
-                                                                  MainAxisSize
-                                                                      .max,
-                                                              mainAxisAlignment:
-                                                                  MainAxisAlignment
-                                                                      .spaceBetween,
-                                                              children:
-                                                                  List.generate(
-                                                                      (constraints.constrainWidth() /
-                                                                              6)
-                                                                          .floor(),
-                                                                      (index) =>
-                                                                          const SizedBox(
-                                                                            height:
-                                                                                1,
-                                                                            width:
-                                                                                3,
-                                                                            child:
-                                                                                DecoratedBox(
-                                                                              decoration: BoxDecoration(color: Colors.white), // DASHED LINE
-                                                                            ),
-                                                                          )),
-                                                            );
-                                                          },
-                                                        ),
-                                                      ),
-                                                      Center(
-                                                          child:
-                                                              Transform.rotate(
-                                                        angle: 1.5,
-                                                        child: const Icon(
-                                                          Icons.local_airport,
-                                                          color: Colors
-                                                              .white, //PLANE
-                                                          size: 24,
-                                                        ),
-                                                      ))
-                                                    ],
-                                                  ),
-                                                ),
-                                              ),
-                                              Container(
-                                                padding:
-                                                    const EdgeInsets.all(6),
-                                                decoration: BoxDecoration(
-                                                    color: Colors
-                                                        .white, //SECOND CIRCLE
-                                                    borderRadius:
-                                                        BorderRadius.circular(
-                                                            20)),
-                                                child: SizedBox(
-                                                  height: 8,
-                                                  width: 8,
-                                                  child: DecoratedBox(
-                                                    decoration: BoxDecoration(
-                                                        color: Colors
-                                                            .black, //SECOND DO TIN CIRCLE
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(5)),
-                                                  ),
-                                                ),
-                                              ),
-                                              const SizedBox(
-                                                width: 16,
+                                                ],
                                               ),
                                               Text(
-                                                ' ${ticketData['Arr_city']}',
+                                                '${ticketData['Arr_city']}',
                                                 style: const TextStyle(
-                                                    fontSize: 18,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
-                                              )
-                                            ],
-                                          ),
-                                          Row(
-                                            children: <Widget>[
-                                              SizedBox(width: 150),
-                                              Text(
-                                                '${ticketData['Flight_duration']}',
-                                                style: TextStyle(
-                                                    fontSize: 13,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
+                                                    fontSize: 24,
+                                                    fontWeight: FontWeight.w400,
+                                                    fontFamily: 'Gilroy'),
                                               ),
                                             ],
-                                          ),
-                                          const SizedBox(
-                                            height: 5,
                                           ),
                                           if (ticketData['Flight_status'] ==
                                               'Delayed')
@@ -296,10 +197,11 @@ class BookedTicketsPage extends StatelessWidget {
                                                                   'New_dep_date_time'])
                                                           : '',
                                                       style: const TextStyle(
-                                                          fontSize: 18,
+                                                          fontSize: 16,
                                                           color: Colors.black,
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                              FontWeight.w500,
+                                                          fontFamily: 'Gilroy'),
                                                     ),
                                                     Text(
                                                       ticketData['New_arr_date_time'] !=
@@ -309,14 +211,15 @@ class BookedTicketsPage extends StatelessWidget {
                                                                   'New_arr_date_time'])
                                                           : '',
                                                       style: const TextStyle(
-                                                          fontSize: 18,
+                                                          fontSize: 16,
                                                           color: Colors.black,
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                              FontWeight.w500,
+                                                          fontFamily: 'Gilroy'),
                                                     ),
                                                   ],
                                                 ),
-                                                const SizedBox(height: 12),
+                                                const SizedBox(height: 10),
                                               ],
                                             ),
                                           if (ticketData['Flight_status'] !=
@@ -335,11 +238,12 @@ class BookedTicketsPage extends StatelessWidget {
                                                               ticketData[
                                                                   'Dep_date_time'])
                                                           : '',
-                                                      style: TextStyle(
-                                                          fontSize: 18,
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
                                                           color: Colors.black,
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                              FontWeight.w500,
+                                                          fontFamily: 'Gilroy'),
                                                     ),
                                                     Text(
                                                       ticketData['Arr_date_time'] !=
@@ -348,76 +252,43 @@ class BookedTicketsPage extends StatelessWidget {
                                                               ticketData[
                                                                   'Arr_date_time'])
                                                           : '',
-                                                      style: TextStyle(
-                                                          fontSize: 18,
+                                                      style: const TextStyle(
+                                                          fontSize: 16,
                                                           color: Colors.black,
                                                           fontWeight:
-                                                              FontWeight.bold),
+                                                              FontWeight.w500,
+                                                          fontFamily: 'Gilroy'),
                                                     ),
                                                   ],
                                                 ),
                                               ],
                                             ),
-                                          const SizedBox(height: 12),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: <Widget>[
-                                              Text(
-                                                _formatFlightTime(ticketData[
-                                                    'Dep_date_time']),
-                                                style: TextStyle(
-                                                    fontSize: 12,
-                                                    color: Colors.white),
-                                              ),
-                                              Row(
-                                                children: <Widget>[
-                                                  const Text(
-                                                    "Flight No: ",
-                                                    style: TextStyle(
-                                                        fontSize: 12,
-                                                        color: Colors.white),
-                                                  ),
-                                                  Text(
-                                                    '${ticketData['Flight_ID']}',
-                                                    style: const TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Colors.white),
-                                                  ),
-                                                ],
-                                              ),
-                                            ],
-                                          ),
-                                          const SizedBox(height: 12),
-                                          Row(
-                                            mainAxisAlignment:
-                                                MainAxisAlignment.spaceBetween,
-                                            children: [
-                                              const Text(
-                                                'Flight Status',
-                                                style: TextStyle(
-                                                    fontSize: 14,
-                                                    fontWeight: FontWeight.bold,
-                                                    color: Colors.black),
-                                              ),
-                                              Text(
-                                                '${ticketData['Flight_status']}'
-                                                    .toUpperCase(),
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.black,
-                                                  fontWeight: FontWeight.bold,
+                                          if (ticketData['Flight_status'] ==
+                                                  "Delayed" ||
+                                              ticketData['Flight_status'] ==
+                                                  "Cancelled")
+                                            Row(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              children: [
+                                                const SizedBox(height: 20),
+                                                Text(
+                                                  '${ticketData['Flight_status']}'
+                                                      .toUpperCase(),
+                                                  style: const TextStyle(
+                                                      fontSize: 16,
+                                                      color: Colors.black,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: 'Gilroy'),
                                                 ),
-                                              ),
-                                            ],
-                                          ),
+                                              ],
+                                            ),
                                         ],
                                       ),
                                     ),
                                     Container(
-                                      color: Colors.blueGrey,
+                                      color: Color.fromARGB(255, 216, 230, 238),
                                       child: Row(
                                         children: <Widget>[
                                           const SizedBox(
@@ -495,7 +366,8 @@ class BookedTicketsPage extends StatelessWidget {
                                       padding: const EdgeInsets.only(
                                           left: 16, right: 16, bottom: 12),
                                       decoration: const BoxDecoration(
-                                          color: Colors.blueGrey,
+                                          color: Color.fromARGB(
+                                              255, 216, 230, 238),
                                           borderRadius: BorderRadius.only(
                                               bottomLeft: Radius.circular(15),
                                               bottomRight:
@@ -503,23 +375,35 @@ class BookedTicketsPage extends StatelessWidget {
                                       child: Row(
                                         children: <Widget>[
                                           Container(
-                                            padding: const EdgeInsets.all(8),
-                                            decoration: BoxDecoration(
-                                                color: Colors
-                                                    .white, //CIRLE OF PLANE
-                                                borderRadius:
-                                                    BorderRadius.circular(20)),
-                                            child: const Icon(Icons.flight_land,
-                                                color: Colors.black), //PLANE
+                                            padding: const EdgeInsets.all(0.5),
+                                            decoration: const BoxDecoration(
+                                              color: Colors
+                                                  .white, // Background color for the circular shape
+                                              shape: BoxShape
+                                                  .circle, // Shape of the container
+                                            ),
+                                            child: ClipOval(
+                                              child: Image.asset(
+                                                'assets/RJ2.png',
+                                                height:
+                                                    47, // Adjust the size as needed
+                                                width:
+                                                    47, // Adjust the size as needed
+                                                fit: BoxFit
+                                                    .cover, // Ensure the image covers the circular area
+                                              ),
+                                            ),
                                           ),
+
                                           const SizedBox(
-                                            width: 16,
+                                            width: 10,
                                           ),
                                           Text('${ticketData['Airline_Name']}',
                                               style: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
-                                                  color: Colors.white)),
+                                                  color: Colors.black,
+                                                  fontFamily: 'Gilroy')),
                                           // MUST BE CHANGED DEPENDING ON CLASS CHOSEN
                                           Expanded(
                                               child: Text(
@@ -528,8 +412,9 @@ class BookedTicketsPage extends StatelessWidget {
                                                   style: const TextStyle(
                                                       fontSize: 18,
                                                       fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black))),
+                                                          FontWeight.w500,
+                                                      color: Colors.black,
+                                                      fontFamily: 'Gilroy'))),
                                         ],
                                       ),
                                     ),
@@ -537,11 +422,16 @@ class BookedTicketsPage extends StatelessWidget {
                                 ),
                               ),
                             );
+                          }
                         },
                       ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: ElevatedButton(
+                          style: ButtonStyle(
+                            backgroundColor: MaterialStateProperty.all(
+                                Color.fromARGB(255, 216, 230, 238)),
+                          ),
                           onPressed: () {
                             Navigator.of(context).push(
                               MaterialPageRoute(
@@ -550,11 +440,14 @@ class BookedTicketsPage extends StatelessWidget {
                               ),
                             );
                           },
-                          child: Text('Proceed To Checkout',
-                              style: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w600,
-                                  color: Colors.blueGrey)),
+                          child: const Text(
+                            'Proceed To Checkout',
+                            style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.w500,
+                                color: Colors.black,
+                                fontFamily: 'Gilroy'),
+                          ),
                         ),
                       ),
                     ],

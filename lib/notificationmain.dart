@@ -15,7 +15,6 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   String? _token;
-
   @override
   void initState() {
     super.initState();
@@ -142,15 +141,26 @@ class _NotificationPageState extends State<NotificationPage> {
                     child: Text('No delayed or cancelled flights.'),
                   );
                 }
-
                 return ListView.builder(
                   itemCount: snapshot.data!.length,
                   itemBuilder: (context, index) {
                     var flightData = snapshot.data![index];
-                    return GestureDetector(
-                      onTap: () {
-                        // Navigate to trip detail page
+                    return Dismissible(
+                      key: Key(flightData[
+                          'Flight_ID']), // Unique key for each notification
+                      direction: DismissDirection
+                          .endToStart, // Swipe direction to dismiss
+                      onDismissed: (direction) async {
+                        setState(() {
+                          snapshot.data!.removeAt(index);
+                        });
                       },
+                      background: Container(
+                        color: Color.fromARGB(255, 243, 89,
+                            78), // Background color when swiping to delete
+                        alignment: Alignment.centerRight,
+                        child: const Icon(Icons.delete, color: Colors.white),
+                      ),
                       child: Container(
                         margin:
                             EdgeInsets.symmetric(vertical: 8, horizontal: 16),
@@ -168,22 +178,38 @@ class _NotificationPageState extends State<NotificationPage> {
                         ),
                         child: Padding(
                           padding: EdgeInsets.all(16),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.start,
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              Text(
-                                'Flight Number: ${flightData['Flight_ID']}',
-                                style: TextStyle(
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 18,
-                                ),
+                              Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                children: [
+                                  Text(
+                                    'Flight Number: ${flightData['Flight_ID']}',
+                                    style: const TextStyle(
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 18,
+                                      fontFamily: 'Gilroy',
+                                    ),
+                                  ),
+                                  const SizedBox(height: 8),
+                                  Text(
+                                    'Status: ${flightData['Flight_status']}',
+                                    style: const TextStyle(
+                                      fontSize: 16,
+                                      fontFamily: 'Gilroy',
+                                    ),
+                                  ),
+                                ],
                               ),
-                              SizedBox(height: 8),
-                              Text(
-                                'Status: ${flightData['Flight_status']}',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
+                              GestureDetector(
+                                onTap: () {
+                                  // Delete the notification
+                                  setState(() {
+                                    snapshot.data!.removeAt(index);
+                                  });
+                                },
+                                child: const Icon(Icons.close),
                               ),
                             ],
                           ),

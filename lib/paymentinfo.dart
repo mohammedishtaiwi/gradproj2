@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:gradproj2/filtershortdetailpage.dart';
+import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -52,16 +53,57 @@ class _paymentinfopageState extends State<paymentinfopage> {
     return Scaffold(
       backgroundColor: notifire.backgroundallscreenColor,
       appBar: AppBar(
+        elevation: 0,
+        centerTitle: true,
+        leading: Padding(
+          padding: const EdgeInsets.only(left: 12),
+          child: GestureDetector(
+            onTap: () {
+              Navigator.of(context).pop(
+                MaterialPageRoute(
+                  builder: (BuildContext context) => const BookedTicketsPage(),
+                ),
+              );
+            },
+            child: Padding(
+              padding: const EdgeInsets.only(bottom: 4, top: 8),
+              child: Container(
+                height: 48,
+                width: 48,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(16),
+                ),
+                child: Center(
+                  child: IconButton(
+                    icon: Icon(
+                      Icons.arrow_back_ios_new_outlined,
+                    ),
+                    iconSize: 14,
+                    color: Colors.black,
+                    onPressed: () {
+                      Navigator.of(context).pop(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const BookedTicketsPage(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+                alignment: Alignment.center,
+              ),
+            ),
+          ),
+        ),
+        automaticallyImplyLeading: false,
         title: const Text(
-          'Checkout',
+          "Checkout",
           style: TextStyle(
             fontWeight: FontWeight.w500,
             fontSize: 18,
             fontFamily: 'Gilroy',
           ),
         ),
-        automaticallyImplyLeading: true,
-        centerTitle: true,
       ),
       floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
       floatingActionButton: Padding(
@@ -73,15 +115,16 @@ class _paymentinfopageState extends State<paymentinfopage> {
             label: const Text(
               "PAY NOW",
               style: TextStyle(
-                  fontWeight: FontWeight.w600,
+                  fontWeight: FontWeight.w500,
                   fontSize: 16,
-                  fontFamily: 'Gilroy'),
+                  fontFamily: 'Gilroy',
+                  color: Colors.black),
             ),
             elevation: 0,
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            backgroundColor: Colors.blueAccent.shade400,
+            backgroundColor: Color.fromARGB(255, 114, 151, 172),
             onPressed: () {
               // NAVIGATE
             },
@@ -94,13 +137,12 @@ class _paymentinfopageState extends State<paymentinfopage> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              Text(
+              const Text(
                 "Select your payment method",
                 style: TextStyle(
-                    color: notifire.getdarkscolor,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Gilroy',
-                    fontSize: 18),
+                    fontSize: 18,
+                    fontWeight: FontWeight.w400,
+                    fontFamily: 'Gilroy'),
               ),
               const SizedBox(
                 height: 20,
@@ -175,6 +217,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'Gilroy'),
                           ),
+                          activeColor: Color.fromARGB(255, 63, 88, 112),
                         ),
                       ),
                     ),
@@ -244,6 +287,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
                               fontWeight: FontWeight.w600,
                               fontFamily: 'Gilroy'),
                         ),
+                        activeColor: Color.fromARGB(255, 63, 88, 112),
                       ),
                     ),
                   ),
@@ -310,6 +354,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
                               fontWeight: FontWeight.w600,
                               fontFamily: 'Gilroy'),
                         ),
+                        activeColor: Color.fromARGB(255, 63, 88, 112),
                       ),
                     ),
                   ),
@@ -321,23 +366,16 @@ class _paymentinfopageState extends State<paymentinfopage> {
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
-                  Text(
-                    'Total Amount',
-                    style: TextStyle(
-                      color: notifire.getdarkscolor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                      // fontFamily: 'Gilroy'
-                    ),
-                  ),
-                  Text(
-                    '$totalAmount JOD',
-                    style: TextStyle(
-                      color: notifire.getdarkscolor,
-                      fontWeight: FontWeight.w600,
-                      fontSize: 16,
-                    ),
-                  ),
+                  const Text('Total Amount',
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w400,
+                          fontFamily: 'Gilroy')),
+                  Text('$totalAmount JOD',
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w600,
+                          fontFamily: 'Gilroy')),
                 ],
               ),
             ],
