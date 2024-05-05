@@ -39,14 +39,15 @@ class _ChatState extends State<Chat> {
       appBar: AppBar(
         automaticallyImplyLeading: false,
         title: const Center(
-            child: Text(
-          'AI Avatar',
-          style: TextStyle(
-            fontWeight: FontWeight.w500,
-            fontSize: 18,
-            fontFamily: 'Gilroy',
+          child: Text(
+            "AI Avatar",
+            style: TextStyle(
+              fontWeight: FontWeight.w500,
+              fontSize: 18,
+              fontFamily: 'Gilroy',
+            ),
           ),
-        )),
+        ),
       ),
       body: Container(
         color: Colors.white, //this is the color of the background
