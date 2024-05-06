@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:gradproj2/filtershortdetailpage.dart';
 import 'package:gradproj2/pages/BookedTicketsPage.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:provider/provider.dart';

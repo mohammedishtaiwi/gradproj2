@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:gradproj2/PayPalPaymentPage.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'package:intl/intl.dart';
-import 'package:gradproj2/paymentinfo.dart';
 
 class BookedTicketsPage extends StatelessWidget {
   const BookedTicketsPage({Key? key}) : super(key: key);
@@ -431,7 +430,7 @@ class BookedTicketsPage extends StatelessWidget {
                         child: ElevatedButton(
                           style: ButtonStyle(
                             backgroundColor: MaterialStateProperty.all(
-                                Color.fromARGB(255, 216, 230, 238)),
+                                const Color.fromARGB(255, 216, 230, 238)),
                           ),
                           onPressed: () {
                             Navigator.of(context).push(
@@ -442,7 +441,7 @@ class BookedTicketsPage extends StatelessWidget {
                             );
                           },
                           child: const Text(
-                            'Proceed To Checkout',
+                            'Pay Now',
                             style: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.w500,
