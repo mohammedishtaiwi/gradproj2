@@ -90,6 +90,7 @@ flutter:
   assets:
     # - assets/dialog_flow_auth.json
     - assets/default_profile_picture.png
+    - assets/RJ2.png
     - assets/samaz.jpeg
     - assets/sha.jpeg
     - assets/moh.jpeg

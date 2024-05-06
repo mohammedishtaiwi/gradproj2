@@ -188,7 +188,7 @@ class _editprofileState extends State<editprofile> {
           ),
         ),
         automaticallyImplyLeading: true,
-        title: Text(
+        title: const Text(
           "Edit Profile",
           style: TextStyle(
             fontWeight: FontWeight.w500,
@@ -209,7 +209,11 @@ class _editprofileState extends State<editprofile> {
               child: FloatingActionButton.extended(
                 label: const Text(
                   "Save Changes",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: "gilroy"),
                 ),
                 onPressed: () {
                   _saveChanges(context);
@@ -218,7 +222,7 @@ class _editprofileState extends State<editprofile> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                backgroundColor: Colors.blueAccent.shade400,
+                backgroundColor: Color.fromARGB(255, 114, 151, 172),
               ),
             ),
             SizedBox(height: 16),
@@ -228,7 +232,11 @@ class _editprofileState extends State<editprofile> {
               child: FloatingActionButton.extended(
                 label: const Text(
                   "Log Out",
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      color: Colors.black,
+                      fontFamily: "gilroy"),
                 ),
                 onPressed: () {
                   _signOut(context);
@@ -237,7 +245,7 @@ class _editprofileState extends State<editprofile> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                backgroundColor: Colors.blueAccent.shade400,
+                backgroundColor: Color.fromARGB(255, 114, 151, 172),
               ),
             ),
           ],
@@ -272,7 +280,7 @@ class _editprofileState extends State<editprofile> {
                           width: 43,
                           padding: const EdgeInsets.all(10),
                           decoration: BoxDecoration(
-                            color: const Color(0xff1F75EC),
+                            color: Color.fromARGB(255, 114, 151, 172),
                             image: const DecorationImage(
                                 image: AssetImage(
                                   "assets/Cameraeditprofile.png",
