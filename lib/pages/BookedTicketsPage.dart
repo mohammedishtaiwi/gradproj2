@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:gradproj2/PayPalPaymentPage.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'package:intl/intl.dart';
 import 'package:gradproj2/paymentinfo.dart';
@@ -108,7 +109,7 @@ class BookedTicketsPage extends StatelessWidget {
                               .toDate()
                               .isBefore(DateTime.now())) {
                             return Container();
-                          } else
+                          } else {
                             return GestureDetector(
                               onTap: () {
                                 Navigator.push(
@@ -269,7 +270,7 @@ class BookedTicketsPage extends StatelessWidget {
                                               SizedBox(width: 150),
                                               Text(
                                                 '${ticketData['Flight_duration']}',
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 13,
                                                     fontWeight: FontWeight.bold,
                                                     color: Colors.black),
@@ -335,7 +336,7 @@ class BookedTicketsPage extends StatelessWidget {
                                                               ticketData[
                                                                   'Dep_date_time'])
                                                           : '',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 18,
                                                           color: Colors.black,
                                                           fontWeight:
@@ -348,7 +349,7 @@ class BookedTicketsPage extends StatelessWidget {
                                                               ticketData[
                                                                   'Arr_date_time'])
                                                           : '',
-                                                      style: TextStyle(
+                                                      style: const TextStyle(
                                                           fontSize: 18,
                                                           color: Colors.black,
                                                           fontWeight:
@@ -366,7 +367,7 @@ class BookedTicketsPage extends StatelessWidget {
                                               Text(
                                                 _formatFlightTime(ticketData[
                                                     'Dep_date_time']),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                     fontSize: 12,
                                                     color: Colors.white),
                                               ),
@@ -405,7 +406,7 @@ class BookedTicketsPage extends StatelessWidget {
                                               Text(
                                                 '${ticketData['Flight_status']}'
                                                     .toUpperCase(),
-                                                style: TextStyle(
+                                                style: const TextStyle(
                                                   fontSize: 16,
                                                   color: Colors.black,
                                                   fontWeight: FontWeight.bold,
@@ -537,6 +538,7 @@ class BookedTicketsPage extends StatelessWidget {
                                 ),
                               ),
                             );
+                          }
                         },
                       ),
                       Padding(
@@ -546,12 +548,12 @@ class BookedTicketsPage extends StatelessWidget {
                             Navigator.of(context).push(
                               MaterialPageRoute(
                                 builder: (BuildContext context) =>
-                                    const paymentinfopage(),
+                                    const CheckoutPage(),
                               ),
                             );
                           },
-                          child: Text('Proceed To Checkout',
-                              style: const TextStyle(
+                          child: const Text('Proceed To Checkout',
+                              style: TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.w600,
                                   color: Colors.blueGrey)),

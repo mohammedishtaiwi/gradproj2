@@ -74,7 +74,7 @@ class _ChatState extends State<Chat> {
           0,
           ChatMessage(
             text: response,
-            sender: selectedAvatar, // Use selectedAvatar as the sender
+            sender: selectedAvatar,
           ),
         );
       }
