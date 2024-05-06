@@ -65,6 +65,7 @@ dependencies:
   flutter_paypal: ^0.2.0
   webview_flutter: ^4.7.0
   flutter_inappwebview: ^5.8.0
+  webview_flutter_android: ^3.16.1
 
 dev_dependencies:
   flutter_test:
