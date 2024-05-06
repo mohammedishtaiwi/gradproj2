@@ -99,7 +99,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                             );
                           } else {
                             // Display default avatar image if data is not available
-                            return SizedBox(
+                            return const SizedBox(
                               height: 52,
                               width: 52,
                               child: CircleAvatar(
@@ -236,18 +236,6 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                   }
                 },
               ),
-              // Row(
-              //   children: [
-              //     Text(
-              //       "Search flight",
-              //       style: TextStyle(
-              //           color: notifire.getdarkscolor,
-              //           fontWeight: FontWeight.w400,
-              //           fontSize: 22,
-              //           fontFamily: 'Gilroy'),
-              //     ),
-              //   ],
-              // ),
               const SizedBox(height: 4),
               const Divider(thickness: 1),
               const SizedBox(height: 4),
@@ -255,7 +243,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                 //height: kToolbarHeight + 4,
                 padding: const EdgeInsets.only(top: 0),
                 decoration: const BoxDecoration(
-                  color: Color.fromARGB(0, 138, 135, 135),
+                  color: Color.fromARGB(0, 203, 5, 5),
                   borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(8.0),
                     topRight: Radius.circular(8.0),
@@ -264,7 +252,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                   ),
                 ),
               ),
-              Expanded(
+              const Expanded(
                 child: searchflight(),
               ),
             ]),
