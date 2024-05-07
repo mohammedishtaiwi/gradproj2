@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
 import 'Messages.dart';
@@ -27,6 +29,8 @@ class _ChatState extends State<Chat> {
     "Sewar"
   ];
 
+  bool _avatarSelectedMessageVisible = false;
+
   @override
   void initState() {
     DialogFlowtter.fromFile().then((instance) => dialogFlowtter = instance);
@@ -53,29 +57,46 @@ class _ChatState extends State<Chat> {
         color: Colors.white, //this is the color of the background
         child: Column(
           children: [
-            // Avatars section
-            Container(
-              padding: const EdgeInsets.all(8.0),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  buildAvatarTile(
-                      title: "Sama", onTap: () => updateSelectedAvatar("Sama")),
-                  buildAvatarTile(
-                      title: "Shatha",
-                      onTap: () => updateSelectedAvatar("Shatha")),
-                  buildAvatarTile(
-                      title: "Mohammed",
-                      onTap: () => updateSelectedAvatar("Mohammed")),
-                  buildAvatarTile(
-                      title: "Shams",
-                      onTap: () => updateSelectedAvatar("Shams")),
-                  buildAvatarTile(
-                      title: "Sewar",
-                      onTap: () => updateSelectedAvatar("Sewar")),
-                ],
+            if (selectedAvatar == "Chatbot")
+              // Avatars section
+              Container(
+                padding: const EdgeInsets.all(8.0),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceAround,
+                  children: [
+                    buildAvatarTile(
+                        title: "Sama",
+                        onTap: () => updateSelectedAvatar("Sama")),
+                    buildAvatarTile(
+                        title: "Shatha",
+                        onTap: () => updateSelectedAvatar("Shatha")),
+                    buildAvatarTile(
+                        title: "Mohammed",
+                        onTap: () => updateSelectedAvatar("Mohammed")),
+                    buildAvatarTile(
+                        title: "Shams",
+                        onTap: () => updateSelectedAvatar("Shams")),
+                    buildAvatarTile(
+                        title: "Sewar",
+                        onTap: () => updateSelectedAvatar("Sewar")),
+                  ],
+                ),
               ),
-            ),
+            if (_avatarSelectedMessageVisible)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: 14),
+                alignment: Alignment.center,
+                child: Opacity(
+                  opacity: 0.5,
+                  child: Text(
+                    "You have chosen $selectedAvatar to Assist you",
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
+                ),
+              ),
             Expanded(
               child: MessagesScreen(
                 messages: messages,
@@ -164,6 +185,8 @@ class _ChatState extends State<Chat> {
       print('Message is empty');
     } else {
       setState(() {
+        _avatarSelectedMessageVisible = false;
+
         addMessage(Message(text: DialogText(text: [text])), true);
       });
 
@@ -184,6 +207,7 @@ class _ChatState extends State<Chat> {
   void updateSelectedAvatar(String avatar) {
     setState(() {
       selectedAvatar = avatar;
+      _avatarSelectedMessageVisible = true;
     });
   }
 }

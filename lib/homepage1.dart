@@ -74,12 +74,16 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                       );
                     },
                     child:
-                        FutureBuilder<DocumentSnapshot<Map<String, dynamic>>>(
-                      future: getUser(),
+                        // Inside your build method in _home1State class
+
+                        StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
+                      stream:
+                          getUserStream(), // Listen for changes in the user document
                       builder: (BuildContext context,
                           AsyncSnapshot<DocumentSnapshot<Map<String, dynamic>>>
                               snapshot) {
-                        if (snapshot.connectionState == ConnectionState.done) {
+                        if (snapshot.connectionState ==
+                            ConnectionState.active) {
                           if (snapshot.hasData) {
                             final data = snapshot.data!.data();
                             final String profileImageUrl =
@@ -90,10 +94,9 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                               width: 52,
                               child: CircleAvatar(
                                 radius: 25,
-                                backgroundImage: profileImageUrl != null
+                                backgroundImage: profileImageUrl.isNotEmpty
                                     ? NetworkImage(profileImageUrl)
-                                    : const AssetImage(
-                                            'assets/placeholder_image.png')
+                                    : AssetImage('assets/default_avatar.png')
                                         as ImageProvider<Object>?,
                               ),
                             );

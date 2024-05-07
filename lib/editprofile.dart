@@ -3,7 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:gradproj2/homepage1.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -95,8 +94,13 @@ class _editprofileState extends State<editprofile> {
             .child('profile_pictures')
             .child('${_user?.uid}.jpg');
 
-        final UploadTask uploadTask =
-            storageReference.putFile(File(_profilePictureUrl));
+        final File file = File(_profilePictureUrl);
+
+        final UploadTask uploadTask = storageReference.putFile(
+          file,
+          SettableMetadata(
+              contentType: 'image/jpeg'), // Set metadata for image file
+        );
         await uploadTask.whenComplete(() async {
           String downloadUrl = await storageReference.getDownloadURL();
 
@@ -134,8 +138,10 @@ class _editprofileState extends State<editprofile> {
 
       Navigator.pop(context);
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update profile: $error')),
+      Navigator.of(context).pop(
+        MaterialPageRoute(
+          builder: (BuildContext context) => const home1(),
+        ),
       );
     }
   }
