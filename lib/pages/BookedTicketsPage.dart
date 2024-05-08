@@ -102,7 +102,7 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
 
                 if (!snapshot.hasData || snapshot.data!.docs.isEmpty) {
                   return const Center(
-                    child: Text('No booked tickets available.'),
+                    child: Text('No booked tickets available'),
                   );
                 }
 
@@ -398,12 +398,9 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                                             child: ClipOval(
                                               child: Image.asset(
                                                 'assets/RJ2.png',
-                                                height:
-                                                    47, // Adjust the size as needed
-                                                width:
-                                                    47, // Adjust the size as needed
-                                                fit: BoxFit
-                                                    .cover, // Ensure the image covers the circular area
+                                                height: 47,
+                                                width: 47,
+                                                fit: BoxFit.cover,
                                               ),
                                             ),
                                           ),
@@ -438,6 +435,24 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                           }
                         },
                       ),
+                      // const SizedBox(height: 10),
+                      // const Divider(thickness: 1.5),
+                      // const SizedBox(height: 10),
+                      // Row(
+                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      //   children: [
+                      //     const Text('Total Amount',
+                      //         style: TextStyle(
+                      //             fontSize: 18,
+                      //             fontWeight: FontWeight.w400,
+                      //             fontFamily: 'Gilroy')),
+                      //     Text('$totalAmount JOD',
+                      //         style: const TextStyle(
+                      //             fontSize: 18,
+                      //             fontWeight: FontWeight.w600,
+                      //             fontFamily: 'Gilroy')),
+                      //   ],
+                      // ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
                         child: ElevatedButton(

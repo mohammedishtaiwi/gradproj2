@@ -2,6 +2,7 @@
 
 import 'dart:developer';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'package:provider/provider.dart';
@@ -366,6 +367,9 @@ class _searchflightState extends State<searchflight>
     );
   }
 
+  List<String> ticketClasses = ['Economy', 'Crown'];
+  int selectedIndex = 0; // Default selection index
+
   Widget buildSelectorBox(BuildContext context) {
     return StatefulBuilder(
       builder: (context, setState) {
@@ -398,7 +402,7 @@ class _searchflightState extends State<searchflight>
 
               return Column(children: [
                 const SizedBox(
-                  height: 10,
+                  height: 5,
                 ),
                 Container(
                   decoration: BoxDecoration(
@@ -414,269 +418,439 @@ class _searchflightState extends State<searchflight>
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,
                           children: [
-                            Radio(
-                              value: true,
-                              groupValue: isOneWaySelected,
-                              onChanged: (bool? value) {
+                            GestureDetector(
+                              onTap: () {
                                 setState(() {
-                                  isOneWaySelected = value ?? false;
-                                  isRoundTripSelected = !isOneWaySelected;
+                                  isOneWaySelected = true;
                                 });
                               },
-                              activeColor: Color.fromARGB(255, 63, 88, 112),
-                            ),
-                            const Text(
-                              'One Way',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16,
-                              ),
-                            ),
-                            Radio(
-                              value: true,
-                              groupValue: isRoundTripSelected,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  isRoundTripSelected = value ?? false;
-                                  isOneWaySelected = !isRoundTripSelected;
-                                });
-                              },
-                              activeColor: Color.fromARGB(255, 63, 88, 112),
-                            ),
-                            const Text(
-                              'Round Trip',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
-                        ),
-                        Row(
-                          children: [
-                            Center(
-                                child: Transform.rotate(
-                              angle: 1,
-                              child: const Icon(
-                                Icons.local_airport,
-                                color: Color.fromARGB(255, 0, 0, 0), //PLANE
-                                size: 24,
-                              ),
-                            )),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              'From ',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            DropdownButton<String>(
-                              value: selectedDepartureCity.isNotEmpty
-                                  ? selectedDepartureCity
-                                  : null,
-                              items: cities
-                                  .toSet() // Deduplicate the list of cities
-                                  .where((city) =>
-                                      city !=
-                                      selectedArrivalCity) // Filter out selected arrival city
-                                  .map((city) {
-                                return DropdownMenuItem<String>(
-                                  value: city,
-                                  child: Text(
-                                    city,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                if (value != null &&
-                                    value != selectedDepartureCity) {
-                                  setState(() {
-                                    selectedDepartureCity = value;
-                                  });
-                                }
-                              },
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.swap_vert),
-                              color: const Color.fromARGB(255, 0, 0, 0),
-                              onPressed: () {
-                                setState(() {
-                                  final temp = selectedDepartureCity;
-                                  selectedDepartureCity = selectedArrivalCity;
-                                  selectedArrivalCity = temp;
-                                });
-                              },
-                            ),
-                          ],
-                        ),
-                        // const SizedBox(height: 5),
-                        Row(
-                          children: [
-                            Center(
-                                child: Transform.rotate(
-                              angle: 1.9,
-                              child: const Icon(
-                                Icons.local_airport,
-                                color: Color.fromARGB(255, 0, 0, 0), //PLANE
-                                size: 24,
-                              ),
-                            )),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            const Text(
-                              'To ',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            DropdownButton<String>(
-                              value: selectedArrivalCity.isNotEmpty
-                                  ? selectedArrivalCity
-                                  : null,
-                              items: cities
-                                  .toSet() // Deduplicate the list of cities
-                                  .where((city) =>
-                                      city !=
-                                      selectedDepartureCity) // Filter out selected departure city
-                                  .map((city) {
-                                return DropdownMenuItem<String>(
-                                  value: city,
-                                  child: Text(
-                                    city,
-                                    style: const TextStyle(
-                                      color: Colors.black,
-                                    ),
-                                  ),
-                                );
-                              }).toList(),
-                              onChanged: (value) {
-                                if (value != null &&
-                                    value != selectedArrivalCity) {
-                                  setState(() {
-                                    selectedArrivalCity = value;
-                                  });
-                                }
-                              },
-                            ),
-                          ],
-                        ),
-                        // const SizedBox(height: 5),
-                        Row(
-                          children: [
-                            const Text(
-                              'Departure',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16,
-                              ),
-                            ),
-                            IconButton(
-                              icon: const Icon(Icons.calendar_month),
-                              color: Colors.black,
-                              onPressed: () {
-                                _selectDate(context, true);
-                              },
-                            ),
-                            Text(
-                              selectedFromDate != null
-                                  ? DateFormat.yMMMd().format(selectedFromDate!)
-                                  : '',
-                              style: const TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ],
-                        ),
-                        if (isRoundTripSelected)
-                          Row(
-                            children: [
-                              const Text(
-                                'Return',
-                                style: TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontSize: 16,
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: isOneWaySelected
+                                      ? Colors.blueGrey
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                child: Text(
+                                  'One Way',
+                                  style: TextStyle(
+                                      color: isOneWaySelected
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: 'Gilroy',
+                                      fontWeight: FontWeight.w500),
                                 ),
                               ),
-                              IconButton(
-                                icon: const Icon(Icons.calendar_month),
-                                color: Colors.black,
-                                onPressed: () {
-                                  _selectDate(context, false);
+                            ),
+                            const SizedBox(width: 20),
+                            GestureDetector(
+                              onTap: () {
+                                setState(() {
+                                  isOneWaySelected = false;
+                                });
+                              },
+                              child: Container(
+                                decoration: BoxDecoration(
+                                  color: !isOneWaySelected
+                                      ? Colors.blueGrey
+                                      : Colors.transparent,
+                                  borderRadius: BorderRadius.circular(20),
+                                ),
+                                padding: const EdgeInsets.symmetric(
+                                    vertical: 10, horizontal: 20),
+                                child: Text(
+                                  'Round Trip',
+                                  style: TextStyle(
+                                      color: !isOneWaySelected
+                                          ? Colors.white
+                                          : Colors.black,
+                                      fontSize: 16,
+                                      fontFamily: 'Gilroy',
+                                      fontWeight: FontWeight.w500),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+                        if (isOneWaySelected)
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        // Row(
+                        //   children: [
+                        //     SizedBox(
+                        //       width: 330,
+                        //       height: 70,
+                        //       child: TextFormField(
+                        //         readOnly:
+                        //             true, // Make the text field non-editable
+                        //         style: TextStyle(
+                        //             color: notifire.black,
+                        //             fontFamily: "Gilroy",
+                        //             fontSize: 18),
+                        //         decoration: InputDecoration(
+                        //           border: OutlineInputBorder(
+                        //             borderRadius: BorderRadius.circular(12),
+                        //           ),
+                        //           enabledBorder: OutlineInputBorder(
+                        //             borderRadius: BorderRadius.circular(12),
+                        //             borderSide: const BorderSide(
+                        //               color: Colors.blueGrey,
+                        //             ),
+                        //           ),
+                        //           focusedBorder: OutlineInputBorder(
+                        //             borderRadius: BorderRadius.circular(12),
+                        //             borderSide: const BorderSide(
+                        //               color: Colors
+                        //                   .blueGrey, // Same color as border
+                        //             ),
+                        //           ),
+                        //           hintStyle: TextStyle(
+                        //               color: notifire.black,
+                        //               fontFamily: "gilroy",
+                        //               fontWeight: FontWeight.w500,
+                        //               fontSize: 18),
+                        //           fillColor: Colors.white,
+                        //           hintText: "Amman",
+                        //           labelText: "From",
+                        //           labelStyle: TextStyle(
+                        //               color: notifire.black,
+                        //               fontFamily: "gilroy",
+                        //               fontWeight: FontWeight.w600,
+                        //               fontSize: 18),
+                        //         ),
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+
+                        // Row(children: [     // Center(
+                        //   child: Transform.rotate(
+                        //     angle: 1.9,
+                        //     child: const Icon(
+                        //       Icons.local_airport,
+                        //       color: Color.fromARGB(255, 0, 0, 0), //PLANE
+                        //       size: 24,
+                        //     ),
+                        //   ),
+                        // // ),
+                        // const SizedBox(
+                        //   width: 10,
+                        // ),
+                        // const Text(
+                        //   'To ',
+                        //   style: TextStyle(
+                        //       color: Color.fromARGB(255, 0, 0, 0),
+                        //       fontSize: 18,
+                        //       fontFamily: 'Gilroy',
+                        //       fontWeight: FontWeight.w600),
+                        // ),
+                        // const SizedBox(
+                        //   width: 10,
+                        // ),],)
+                        // const SizedBox(height: 5),
+                        Row(
+                          children: [
+                            Transform.rotate(
+                              angle: 0.9,
+                              child: const Icon(
+                                Icons.local_airport,
+                                color: Color.fromARGB(255, 0, 0, 0), //PLANE
+                                size: 24,
+                              ),
+                            ),
+                            const SizedBox(
+                              width: 10,
+                            ),
+                            Expanded(
+                              child: DropdownButton<String>(
+                                value: selectedArrivalCity.isNotEmpty
+                                    ? selectedArrivalCity
+                                    : null,
+                                items: cities
+                                    .toSet()
+                                    .where(
+                                        (city) => city != selectedDepartureCity)
+                                    .map((city) {
+                                  return DropdownMenuItem<String>(
+                                    value: city,
+                                    child: Text(
+                                      city,
+                                      style: const TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: "gilroy",
+                                        fontWeight: FontWeight.w500,
+                                      ),
+                                    ),
+                                  );
+                                }).toList(),
+                                isExpanded: true,
+                                style: const TextStyle(
+                                    color: Colors.black,
+                                    fontFamily: "gilroy",
+                                    fontWeight: FontWeight.w500,
+                                    fontSize: 18),
+                                onChanged: (value) {
+                                  if (value != null &&
+                                      value != selectedArrivalCity) {
+                                    setState(() {
+                                      selectedArrivalCity = value;
+                                    });
+                                  }
                                 },
                               ),
-                              Text(
-                                selectedToDate != null
-                                    ? DateFormat.yMMMd().format(selectedToDate!)
-                                    : '',
-                                style: const TextStyle(
-                                  color: Color.fromARGB(255, 0, 0, 0),
-                                  fontWeight: FontWeight.bold,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(
+                          height: 4,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                              child: TextFormField(
+                                readOnly: true,
+                                controller: TextEditingController(
+                                  text: selectedFromDate != null
+                                      ? DateFormat.yMMMd()
+                                          .format(selectedFromDate!)
+                                      : '',
+                                ),
+                                decoration: InputDecoration(
+                                  labelText: 'Departure',
+                                  labelStyle: const TextStyle(
+                                      color: Color.fromARGB(255, 0, 0, 0),
+                                      fontSize: 17,
+                                      fontFamily: 'Gilroy',
+                                      fontWeight: FontWeight.w500),
+                                  suffixIcon: IconButton(
+                                    icon: const Icon(Icons.calendar_month),
+                                    color: Colors.black,
+                                    onPressed: () {
+                                      _selectDate(context, true);
+                                    },
+                                  ),
+                                  // border: OutlineInputBorder(
+                                  //   borderSide: const BorderSide(
+                                  //       color:
+                                  //           Color.fromARGB(255, 216, 230, 238)),
+                                  //   borderRadius: BorderRadius.circular(8.0),
+                                  // ),
+                                  focusedBorder: OutlineInputBorder(
+                                    borderSide: const BorderSide(
+                                        color: Colors.blueGrey),
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        // Row(
+                        //   children: [
+                        //     const Text(
+                        //       'Departure',
+                        //       style: TextStyle(
+                        //         color: Color.fromARGB(255, 0, 0, 0),
+                        //         fontSize: 16,
+                        //       ),
+                        //     ),
+                        //     IconButton(
+                        //       icon: const Icon(Icons.calendar_month),
+                        //       color: Colors.black,
+                        //       onPressed: () {
+                        //         _selectDate(context, true);
+                        //       },
+                        //     ),
+                        //     Text(
+                        //       selectedFromDate != null
+                        //           ? DateFormat.yMMMd().format(selectedFromDate!)
+                        //           : '',
+                        //       style: const TextStyle(
+                        //         color: Color.fromARGB(255, 0, 0, 0),
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        if (!isOneWaySelected)
+                          Row(
+                            children: [
+                              Expanded(
+                                child: TextFormField(
+                                  readOnly: true,
+                                  controller: TextEditingController(
+                                    text: selectedToDate != null
+                                        ? DateFormat.yMMMd()
+                                            .format(selectedToDate!)
+                                        : '',
+                                  ),
+                                  decoration: InputDecoration(
+                                    labelText: 'Return',
+                                    labelStyle: const TextStyle(
+                                        color: Color.fromARGB(255, 0, 0, 0),
+                                        fontSize: 17,
+                                        fontFamily: 'Gilroy',
+                                        fontWeight: FontWeight.w500),
+                                    suffixIcon: IconButton(
+                                      icon: const Icon(Icons.calendar_month),
+                                      color: Colors.black,
+                                      onPressed: () {
+                                        _selectDate(context, false);
+                                      },
+                                    ),
+                                    // border: OutlineInputBorder(
+                                    //   borderSide: const BorderSide(
+                                    //       color: Color.fromARGB(
+                                    //           255, 238, 216, 216)),
+                                    //   borderRadius: BorderRadius.circular(8.0),
+                                    // ),
+                                    focusedBorder: OutlineInputBorder(
+                                      borderSide: const BorderSide(
+                                          color: Colors
+                                              .blueGrey), // Ensure color is black
+                                      borderRadius: BorderRadius.circular(8.0),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ],
                           ),
+                        // Row(
+                        //   children: [
+                        //     const Text(
+                        //       'Return',
+                        //       style: TextStyle(
+                        //         color: Color.fromARGB(255, 0, 0, 0),
+                        //         fontSize: 16,
+                        //       ),
+                        //     ),
+                        //     IconButton(
+                        //       icon: const Icon(Icons.calendar_month),
+                        //       color: Colors.black,
+                        //       onPressed: () {
+                        //         _selectDate(context, false);
+                        //       },
+                        //     ),
+                        //     Text(
+                        //       selectedToDate != null
+                        //           ? DateFormat.yMMMd().format(selectedToDate!)
+                        //           : '',
+                        //       style: const TextStyle(
+                        //         color: Color.fromARGB(255, 0, 0, 0),
+                        //         fontWeight: FontWeight.bold,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        const SizedBox(
+                          height: 15,
+                        ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children: [
-                            const Text(
-                              'Class',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16,
+                          children:
+                              List.generate(ticketClasses.length, (index) {
+                            return Expanded(
+                              child: GestureDetector(
+                                onTap: () {
+                                  setState(() {
+                                    selectedIndex = index;
+                                  });
+                                },
+                                child: Container(
+                                  width: MediaQuery.of(context).size.width /
+                                          ticketClasses.length -
+                                      16,
+                                  margin: const EdgeInsets.symmetric(
+                                      horizontal: 8.0),
+                                  decoration: BoxDecoration(
+                                    color: selectedIndex == index
+                                        ? Colors.blueGrey
+                                        : Colors.grey,
+                                    borderRadius: BorderRadius.circular(8.0),
+                                  ),
+                                  padding: const EdgeInsets.symmetric(
+                                      vertical: 12.0),
+                                  child: Center(
+                                    child: Text(
+                                      ticketClasses[index],
+                                      style: TextStyle(
+                                          color: selectedIndex == index
+                                              ? Colors.white
+                                              : Color.fromARGB(255, 0, 0, 0),
+                                          fontSize: 14,
+                                          fontFamily: 'Gilroy',
+                                          fontWeight: FontWeight.w500),
+                                    ),
+                                  ),
+                                ),
                               ),
-                            ),
-                            Radio(
-                              value: true,
-                              groupValue: EconomyClassSelected,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  EconomyClassSelected = value ?? false;
-                                  CrownClassSelected = !EconomyClassSelected;
-                                });
-                              },
-                              activeColor: Color.fromARGB(255, 63, 88, 112),
-                            ),
-                            const Text(
-                              'Economy',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16,
-                              ),
-                            ),
-                            Radio(
-                              value: true,
-                              groupValue: CrownClassSelected,
-                              onChanged: (bool? value) {
-                                setState(() {
-                                  CrownClassSelected = value ?? false;
-                                  EconomyClassSelected = !CrownClassSelected;
-                                });
-                              },
-                              activeColor: Color.fromARGB(255, 63, 88, 112),
-                            ),
-                            const Text(
-                              'Crown',
-                              style: TextStyle(
-                                color: Color.fromARGB(255, 0, 0, 0),
-                                fontSize: 16,
-                              ),
-                            ),
-                          ],
+                            );
+                          }),
+                        ),
+                        ////////////CLASSS CODE
+                        // Row(
+                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        //   children: [
+                        //     const Text(
+                        //       'Class',
+                        //       style: TextStyle(
+                        //         color: Color.fromARGB(255, 0, 0, 0),
+                        //         fontSize: 16,
+                        //       ),
+                        //     ),
+                        //     Radio(
+                        //       value: true,
+                        //       groupValue: EconomyClassSelected,
+                        //       onChanged: (bool? value) {
+                        //         setState(() {
+                        //           EconomyClassSelected = value ?? false;
+                        //           CrownClassSelected = !EconomyClassSelected;
+                        //         });
+                        //       },
+                        //       activeColor: Color.fromARGB(255, 63, 88, 112),
+                        //     ),
+                        //     const Text(
+                        //       'Economy',
+                        //       style: TextStyle(
+                        //         color: Color.fromARGB(255, 0, 0, 0),
+                        //         fontSize: 16,
+                        //       ),
+                        //     ),
+                        //     Radio(
+                        //       value: true,
+                        //       groupValue: CrownClassSelected,
+                        //       onChanged: (bool? value) {
+                        //         setState(() {
+                        //           CrownClassSelected = value ?? false;
+                        //           EconomyClassSelected = !CrownClassSelected;
+                        //         });
+                        //       },
+                        //       activeColor: Color.fromARGB(255, 63, 88, 112),
+                        //     ),
+                        //     const Text(
+                        //       'Crown',
+                        //       style: TextStyle(
+                        //         color: Color.fromARGB(255, 0, 0, 0),
+                        //         fontSize: 16,
+                        //       ),
+                        //     ),
+                        //   ],
+                        // ),
+                        if (isOneWaySelected)
+                          const SizedBox(
+                            height: 10,
+                          ),
+                        const SizedBox(
+                          height: 10,
                         ),
                         Row(
                           mainAxisAlignment: MainAxisAlignment.center,

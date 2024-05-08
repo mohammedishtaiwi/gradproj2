@@ -125,7 +125,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                         "Location",
                         style: TextStyle(
                             fontFamily: "gilroy",
-                            fontSize: 12,
+                            fontSize: 13,
                             color: notifire.getdarkscolor,
                             fontWeight: FontWeight.w500),
                       ),
@@ -139,11 +139,11 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                             width: 5,
                           ),
                           Text(
-                            "Amman,",
+                            "Amman, ",
                             style: TextStyle(
                                 color: notifire.getdarkscolor,
                                 fontWeight: FontWeight.w600,
-                                fontSize: 15,
+                                fontSize: 13,
                                 fontFamily: 'Gilroy'),
                           ),
                           Text(
@@ -151,7 +151,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                             style: TextStyle(
                                 color: notifire.getdarkscolor,
                                 fontWeight: FontWeight.w400,
-                                fontSize: 15,
+                                fontSize: 13,
                                 fontFamily: 'Gilroy'),
                           ),
                           const SizedBox(

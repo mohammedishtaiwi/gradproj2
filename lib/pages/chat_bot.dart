@@ -90,7 +90,7 @@ class _ChatState extends State<Chat> {
                   opacity: 0.5,
                   child: Text(
                     "You have chosen $selectedAvatar to Assist you",
-                    style: TextStyle(
+                    style: const TextStyle(
                       fontSize: 16,
                       fontWeight: FontWeight.bold,
                     ),
@@ -121,8 +121,14 @@ class _ChatState extends State<Chat> {
                         border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(100.0),
                         ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(100.0),
+                          borderSide: const BorderSide(
+                            color: Colors.blueGrey,
+                          ),
+                        ),
                         hintText: 'Type Here...',
-                        hintStyle: TextStyle(color: Colors.grey),
+                        hintStyle: const TextStyle(color: Colors.grey),
                       ),
                     ),
                   ),
@@ -170,10 +176,10 @@ class _ChatState extends State<Chat> {
                   radius: 24,
                 ),
               ),
-              SizedBox(height: 4.0),
+              const SizedBox(height: 4.0),
               Text(
                 title,
-                style: TextStyle(fontWeight: FontWeight.bold),
+                style: const TextStyle(fontWeight: FontWeight.bold),
               ),
             ],
           ),
@@ -215,17 +221,17 @@ class _ChatState extends State<Chat> {
 ImageProvider getSelectedAvatarImage(String title) {
   switch (title) {
     case 'Sama':
-      return AssetImage('assets/samaz.jpeg');
+      return const AssetImage('assets/samaz.jpeg');
     case 'Shatha':
-      return AssetImage('assets/sha.jpeg');
+      return const AssetImage('assets/sha.jpeg');
     case 'Mohammed':
-      return AssetImage('assets/moh.jpeg');
+      return const AssetImage('assets/moh.jpeg');
     case 'Shams':
-      return AssetImage('assets/shams.jpeg');
+      return const AssetImage('assets/shams.jpeg');
     case 'Sewar':
-      return AssetImage('assets/sewar.jpeg');
+      return const AssetImage('assets/sewar.jpeg');
 
     default:
-      return AssetImage('assets/default_profile_picture.png');
+      return const AssetImage('assets/default_profile_picture.png');
   }
 }

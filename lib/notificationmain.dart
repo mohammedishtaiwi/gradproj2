@@ -156,28 +156,29 @@ class _NotificationPageState extends State<NotificationPage> {
                         });
                       },
                       background: Container(
-                        color: Color.fromARGB(255, 243, 89,
-                            78), // Background color when swiping to delete
+                        color: Color.fromARGB(255, 237, 103,
+                            94), // Background color when swiping to delete
                         alignment: Alignment.centerRight,
                         child: const Icon(Icons.delete, color: Colors.white),
                       ),
                       child: Container(
-                        margin:
-                            EdgeInsets.symmetric(vertical: 8, horizontal: 16),
+                        margin: const EdgeInsets.symmetric(
+                            vertical: 8, horizontal: 16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Colors.grey[200], // Background color
+                          color: Color.fromARGB(
+                              255, 216, 230, 238), // Background color
                           boxShadow: [
                             BoxShadow(
                               color: Colors.grey.withOpacity(0.5),
                               spreadRadius: 2,
                               blurRadius: 5,
-                              offset: Offset(0, 3),
+                              offset: const Offset(0, 3),
                             ),
                           ],
                         ),
                         child: Padding(
-                          padding: EdgeInsets.all(16),
+                          padding: const EdgeInsets.all(16),
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
@@ -202,14 +203,24 @@ class _NotificationPageState extends State<NotificationPage> {
                                   ),
                                 ],
                               ),
-                              GestureDetector(
-                                onTap: () {
-                                  // Delete the notification
-                                  setState(() {
-                                    snapshot.data!.removeAt(index);
-                                  });
-                                },
-                                child: const Icon(Icons.close),
+                              // GestureDetector(
+                              //   onTap: () {
+                              //     // Delete the notification
+                              //     setState(() {
+                              //       snapshot.data!.removeAt(index);
+                              //     });
+                              //   },
+                              //   child: const Icon(Icons.close),
+                              // ),
+                              CircleAvatar(
+                                backgroundColor: Colors.transparent,
+                                radius: 30,
+                                child: Image.asset(
+                                  'assets/RJ2.png',
+                                  fit: BoxFit.cover,
+                                  height: 70,
+                                  width: 70,
+                                ),
                               ),
                             ],
                           ),

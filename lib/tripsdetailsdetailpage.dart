@@ -488,11 +488,23 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                             const SizedBox(height: 25),
                             if (!isTicketBooked)
                               ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      Color.fromARGB(255, 114, 151, 172)),
+                                ),
                                 onPressed: () {
                                   _bookTicket(context, widget.ticketData,
                                       widget.documentID);
                                 },
-                                child: const Text('Book'),
+                                child: const Text(
+                                  'Book Ticket',
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
+                                    fontFamily: 'Gilroy',
+                                  ),
+                                ),
                               ),
                             if (isTicketBooked &&
                                 widget.ticketData['Flight_status'] !=
@@ -509,8 +521,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   'Cancel Booking',
                                   style: TextStyle(
                                     color: Colors.black,
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w600,
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.w500,
                                     fontFamily: 'Gilroy',
                                   ),
                                 ),

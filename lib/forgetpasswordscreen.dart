@@ -70,9 +70,7 @@ class _forgetpasswordState extends State<forgetpassword> {
               child: Container(
                 height: 48,
                 width: 48,
-                decoration: BoxDecoration(
-                    border: Border.all(color: notifire.backbuttonborderColor),
-                    borderRadius: BorderRadius.circular(16)),
+                decoration: BoxDecoration(),
                 child: Center(
                   child: IconButton(
                     icon: Icon(
@@ -138,11 +136,11 @@ class _forgetpasswordState extends State<forgetpassword> {
               decoration: InputDecoration(
                 hintStyle: TextStyle(
                     color: notifire.getdarkscolor, fontFamily: "gilroy"),
-                fillColor: Colors.white,
+                fillColor: Colors.black,
                 hintText: 'Enter Your Email',
                 labelText: "EMAIL",
-                labelStyle: TextStyle(
-                    color: notifire.getgreycolor, fontFamily: "gilroy"),
+                labelStyle:
+                    TextStyle(color: notifire.black, fontFamily: "gilroy"),
                 border:
                     OutlineInputBorder(borderRadius: BorderRadius.circular(12)),
                 enabledBorder: OutlineInputBorder(
@@ -153,7 +151,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                 ),
               ),
             ),
-            SizedBox(height: 65),
+            const SizedBox(height: 65),
             SizedBox(
               height: 56,
               width: double.infinity,
@@ -164,11 +162,12 @@ class _forgetpasswordState extends State<forgetpassword> {
                 child: Text(
                   'SEND CODE',
                   style: TextStyle(
-                      fontWeight: FontWeight.w600,
+                      fontWeight: FontWeight.w500,
                       fontSize: 16,
-                      fontFamily: 'Gilroy'),
+                      fontFamily: 'Gilroy',
+                      color: Colors.black),
                 ),
-                backgroundColor: Colors.blueAccent.shade400,
+                backgroundColor: Color.fromARGB(255, 114, 151, 172),
                 onPressed: () {
                   String enteredEmail = emailController.text.trim();
                   // Check if email is not empty

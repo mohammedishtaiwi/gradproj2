@@ -50,7 +50,21 @@ class _signinState extends State<signin> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   const SizedBox(
-                    height: 50,
+                    height: 20,
+                  ),
+                  RichText(
+                    text: const TextSpan(
+                      text: 'Welcome back!',
+                      style: TextStyle(
+                          fontSize: 25,
+                          fontWeight: FontWeight.w500,
+                          color:
+                              Colors.black, // Adjust the text color as needed
+                          fontFamily: 'Gilroy'),
+                    ),
+                  ),
+                  const SizedBox(
+                    height: 20,
                   ),
                   Column(
                     children: [
@@ -68,6 +82,12 @@ class _signinState extends State<signin> {
                             borderRadius: BorderRadius.circular(12),
                             borderSide: BorderSide(
                               color: notifire.getgreycolor,
+                            ),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Colors.blueGrey, // Same color as border
                             ),
                           ),
                           hintStyle: TextStyle(
@@ -124,6 +144,12 @@ class _signinState extends State<signin> {
                               color: notifire.getgreycolor,
                             ),
                           ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: const BorderSide(
+                              color: Colors.blueGrey, // Same color as border
+                            ),
+                          ),
                         ),
                       ),
                     ],
@@ -132,34 +158,10 @@ class _signinState extends State<signin> {
                   //   height: 5,
                   // ),
                   Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    mainAxisAlignment: MainAxisAlignment.end,
                     children: [
                       // ignore: avoid_unnecessary_containers
-                      Row(
-                        children: [
-                          // Checkbox(
-                          //   side: const BorderSide(color: Colors.grey),
-                          //   shape: const RoundedRectangleBorder(
-                          //       borderRadius:
-                          //           BorderRadius.all(Radius.circular(5))),
-                          //   // ignore: unnecessary_this
-                          //   value: this.value,
-                          //   onChanged: (bool? value) {
-                          //     setState(() {
-                          //       this.value = value!;
-                          //     });
-                          //   },
-                          // ),
-                          // const Text(
-                          //   "RememberMe",
-                          //   style: TextStyle(
-                          //       color: Colors.grey,
-                          //       fontWeight: FontWeight.w400,
-                          //       fontSize: 12,
-                          //       fontFamily: 'Gilroy'),
-                          // ),
-                        ],
-                      ),
+
                       TextButton(
                         child: Text(
                           "Forgot Password?",
@@ -192,10 +194,11 @@ class _signinState extends State<signin> {
                       // ignore: sort_child_properties_last
                       child: const Text('SIGN IN',
                           style: TextStyle(
-                              fontWeight: FontWeight.w600,
+                              fontWeight: FontWeight.w500,
                               fontSize: 16,
+                              color: Colors.black,
                               fontFamily: 'Gilroy')),
-                      backgroundColor: Colors.blueAccent.shade400,
+                      backgroundColor: Color.fromARGB(255, 114, 151, 172),
                       onPressed: () async {
                         await _signInWithEmailAndPassword(context);
                       },

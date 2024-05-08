@@ -59,29 +59,30 @@ class _SignupState extends State<signup> {
                   height: 18,
                 ),
                 RichText(
-                  text: TextSpan(
-                    text: 'Hello,',
+                  text: const TextSpan(
+                    text: 'Welcome to QAIA,',
                     style: TextStyle(
                         fontSize: 30,
+                        fontWeight: FontWeight.w500,
                         color: Colors.black, // Adjust the text color as needed
                         fontFamily: 'Gilroy'),
-                    children: <TextSpan>[
-                      TextSpan(
-                          text: 'There',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontSize: 30,
-                              color: Colors
-                                  .black, // Adjust the text color as needed
-                              fontFamily: 'Gilroy')),
-                    ],
+                    // children: <TextSpan>[
+                    //   TextSpan(
+                    //       text: 'There',
+                    //       style: TextStyle(
+                    //           fontWeight: FontWeight.bold,
+                    //           fontSize: 30,
+                    //           color: Colors
+                    //               .black, // Adjust the text color as needed
+                    //           fontFamily: 'Gilroy')),
+                    // ],
                   ),
                 ),
                 const SizedBox(
                   height: 10,
                 ),
-                Text(
-                  "Enter your information below to get\nstarted on your trips",
+                const Text(
+                  "Enter your information below to \n start your journey",
                   style: TextStyle(
                       fontSize: 18,
                       color: Colors.grey, // Adjust the text color as needed
@@ -103,13 +104,23 @@ class _SignupState extends State<signup> {
                       },
                       decoration: InputDecoration(
                         labelText: "FULL NAME",
+                        labelStyle: const TextStyle(
+                            color: Colors.black,
+                            fontFamily: "gilroy",
+                            fontWeight: FontWeight.w500),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12)),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors
                                 .grey, // Adjust the border color as needed
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.blueGrey, // Same color as border
                           ),
                         ),
                       ),
@@ -123,13 +134,23 @@ class _SignupState extends State<signup> {
                       textInputAction: TextInputAction.next,
                       decoration: InputDecoration(
                         labelText: "EMAIL",
+                        labelStyle: const TextStyle(
+                            color: Colors.black,
+                            fontFamily: "gilroy",
+                            fontWeight: FontWeight.w500),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12)),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors
                                 .grey, // Adjust the border color as needed
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.blueGrey, // Same color as border
                           ),
                         ),
                       ),
@@ -156,13 +177,23 @@ class _SignupState extends State<signup> {
                           ),
                         ),
                         labelText: "PASSWORD",
+                        labelStyle: const TextStyle(
+                            color: Colors.black,
+                            fontFamily: "gilroy",
+                            fontWeight: FontWeight.w500),
                         border: OutlineInputBorder(
                             borderRadius: BorderRadius.circular(12)),
                         enabledBorder: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12),
-                          borderSide: BorderSide(
+                          borderSide: const BorderSide(
                             color: Colors
                                 .grey, // Adjust the border color as needed
+                          ),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(
+                            color: Colors.blueGrey, // Same color as border
                           ),
                         ),
                       ),
@@ -179,10 +210,11 @@ class _SignupState extends State<signup> {
                       borderRadius: BorderRadius.circular(12)),
                   child: const Text('SIGN UP',
                       style: TextStyle(
-                          fontWeight: FontWeight.w400,
+                          fontWeight: FontWeight.w500,
                           fontSize: 18,
+                          color: Colors.black,
                           fontFamily: 'Gilroy')),
-                  backgroundColor: Colors.blueAccent.shade400,
+                  backgroundColor: Color.fromARGB(255, 114, 151, 172),
                   onPressed: () {
                     _signUp();
                   },

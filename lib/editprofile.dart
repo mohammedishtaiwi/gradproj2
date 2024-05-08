@@ -85,67 +85,6 @@ class _editprofileState extends State<editprofile> {
     }
   }
 
-  Future<void> _saveChanges(BuildContext context) async {
-    try {
-      // Upload new profile picture if it's different from the current one
-      if (_profilePictureUrl != widget.profileImageUrl) {
-        final Reference storageReference = FirebaseStorage.instance
-            .ref()
-            .child('profile_pictures')
-            .child('${_user?.uid}.jpg');
-
-        final File file = File(_profilePictureUrl);
-
-        final UploadTask uploadTask = storageReference.putFile(
-          file,
-          SettableMetadata(
-              contentType: 'image/jpeg'), // Set metadata for image file
-        );
-        await uploadTask.whenComplete(() async {
-          String downloadUrl = await storageReference.getDownloadURL();
-
-          await _firestore
-              .collection('users')
-              .doc(_user?.uid)
-              .update({'profileImageUrl': downloadUrl});
-        });
-      }
-
-      if (_newName != widget.currentName) {
-        await _user?.updateDisplayName(_newName);
-        await _firestore
-            .collection('users')
-            .doc(_user?.uid)
-            .update({'name': _newName});
-      }
-
-      if (_newUsername != widget.currentUsername) {
-        await _firestore
-            .collection('users')
-            .doc(_user?.uid)
-            .update({'username': _newUsername});
-      }
-      if (_newPassword.isNotEmpty && _newPassword != widget.currentPass) {
-        //  await _user?.updatePassword(_newPassword);
-        await _firestore
-            .collection('users')
-            .doc(_user?.uid)
-            .update({'password': _newPassword});
-      }
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(content: Text('Profile updated successfully')),
-      );
-
-      Navigator.pop(context);
-    } catch (error) {
-      Navigator.of(context).pop(
-        MaterialPageRoute(
-          builder: (BuildContext context) => const home1(),
-        ),
-      );
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
@@ -231,7 +170,7 @@ class _editprofileState extends State<editprofile> {
                 backgroundColor: Color.fromARGB(255, 114, 151, 172),
               ),
             ),
-            SizedBox(height: 16),
+            const SizedBox(height: 16),
             SizedBox(
               width: double.infinity,
               height: 56,
@@ -242,7 +181,7 @@ class _editprofileState extends State<editprofile> {
                       fontWeight: FontWeight.w500,
                       fontSize: 16,
                       color: Colors.black,
-                      fontFamily: "gilroy"),
+                      fontFamily: "Gilroy"),
                 ),
                 onPressed: () {
                   _signOut(context);
@@ -326,6 +265,12 @@ class _editprofileState extends State<editprofile> {
                           color: notifire.getgreycolor,
                         ),
                       ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Colors.blueGrey,
+                        ),
+                      ),
                       hintStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
@@ -354,6 +299,12 @@ class _editprofileState extends State<editprofile> {
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(
                           color: notifire.getgreycolor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Colors.blueGrey,
                         ),
                       ),
                       hintStyle: TextStyle(
@@ -406,6 +357,12 @@ class _editprofileState extends State<editprofile> {
                         borderRadius: BorderRadius.circular(12),
                         borderSide: BorderSide(
                           color: notifire.getgreycolor,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Colors.blueGrey,
                         ),
                       ),
                     ),
@@ -467,5 +424,69 @@ class _editprofileState extends State<editprofile> {
   Future<void> _signOut(BuildContext context) async {
     await _auth.signOut();
     Navigator.pushReplacementNamed(context, '/');
+  }
+
+  Future<void> _saveChanges(BuildContext context) async {
+    try {
+      // Upload new profile picture if it's different from the current one
+      if (_profilePictureUrl != widget.profileImageUrl) {
+        final Reference storageReference = FirebaseStorage.instance
+            .ref()
+            .child('profile_pictures')
+            .child('${_user?.uid}.jpg');
+
+        final File file = File(_profilePictureUrl);
+
+        final UploadTask uploadTask = storageReference.putFile(
+          file,
+          SettableMetadata(
+              contentType: 'image/jpeg'), // Set metadata for image file
+        );
+        await uploadTask.whenComplete(() async {
+          String downloadUrl = await storageReference.getDownloadURL();
+
+          await _firestore
+              .collection('users')
+              .doc(_user?.uid)
+              .update({'profileImageUrl': downloadUrl});
+        });
+      }
+
+      if (_newName != widget.currentName) {
+        await _user?.updateDisplayName(_newName);
+        await _firestore
+            .collection('users')
+            .doc(_user?.uid)
+            .update({'name': _newName});
+      }
+
+      if (_newUsername != widget.currentUsername) {
+        await _firestore
+            .collection('users')
+            .doc(_user?.uid)
+            .update({'username': _newUsername});
+      }
+      if (_newPassword.isNotEmpty && _newPassword != widget.currentPass) {
+        await _user?.updatePassword(_newPassword);
+        await _firestore
+            .collection('users')
+            .doc(_user?.uid)
+            .update({'password': _newPassword});
+      }
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(content: Text('Profile updated successfully')),
+      );
+
+      Navigator.pop(context);
+    } catch (error) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        // Navigator.of(context).pop(
+        //   MaterialPageRoute(
+        //     builder: (BuildContext context) => const home1(),
+        //   ),
+        // ); ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('Failed to update profile: $error')),
+      );
+    }
   }
 }
