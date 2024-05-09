@@ -479,13 +479,10 @@ class _editprofileState extends State<editprofile> {
 
       Navigator.pop(context);
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        // Navigator.of(context).pop(
-        //   MaterialPageRoute(
-        //     builder: (BuildContext context) => const home1(),
-        //   ),
-        // ); ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(content: Text('Failed to update profile: $error')),
+      Navigator.of(context).pop(
+        MaterialPageRoute(
+          builder: (BuildContext context) => const home1(),
+        ),
       );
     }
   }

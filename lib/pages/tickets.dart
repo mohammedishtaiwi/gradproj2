@@ -5,8 +5,8 @@ import 'package:intl/intl.dart';
 import 'package:gradproj2/homepage1.dart';
 
 class TicketsPage extends StatelessWidget {
-  final String? departureCity;
-  final String? arrivalCity;
+  final String departureCity;
+  final String arrivalCity;
   final bool? isRoundTrip;
   final DateTime? selectedFromDate;
   final DateTime? selectedToDate;
@@ -15,8 +15,8 @@ class TicketsPage extends StatelessWidget {
 
   const TicketsPage({
     Key? key,
-    this.departureCity,
-    this.arrivalCity,
+    required this.departureCity,
+    required this.arrivalCity,
     this.selectedFromDate,
     this.selectedToDate,
     this.isRoundTrip,
@@ -48,9 +48,10 @@ class TicketsPage extends StatelessWidget {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                 ),
+                alignment: Alignment.center,
                 child: Center(
                   child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios_new_outlined,
                     ),
                     iconSize: 14,
@@ -64,7 +65,6 @@ class TicketsPage extends StatelessWidget {
                     },
                   ),
                 ),
-                alignment: Alignment.center,
               ),
             ),
           ),
@@ -95,6 +95,7 @@ class TicketsPage extends StatelessWidget {
                 child: CircularProgressIndicator(),
               );
             }
+
             List<DocumentSnapshot> filteredFlights =
                 snapshot.data!.docs.where((document) {
               Map<String, dynamic> data =
@@ -105,8 +106,9 @@ class TicketsPage extends StatelessWidget {
               bool isRoundTrip = data['two_way'] ?? false;
               bool isOneWay = data['one_way'] ?? false;
 
-              bool isMatchingCities = data['Dep_city'] == departureCity &&
-                  data['Arr_city'] == arrivalCity;
+              bool isMatchingCities = data['Arr_city'] == arrivalCity;
+
+              print(isMatchingCities);
               bool isMatchingDate = false;
 
               if (isOneWay && selectedFromDate != null) {
@@ -182,7 +184,7 @@ class TicketsPage extends StatelessWidget {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   Text(
-                                    '${data['Dep_city']}',
+                                    'Amman',
                                     style: const TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w400,

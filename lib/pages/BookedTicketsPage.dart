@@ -14,6 +14,67 @@ class BookedTicketsPage extends StatefulWidget {
 
 class _BookedTicketsPageState extends State<BookedTicketsPage> {
   int totalAmount = 0;
+  int bookedTicketCount = 0; // New variable to store booked ticket count
+
+  Future<void> fetchBookedTicketCount() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userSnapshot.exists) {
+          List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
+          setState(() {
+            bookedTicketCount = bookedTickets.length;
+          });
+        }
+      } catch (error) {
+        print('Error fetching booked ticket count: $error');
+      }
+    }
+  }
+
+  Future<void> fetchTotalAmount() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userSnapshot.exists) {
+          List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
+
+          int total = 0;
+          for (String ticketId in bookedTickets) {
+            DocumentSnapshot ticketSnapshot = await FirebaseFirestore.instance
+                .collection('Flights')
+                .doc(ticketId)
+                .get();
+
+            if (ticketSnapshot.exists) {
+              var ticketPrice = ticketSnapshot['Ticket_crown_price'];
+              if (ticketPrice is int) {
+                total += ticketPrice;
+              } else if (ticketPrice is num) {
+                total += ticketPrice.toInt();
+              }
+            }
+          }
+
+          setState(() {
+            totalAmount = total;
+          });
+        }
+      } catch (error) {
+        print('Error fetching total amount: $error');
+      }
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -159,7 +220,7 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
                                               Text(
-                                                '${ticketData['Dep_city']}',
+                                                'Amman',
                                                 style: const TextStyle(
                                                     fontSize: 24,
                                                     fontWeight: FontWeight.w400,
@@ -435,90 +496,79 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                           }
                         },
                       ),
-                      // const SizedBox(height: 10),
-                      // const Divider(thickness: 1.5),
-                      // const SizedBox(height: 10),
-                      // Row(
-                      //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      //   children: [
-                      //     const Text('Total Amount',
-                      //         style: TextStyle(
-                      //             fontSize: 18,
-                      //             fontWeight: FontWeight.w400,
-                      //             fontFamily: 'Gilroy')),
-                      //     Text('$totalAmount JOD',
-                      //         style: const TextStyle(
-                      //             fontSize: 18,
-                      //             fontWeight: FontWeight.w600,
-                      //             fontFamily: 'Gilroy')),
-                      //   ],
-                      // ),
                       Padding(
                         padding: const EdgeInsets.all(16.0),
-                        child: ElevatedButton(
-                          style: ButtonStyle(
-                            backgroundColor: MaterialStateProperty.all(
-                                const Color.fromARGB(255, 216, 230, 238)),
-                          ),
-                          onPressed: () async {
-                            await fetchTotalAmount();
-                            Navigator.of(context).push(
-                              MaterialPageRoute(
-                                builder: (BuildContext context) => UsePaypal(
-                                    sandboxMode: true,
-                                    clientId:
-                                        "ASC44z2CwYZ5O5xinERWYqkft2q58dZ5vFM_sJgV2b7a1hgFHnhwOxzByGvHfxisfeUcMyWZ6WzzswvU",
-                                    secretKey:
-                                        "EJjOIou2B1Vrv8JpO9I7ePCFk7zQ4-5I3I8GIX_mkfVEFcmW0Bjp1Rnn9hJQp-WRfwhUN0hQkkjt2FuG",
-                                    returnURL: "https://samplesite.com/return",
-                                    cancelURL: "https://samplesite.com/cancel",
-                                    transactions: [
-                                      {
-                                        "amount": {
-                                          "total": '$totalAmount',
-                                          "currency": "USD",
-                                          "details": {
-                                            "subtotal": '$totalAmount',
-                                            "shipping": '0',
-                                            "shipping_discount": 0
-                                          }
-                                        },
-                                        "description":
-                                            "The payment transaction description.",
-                                        "item_list": {
-                                          "items": [
-                                            {
-                                              "name": "A demo product",
-                                              "quantity": 1,
-                                              "price": '$totalAmount',
-                                              "currency": "USD"
-                                            }
-                                          ],
-                                        }
-                                      }
-                                    ],
-                                    note:
-                                        "Contact us for any questions on your order.",
-                                    onSuccess: (Map params) async {
-                                      print("onSuccess: $params");
-                                    },
-                                    onError: (error) {
-                                      print("onError: $error");
-                                    },
-                                    onCancel: (params) {
-                                      print('cancelled: $params');
-                                    }),
+                        child: Column(
+                          children: [
+                            ElevatedButton(
+                              style: ButtonStyle(
+                                backgroundColor: MaterialStateProperty.all(
+                                    const Color.fromARGB(255, 216, 230, 238)),
                               ),
-                            );
-                          },
-                          child: const Text(
-                            'Pay Now',
-                            style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.w500,
-                                color: Colors.black,
-                                fontFamily: 'Gilroy'),
-                          ),
+                              onPressed: () async {
+                                await fetchTotalAmount();
+                                Navigator.of(context).push(
+                                  MaterialPageRoute(
+                                    builder: (BuildContext context) =>
+                                        UsePaypal(
+                                            sandboxMode: true,
+                                            clientId:
+                                                "ASC44z2CwYZ5O5xinERWYqkft2q58dZ5vFM_sJgV2b7a1hgFHnhwOxzByGvHfxisfeUcMyWZ6WzzswvU",
+                                            secretKey:
+                                                "EJjOIou2B1Vrv8JpO9I7ePCFk7zQ4-5I3I8GIX_mkfVEFcmW0Bjp1Rnn9hJQp-WRfwhUN0hQkkjt2FuG",
+                                            returnURL:
+                                                "https://samplesite.com/return",
+                                            cancelURL:
+                                                "https://samplesite.com/cancel",
+                                            transactions: [
+                                              {
+                                                "amount": {
+                                                  "total": '$totalAmount',
+                                                  "currency": "USD",
+                                                  "details": {
+                                                    "subtotal": '$totalAmount',
+                                                    "shipping": '0',
+                                                    "shipping_discount": 0
+                                                  }
+                                                },
+                                                "description":
+                                                    "The payment transaction description.",
+                                                "item_list": {
+                                                  "items": [
+                                                    {
+                                                      "name": "A demo product",
+                                                      "quantity": 1,
+                                                      "price": '$totalAmount',
+                                                      "currency": "USD"
+                                                    }
+                                                  ],
+                                                }
+                                              }
+                                            ],
+                                            note:
+                                                "Contact us for any questions on your order.",
+                                            onSuccess: (Map params) async {
+                                              print("onSuccess: $params");
+                                            },
+                                            onError: (error) {
+                                              print("onError: $error");
+                                            },
+                                            onCancel: (params) {
+                                              print('cancelled: $params');
+                                            }),
+                                  ),
+                                );
+                              },
+                              child: const Text(
+                                'Pay Now',
+                                style: TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.w500,
+                                    color: Colors.black,
+                                    fontFamily: 'Gilroy'),
+                              ),
+                            ),
+                          ],
                         ),
                       ),
                     ],
@@ -542,44 +592,5 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
     DateTime dateTime = flightTime.toDate();
     String formattedTime = DateFormat.jm().format(dateTime);
     return formattedTime;
-  }
-
-  Future<void> fetchTotalAmount() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      try {
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .get();
-
-        if (userSnapshot.exists) {
-          List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
-
-          int total = 0;
-          for (String ticketId in bookedTickets) {
-            DocumentSnapshot ticketSnapshot = await FirebaseFirestore.instance
-                .collection('Flights')
-                .doc(ticketId)
-                .get();
-
-            if (ticketSnapshot.exists) {
-              var ticketPrice = ticketSnapshot['Ticket_crown_price'];
-              if (ticketPrice is int) {
-                total += ticketPrice;
-              } else if (ticketPrice is num) {
-                total += ticketPrice.toInt();
-              }
-            }
-          }
-
-          setState(() {
-            totalAmount = total;
-          });
-        }
-      } catch (error) {
-        print('Error fetching total amount: $error');
-      }
-    }
   }
 }

@@ -1,8 +1,8 @@
-// ignore_for_file: camel_case_types, sort_child_properties_last
+// ignore_for_file: camel_case_types, sort_child_properties_last, non_constant_identifier_names
 
 import 'dart:developer';
+import 'dart:math';
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'package:provider/provider.dart';
@@ -54,23 +54,11 @@ class _searchflightState extends State<searchflight>
     });
   }
 
-  late ColorNotifire notifire;
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     User? currentUser = FirebaseAuth.instance.currentUser;
 
     String userId = currentUser!.uid;
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
       key: _scaffoldKey,
       body: Column(
@@ -422,6 +410,7 @@ class _searchflightState extends State<searchflight>
                               onTap: () {
                                 setState(() {
                                   isOneWaySelected = true;
+                                  isRoundTripSelected = false;
                                 });
                               },
                               child: Container(
@@ -450,6 +439,7 @@ class _searchflightState extends State<searchflight>
                               onTap: () {
                                 setState(() {
                                   isOneWaySelected = false;
+                                  isRoundTripSelected = true;
                                 });
                               },
                               child: Container(
@@ -479,79 +469,6 @@ class _searchflightState extends State<searchflight>
                           const SizedBox(
                             height: 10,
                           ),
-                        // Row(
-                        //   children: [
-                        //     SizedBox(
-                        //       width: 330,
-                        //       height: 70,
-                        //       child: TextFormField(
-                        //         readOnly:
-                        //             true, // Make the text field non-editable
-                        //         style: TextStyle(
-                        //             color: notifire.black,
-                        //             fontFamily: "Gilroy",
-                        //             fontSize: 18),
-                        //         decoration: InputDecoration(
-                        //           border: OutlineInputBorder(
-                        //             borderRadius: BorderRadius.circular(12),
-                        //           ),
-                        //           enabledBorder: OutlineInputBorder(
-                        //             borderRadius: BorderRadius.circular(12),
-                        //             borderSide: const BorderSide(
-                        //               color: Colors.blueGrey,
-                        //             ),
-                        //           ),
-                        //           focusedBorder: OutlineInputBorder(
-                        //             borderRadius: BorderRadius.circular(12),
-                        //             borderSide: const BorderSide(
-                        //               color: Colors
-                        //                   .blueGrey, // Same color as border
-                        //             ),
-                        //           ),
-                        //           hintStyle: TextStyle(
-                        //               color: notifire.black,
-                        //               fontFamily: "gilroy",
-                        //               fontWeight: FontWeight.w500,
-                        //               fontSize: 18),
-                        //           fillColor: Colors.white,
-                        //           hintText: "Amman",
-                        //           labelText: "From",
-                        //           labelStyle: TextStyle(
-                        //               color: notifire.black,
-                        //               fontFamily: "gilroy",
-                        //               fontWeight: FontWeight.w600,
-                        //               fontSize: 18),
-                        //         ),
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-
-                        // Row(children: [     // Center(
-                        //   child: Transform.rotate(
-                        //     angle: 1.9,
-                        //     child: const Icon(
-                        //       Icons.local_airport,
-                        //       color: Color.fromARGB(255, 0, 0, 0), //PLANE
-                        //       size: 24,
-                        //     ),
-                        //   ),
-                        // // ),
-                        // const SizedBox(
-                        //   width: 10,
-                        // ),
-                        // const Text(
-                        //   'To ',
-                        //   style: TextStyle(
-                        //       color: Color.fromARGB(255, 0, 0, 0),
-                        //       fontSize: 18,
-                        //       fontFamily: 'Gilroy',
-                        //       fontWeight: FontWeight.w600),
-                        // ),
-                        // const SizedBox(
-                        //   width: 10,
-                        // ),],)
-                        // const SizedBox(height: 5),
                         Row(
                           children: [
                             Transform.rotate(
@@ -649,35 +566,6 @@ class _searchflightState extends State<searchflight>
                             ),
                           ],
                         ),
-
-                        // Row(
-                        //   children: [
-                        //     const Text(
-                        //       'Departure',
-                        //       style: TextStyle(
-                        //         color: Color.fromARGB(255, 0, 0, 0),
-                        //         fontSize: 16,
-                        //       ),
-                        //     ),
-                        //     IconButton(
-                        //       icon: const Icon(Icons.calendar_month),
-                        //       color: Colors.black,
-                        //       onPressed: () {
-                        //         _selectDate(context, true);
-                        //       },
-                        //     ),
-                        //     Text(
-                        //       selectedFromDate != null
-                        //           ? DateFormat.yMMMd().format(selectedFromDate!)
-                        //           : '',
-                        //       style: const TextStyle(
-                        //         color: Color.fromARGB(255, 0, 0, 0),
-                        //         fontWeight: FontWeight.bold,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
-
                         const SizedBox(
                           height: 10,
                         ),
@@ -707,12 +595,6 @@ class _searchflightState extends State<searchflight>
                                         _selectDate(context, false);
                                       },
                                     ),
-                                    // border: OutlineInputBorder(
-                                    //   borderSide: const BorderSide(
-                                    //       color: Color.fromARGB(
-                                    //           255, 238, 216, 216)),
-                                    //   borderRadius: BorderRadius.circular(8.0),
-                                    // ),
                                     focusedBorder: OutlineInputBorder(
                                       borderSide: const BorderSide(
                                           color: Colors
@@ -724,33 +606,6 @@ class _searchflightState extends State<searchflight>
                               ),
                             ],
                           ),
-                        // Row(
-                        //   children: [
-                        //     const Text(
-                        //       'Return',
-                        //       style: TextStyle(
-                        //         color: Color.fromARGB(255, 0, 0, 0),
-                        //         fontSize: 16,
-                        //       ),
-                        //     ),
-                        //     IconButton(
-                        //       icon: const Icon(Icons.calendar_month),
-                        //       color: Colors.black,
-                        //       onPressed: () {
-                        //         _selectDate(context, false);
-                        //       },
-                        //     ),
-                        //     Text(
-                        //       selectedToDate != null
-                        //           ? DateFormat.yMMMd().format(selectedToDate!)
-                        //           : '',
-                        //       style: const TextStyle(
-                        //         color: Color.fromARGB(255, 0, 0, 0),
-                        //         fontWeight: FontWeight.bold,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                         const SizedBox(
                           height: 15,
                         ),
@@ -796,55 +651,6 @@ class _searchflightState extends State<searchflight>
                             );
                           }),
                         ),
-                        ////////////CLASSS CODE
-                        // Row(
-                        //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        //   children: [
-                        //     const Text(
-                        //       'Class',
-                        //       style: TextStyle(
-                        //         color: Color.fromARGB(255, 0, 0, 0),
-                        //         fontSize: 16,
-                        //       ),
-                        //     ),
-                        //     Radio(
-                        //       value: true,
-                        //       groupValue: EconomyClassSelected,
-                        //       onChanged: (bool? value) {
-                        //         setState(() {
-                        //           EconomyClassSelected = value ?? false;
-                        //           CrownClassSelected = !EconomyClassSelected;
-                        //         });
-                        //       },
-                        //       activeColor: Color.fromARGB(255, 63, 88, 112),
-                        //     ),
-                        //     const Text(
-                        //       'Economy',
-                        //       style: TextStyle(
-                        //         color: Color.fromARGB(255, 0, 0, 0),
-                        //         fontSize: 16,
-                        //       ),
-                        //     ),
-                        //     Radio(
-                        //       value: true,
-                        //       groupValue: CrownClassSelected,
-                        //       onChanged: (bool? value) {
-                        //         setState(() {
-                        //           CrownClassSelected = value ?? false;
-                        //           EconomyClassSelected = !CrownClassSelected;
-                        //         });
-                        //       },
-                        //       activeColor: Color.fromARGB(255, 63, 88, 112),
-                        //     ),
-                        //     const Text(
-                        //       'Crown',
-                        //       style: TextStyle(
-                        //         color: Color.fromARGB(255, 0, 0, 0),
-                        //         fontSize: 16,
-                        //       ),
-                        //     ),
-                        //   ],
-                        // ),
                         if (isOneWaySelected)
                           const SizedBox(
                             height: 10,
@@ -861,7 +667,8 @@ class _searchflightState extends State<searchflight>
                                 child: ElevatedButton(
                                   style: ButtonStyle(
                                     backgroundColor: MaterialStateProperty.all(
-                                        Color.fromARGB(255, 216, 230, 238)),
+                                        const Color.fromARGB(
+                                            255, 216, 230, 238)),
                                   ),
                                   onPressed: _searchFlights,
                                   child: const Text(
@@ -936,6 +743,13 @@ class _searchflightState extends State<searchflight>
   }
 
   void _searchFlights() {
+    // print('Departure City: $selectedDepartureCity');
+    // print('Arrival City: $selectedArrivalCity');
+    // print('Is Round Trip: $isRoundTripSelected');
+    // print('Selected From Date: $selectedFromDate');
+    // print('Selected To Date: $selectedToDate');
+    // print('Is One Way: $isOneWaySelected');
+
     if (isRoundTripSelected &&
         (selectedFromDate == null || selectedToDate == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -948,8 +762,8 @@ class _searchflightState extends State<searchflight>
         context,
         MaterialPageRoute(
           builder: (_) => TicketsPage(
-            departureCity: selectedDepartureCity,
-            arrivalCity: selectedArrivalCity,
+            departureCity: selectedDepartureCity.toString(),
+            arrivalCity: selectedArrivalCity.toString(),
             isRoundTrip: isRoundTripSelected,
             selectedFromDate: selectedFromDate,
             selectedToDate: selectedToDate,
@@ -994,7 +808,6 @@ class _searchflightState extends State<searchflight>
         return {}; // Return an empty map if no booked tickets are found
       }
     } catch (e) {
-      log(404 as String);
       return {}; // Return an empty map in case of an error
     }
   }

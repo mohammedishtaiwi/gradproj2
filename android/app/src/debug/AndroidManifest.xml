@@ -11,7 +11,7 @@
 
 
     <application
-        android:label="gradproj2"
+        android:label="QAIA Avatars"
         android:icon="@mipmap/ic_launcher"
         tools:replace="android:label">
 

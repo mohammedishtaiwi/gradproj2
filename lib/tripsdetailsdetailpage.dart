@@ -46,6 +46,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
   Widget build(BuildContext context) {
     notifire = Provider.of<ColorNotifire>(context, listen: true);
 
+    log('Ticket Data: ${widget.ticketData}'); // Log ticket data
+
     return FutureBuilder<DocumentSnapshot>(
       future: FirebaseFirestore.instance
           .collection('users')
@@ -138,13 +140,14 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          Text(
-                            '${widget.ticketData['Dep_city']}',
+                          const Text(
+                            'Amman',
                             style: TextStyle(
-                                fontSize: 24,
-                                color: notifire.getdarkscolor,
-                                fontWeight: FontWeight.w400,
-                                fontFamily: 'Gilroy'),
+                              fontSize: 24,
+                              // color: notifire.getdarkscolor,
+                              // fontWeight: FontWeight.w400,
+                              // fontFamily: 'Gilroy'
+                            ),
                           ),
                           Column(
                             children: [
