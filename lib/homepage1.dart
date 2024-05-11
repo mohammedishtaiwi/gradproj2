@@ -120,6 +120,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                     ),
                   ),
                   Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       Text(
                         "Location",
@@ -154,9 +155,9 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                                 fontSize: 13,
                                 fontFamily: 'Gilroy'),
                           ),
-                          const SizedBox(
-                            width: 5,
-                          ),
+                          // const SizedBox(
+                          //   width: 5,
+                          // ),
                           // const Icon(Icons.keyboard_arrow_down_outlined,
                           //     color: Colors.blue),
                         ],
@@ -197,7 +198,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
             ),
           ),
           body: Padding(
-            padding: const EdgeInsets.all(10),
+            padding: const EdgeInsets.only(left: 0),
             child: Column(children: [
               StreamBuilder<DocumentSnapshot<Map<String, dynamic>>>(
                 stream: getUserStream(),
@@ -209,28 +210,28 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                       return Row(
                         children: [
                           Text(
-                            "Welcome, ${snapshot.data!['name']}",
+                            "    Welcome, ${snapshot.data!['name']}",
                             style: TextStyle(
                                 color: notifire.getdarkscolor,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 17,
                                 fontFamily: 'Gilroy'),
                           ),
-                          const SizedBox(height: 20),
+                          //const SizedBox(height: 20),
                         ],
                       );
                     } else {
                       return Row(
                         children: [
                           Text(
-                            "Welcome, User",
+                            "    Welcome, User",
                             style: TextStyle(
                                 color: notifire.getdarkscolor,
                                 fontWeight: FontWeight.w400,
                                 fontSize: 17,
                                 fontFamily: 'Gilroy'),
                           ),
-                          const SizedBox(height: 20),
+                          // const SizedBox(height: 20),
                         ],
                       );
                     }
@@ -239,22 +240,22 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                   }
                 },
               ),
-              const SizedBox(height: 4),
-              const Divider(thickness: 1),
-              const SizedBox(height: 4),
-              Container(
-                //height: kToolbarHeight + 4,
-                padding: const EdgeInsets.only(top: 0),
-                decoration: const BoxDecoration(
-                  color: Color.fromARGB(0, 203, 5, 5),
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(8.0),
-                    topRight: Radius.circular(8.0),
-                    bottomLeft: Radius.circular(8.0),
-                    bottomRight: Radius.circular(8.0),
-                  ),
-                ),
-              ),
+              // const SizedBox(height: 4),
+              // const Divider(thickness: 1),
+              // const SizedBox(height: 4),
+              // Container(
+              //   //height: kToolbarHeight + 4,
+              //   padding: const EdgeInsets.only(top: 0),
+              //   decoration: const BoxDecoration(
+              //     color: Color.fromARGB(0, 203, 5, 5),
+              //     borderRadius: BorderRadius.only(
+              //       topLeft: Radius.circular(8.0),
+              //       topRight: Radius.circular(8.0),
+              //       bottomLeft: Radius.circular(8.0),
+              //       bottomRight: Radius.circular(8.0),
+              //     ),
+              //   ),
+              // ),
               const Expanded(
                 child: searchflight(),
               ),

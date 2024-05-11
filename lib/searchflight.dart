@@ -2,7 +2,9 @@
 
 import 'dart:developer';
 import 'dart:math';
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'package:provider/provider.dart';
@@ -98,22 +100,22 @@ class _searchflightState extends State<searchflight>
                     color: Colors.transparent,
                   ),
                   child: Card(
-                    elevation: 10,
-                    color: const Color.fromARGB(255, 48, 48, 48),
+                    elevation: 0,
+                    color: const Color.fromARGB(255, 216, 230, 238),
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(15),
+                      borderRadius: BorderRadius.circular(60),
                     ),
                     child: const Stack(
                       children: [
                         Positioned.fill(
                           child: Center(
                             child: Text(
-                              'No Flights Have Been Booked',
+                              'Your upcoming flight will appear here',
                               style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 18,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  color: Colors.black,
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.w500,
+                                  fontFamily: 'Gilroy'),
                             ),
                           ),
                         ),
@@ -143,17 +145,17 @@ class _searchflightState extends State<searchflight>
                         color: Colors.transparent,
                       ),
                       child: Card(
-                        elevation: 10,
-                        color: const Color.fromARGB(255, 48, 48, 48),
+                        elevation: 0,
+                        color: const Color.fromARGB(255, 216, 230, 238),
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(15),
+                          borderRadius: BorderRadius.circular(60),
                         ),
                         child: const Stack(
                           children: [
                             Positioned.fill(
                               child: Center(
                                 child: Text(
-                                  'No Flights Have Been Booked',
+                                  'Your upcoming flight will appear here',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -172,20 +174,19 @@ class _searchflightState extends State<searchflight>
 
                     return SizedBox(
                       child: Card(
-                        elevation: 5,
+                        elevation: 0,
                         margin: const EdgeInsets.symmetric(
                             horizontal: 14, vertical: 8),
                         child: Column(
-                          mainAxisSize: MainAxisSize.min,
                           children: <Widget>[
                             Container(
+                              width: 500,
                               padding: const EdgeInsets.only(
                                   top: 16, left: 14, right: 14, bottom: 8),
-                              decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 216, 230, 238),
-                                  borderRadius: BorderRadius.only(
-                                      topLeft: Radius.circular(24),
-                                      topRight: Radius.circular(24))),
+                              decoration: BoxDecoration(
+                                color: const Color.fromARGB(255, 193, 205, 213),
+                                borderRadius: BorderRadius.circular(40),
+                              ),
                               child: Column(
                                 children: <Widget>[
                                   Row(
@@ -261,7 +262,6 @@ class _searchflightState extends State<searchflight>
                                             ),
                                           ],
                                         ),
-                                        const SizedBox(height: 10),
                                       ],
                                     ),
                                   if (ticketData['Flight_status'] != 'Delayed')
@@ -302,17 +302,17 @@ class _searchflightState extends State<searchflight>
                                       ],
                                     ),
                                   Row(
-                                    mainAxisAlignment:
-                                        MainAxisAlignment.spaceBetween,
+                                    mainAxisAlignment: MainAxisAlignment.center,
                                     children: <Widget>[
-                                      Text(
-                                        'Flight Number: ${ticketData['Flight_ID']}',
-                                        style: const TextStyle(
-                                            color: Colors.black,
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.w500,
-                                            fontFamily: 'Gilroy'),
-                                      ),
+                                      const SizedBox(height: 5),
+                                      // Text(
+                                      //   'Flight Number: ${ticketData['Flight_ID']}',
+                                      //   style: const TextStyle(
+                                      //       color: Colors.black,
+                                      //       fontSize: 16,
+                                      //       fontWeight: FontWeight.w500,
+                                      //       fontFamily: 'Gilroy'),
+                                      // ),
                                       GestureDetector(
                                         onTap: () {
                                           Navigator.push(
@@ -329,7 +329,7 @@ class _searchflightState extends State<searchflight>
                                         child: const Text(
                                           'View Ticket >',
                                           style: TextStyle(
-                                            color: Colors.blueAccent,
+                                            color: Colors.black,
                                             fontSize: 14,
                                             fontWeight: FontWeight.w600,
                                             fontFamily: 'Gilroy',
@@ -388,307 +388,323 @@ class _searchflightState extends State<searchflight>
             } else {
               List<String> cities = snapshot.data!;
 
-              return Column(children: [
-                const SizedBox(
-                  height: 5,
-                ),
-                Container(
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(20),
-                    color: Colors.white,
-                  ),
-                  child: Padding(
-                    padding: const EdgeInsets.only(
-                        left: 13.0, right: 13.0, top: 5, bottom: 10),
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isOneWaySelected = true;
-                                  isRoundTripSelected = false;
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: isOneWaySelected
-                                      ? Colors.blueGrey
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                                child: Text(
-                                  'One Way',
-                                  style: TextStyle(
-                                      color: isOneWaySelected
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: 'Gilroy',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ),
-                            const SizedBox(width: 20),
-                            GestureDetector(
-                              onTap: () {
-                                setState(() {
-                                  isOneWaySelected = false;
-                                  isRoundTripSelected = true;
-                                });
-                              },
-                              child: Container(
-                                decoration: BoxDecoration(
-                                  color: !isOneWaySelected
-                                      ? Colors.blueGrey
-                                      : Colors.transparent,
-                                  borderRadius: BorderRadius.circular(20),
-                                ),
-                                padding: const EdgeInsets.symmetric(
-                                    vertical: 10, horizontal: 20),
-                                child: Text(
-                                  'Round Trip',
-                                  style: TextStyle(
-                                      color: !isOneWaySelected
-                                          ? Colors.white
-                                          : Colors.black,
-                                      fontSize: 16,
-                                      fontFamily: 'Gilroy',
-                                      fontWeight: FontWeight.w500),
-                                ),
-                              ),
-                            ),
-                          ],
+              return Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Container(
+                      height: 429,
+                      width: 372,
+                      decoration: const BoxDecoration(
+                        borderRadius: BorderRadius.only(
+                          topLeft: Radius.circular(80),
+                          topRight: Radius.circular(80),
                         ),
-                        if (isOneWaySelected)
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        Row(
+                        color: Color.fromARGB(255, 193, 205, 213),
+                      ),
+                      child: Padding(
+                        padding: const EdgeInsets.only(
+                            left: 25.0, right: 25.0, bottom: 5, top: 20),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                           children: [
-                            Transform.rotate(
-                              angle: 0.9,
-                              child: const Icon(
-                                Icons.local_airport,
-                                color: Color.fromARGB(255, 0, 0, 0), //PLANE
-                                size: 24,
-                              ),
-                            ),
-                            const SizedBox(
-                              width: 10,
-                            ),
-                            Expanded(
-                              child: DropdownButton<String>(
-                                value: selectedArrivalCity.isNotEmpty
-                                    ? selectedArrivalCity
-                                    : null,
-                                items: cities
-                                    .toSet()
-                                    .where(
-                                        (city) => city != selectedDepartureCity)
-                                    .map((city) {
-                                  return DropdownMenuItem<String>(
-                                    value: city,
-                                    child: Text(
-                                      city,
-                                      style: const TextStyle(
-                                        color: Colors.black,
-                                        fontFamily: "gilroy",
-                                        fontWeight: FontWeight.w500,
-                                      ),
-                                    ),
-                                  );
-                                }).toList(),
-                                isExpanded: true,
-                                style: const TextStyle(
-                                    color: Colors.black,
-                                    fontFamily: "gilroy",
-                                    fontWeight: FontWeight.w500,
-                                    fontSize: 18),
-                                onChanged: (value) {
-                                  if (value != null &&
-                                      value != selectedArrivalCity) {
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                GestureDetector(
+                                  onTap: () {
                                     setState(() {
-                                      selectedArrivalCity = value;
+                                      isOneWaySelected = true;
+                                      isRoundTripSelected = false;
                                     });
-                                  }
-                                },
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 4,
-                        ),
-                        Row(
-                          children: [
-                            Expanded(
-                              child: TextFormField(
-                                readOnly: true,
-                                controller: TextEditingController(
-                                  text: selectedFromDate != null
-                                      ? DateFormat.yMMMd()
-                                          .format(selectedFromDate!)
-                                      : '',
-                                ),
-                                decoration: InputDecoration(
-                                  labelText: 'Departure',
-                                  labelStyle: const TextStyle(
-                                      color: Color.fromARGB(255, 0, 0, 0),
-                                      fontSize: 17,
-                                      fontFamily: 'Gilroy',
-                                      fontWeight: FontWeight.w500),
-                                  suffixIcon: IconButton(
-                                    icon: const Icon(Icons.calendar_month),
-                                    color: Colors.black,
-                                    onPressed: () {
-                                      _selectDate(context, true);
-                                    },
-                                  ),
-                                  // border: OutlineInputBorder(
-                                  //   borderSide: const BorderSide(
-                                  //       color:
-                                  //           Color.fromARGB(255, 216, 230, 238)),
-                                  //   borderRadius: BorderRadius.circular(8.0),
-                                  // ),
-                                  focusedBorder: OutlineInputBorder(
-                                    borderSide: const BorderSide(
-                                        color: Colors.blueGrey),
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        if (!isOneWaySelected)
-                          Row(
-                            children: [
-                              Expanded(
-                                child: TextFormField(
-                                  readOnly: true,
-                                  controller: TextEditingController(
-                                    text: selectedToDate != null
-                                        ? DateFormat.yMMMd()
-                                            .format(selectedToDate!)
-                                        : '',
-                                  ),
-                                  decoration: InputDecoration(
-                                    labelText: 'Return',
-                                    labelStyle: const TextStyle(
-                                        color: Color.fromARGB(255, 0, 0, 0),
-                                        fontSize: 17,
-                                        fontFamily: 'Gilroy',
-                                        fontWeight: FontWeight.w500),
-                                    suffixIcon: IconButton(
-                                      icon: const Icon(Icons.calendar_month),
-                                      color: Colors.black,
-                                      onPressed: () {
-                                        _selectDate(context, false);
-                                      },
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: isOneWaySelected
+                                          ? Colors.blueGrey
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(25),
                                     ),
-                                    focusedBorder: OutlineInputBorder(
-                                      borderSide: const BorderSide(
-                                          color: Colors
-                                              .blueGrey), // Ensure color is black
-                                      borderRadius: BorderRadius.circular(8.0),
-                                    ),
-                                  ),
-                                ),
-                              ),
-                            ],
-                          ),
-                        const SizedBox(
-                          height: 15,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                          children:
-                              List.generate(ticketClasses.length, (index) {
-                            return Expanded(
-                              child: GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    selectedIndex = index;
-                                  });
-                                },
-                                child: Container(
-                                  width: MediaQuery.of(context).size.width /
-                                          ticketClasses.length -
-                                      16,
-                                  margin: const EdgeInsets.symmetric(
-                                      horizontal: 8.0),
-                                  decoration: BoxDecoration(
-                                    color: selectedIndex == index
-                                        ? Colors.blueGrey
-                                        : Colors.grey,
-                                    borderRadius: BorderRadius.circular(8.0),
-                                  ),
-                                  padding: const EdgeInsets.symmetric(
-                                      vertical: 12.0),
-                                  child: Center(
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 20),
                                     child: Text(
-                                      ticketClasses[index],
+                                      'One Way',
                                       style: TextStyle(
-                                          color: selectedIndex == index
+                                          color: isOneWaySelected
                                               ? Colors.white
-                                              : Color.fromARGB(255, 0, 0, 0),
-                                          fontSize: 14,
+                                              : Colors.black,
+                                          fontSize: 16,
                                           fontFamily: 'Gilroy',
                                           fontWeight: FontWeight.w500),
                                     ),
                                   ),
                                 ),
-                              ),
-                            );
-                          }),
-                        ),
-                        if (isOneWaySelected)
-                          const SizedBox(
-                            height: 10,
-                          ),
-                        const SizedBox(
-                          height: 10,
-                        ),
-                        Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            Expanded(
-                              child: Align(
-                                alignment: Alignment.bottomCenter,
-                                child: ElevatedButton(
-                                  style: ButtonStyle(
-                                    backgroundColor: MaterialStateProperty.all(
-                                        const Color.fromARGB(
-                                            255, 216, 230, 238)),
-                                  ),
-                                  onPressed: _searchFlights,
-                                  child: const Text(
-                                    "Search Flights",
-                                    style: TextStyle(
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.w500,
-                                        color: Colors.black,
-                                        fontFamily: 'Gilroy'),
+                                const SizedBox(width: 20),
+                                GestureDetector(
+                                  onTap: () {
+                                    setState(() {
+                                      isOneWaySelected = false;
+                                      isRoundTripSelected = true;
+                                    });
+                                  },
+                                  child: Container(
+                                    decoration: BoxDecoration(
+                                      color: !isOneWaySelected
+                                          ? Colors.blueGrey
+                                          : Colors.transparent,
+                                      borderRadius: BorderRadius.circular(25),
+                                    ),
+                                    padding: const EdgeInsets.symmetric(
+                                        vertical: 10, horizontal: 20),
+                                    child: Text(
+                                      'Round Trip',
+                                      style: TextStyle(
+                                          color: !isOneWaySelected
+                                              ? Colors.white
+                                              : Colors.black,
+                                          fontSize: 16,
+                                          fontFamily: 'Gilroy',
+                                          fontWeight: FontWeight.w500),
+                                    ),
                                   ),
                                 ),
-                              ),
+                              ],
                             ),
+                            if (isOneWaySelected)
+                              const SizedBox(
+                                height: 10,
+                              ),
+                            Row(
+                              children: [
+                                Transform.rotate(
+                                  angle: 0.9,
+                                  child: const Icon(
+                                    Icons.local_airport,
+                                    color: Color.fromARGB(255, 0, 0, 0), //PLANE
+                                    size: 24,
+                                  ),
+                                ),
+                                const SizedBox(
+                                  width: 10,
+                                ),
+                                Expanded(
+                                  child: DropdownButton<String>(
+                                    value: selectedArrivalCity.isNotEmpty
+                                        ? selectedArrivalCity
+                                        : null,
+                                    items: cities
+                                        .toSet()
+                                        .where((city) =>
+                                            city != selectedDepartureCity)
+                                        .map((city) {
+                                      return DropdownMenuItem<String>(
+                                        value: city,
+                                        child: Text(
+                                          city,
+                                          style: const TextStyle(
+                                            color: Colors.black,
+                                            fontFamily: "gilroy",
+                                            fontWeight: FontWeight.w500,
+                                          ),
+                                        ),
+                                      );
+                                    }).toList(),
+                                    isExpanded: true,
+                                    style: const TextStyle(
+                                        color: Colors.black,
+                                        fontFamily: "gilroy",
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 18),
+                                    onChanged: (value) {
+                                      if (value != null &&
+                                          value != selectedArrivalCity) {
+                                        setState(() {
+                                          selectedArrivalCity = value;
+                                        });
+                                      }
+                                    },
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 4,
+                            ),
+                            Row(
+                              children: [
+                                Expanded(
+                                  child: TextFormField(
+                                    readOnly: true,
+                                    controller: TextEditingController(
+                                      text: selectedFromDate != null
+                                          ? DateFormat.yMMMd()
+                                              .format(selectedFromDate!)
+                                          : '',
+                                    ),
+                                    decoration: InputDecoration(
+                                      labelText: 'Departure',
+                                      labelStyle: const TextStyle(
+                                          color: Color.fromARGB(255, 0, 0, 0),
+                                          fontSize: 17,
+                                          fontFamily: 'Gilroy',
+                                          fontWeight: FontWeight.w500),
+                                      suffixIcon: IconButton(
+                                        icon: const Icon(Icons.calendar_month),
+                                        color: Colors.black,
+                                        onPressed: () {
+                                          _selectDate(context, true);
+                                        },
+                                      ),
+                                      // border: OutlineInputBorder(
+                                      //   borderSide: const BorderSide(
+                                      //       color:
+                                      //           Color.fromARGB(255, 216, 230, 238)),
+                                      //   borderRadius: BorderRadius.circular(8.0),
+                                      // ),
+                                      focusedBorder: OutlineInputBorder(
+                                        borderSide: const BorderSide(
+                                            color: Colors.blueGrey),
+                                        borderRadius:
+                                            BorderRadius.circular(8.0),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            if (!isOneWaySelected)
+                              Row(
+                                children: [
+                                  Expanded(
+                                    child: TextFormField(
+                                      readOnly: true,
+                                      controller: TextEditingController(
+                                        text: selectedToDate != null
+                                            ? DateFormat.yMMMd()
+                                                .format(selectedToDate!)
+                                            : '',
+                                      ),
+                                      decoration: InputDecoration(
+                                        labelText: 'Return',
+                                        labelStyle: const TextStyle(
+                                            color: Color.fromARGB(255, 0, 0, 0),
+                                            fontSize: 17,
+                                            fontFamily: 'Gilroy',
+                                            fontWeight: FontWeight.w500),
+                                        suffixIcon: IconButton(
+                                          icon:
+                                              const Icon(Icons.calendar_month),
+                                          color: Colors.black,
+                                          onPressed: () {
+                                            _selectDate(context, false);
+                                          },
+                                        ),
+                                        focusedBorder: OutlineInputBorder(
+                                          borderSide: const BorderSide(
+                                              color: Colors
+                                                  .blueGrey), // Ensure color is black
+                                          borderRadius:
+                                              BorderRadius.circular(8.0),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            const SizedBox(
+                              height: 10,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                              children:
+                                  List.generate(ticketClasses.length, (index) {
+                                return Expanded(
+                                  child: GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        selectedIndex = index;
+                                      });
+                                    },
+                                    child: Container(
+                                      width: MediaQuery.of(context).size.width /
+                                              ticketClasses.length -
+                                          16,
+                                      margin: const EdgeInsets.symmetric(
+                                          horizontal: 8.0),
+                                      decoration: BoxDecoration(
+                                        color: selectedIndex == index
+                                            ? Colors.blueGrey
+                                            : Colors.transparent,
+                                        borderRadius:
+                                            BorderRadius.circular(25.0),
+                                      ),
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 10),
+                                      child: Center(
+                                        child: Text(
+                                          ticketClasses[index],
+                                          style: TextStyle(
+                                              color: selectedIndex == index
+                                                  ? Colors.white
+                                                  : Color.fromARGB(
+                                                      255, 0, 0, 0),
+                                              fontSize: 16,
+                                              fontFamily: 'Gilroy',
+                                              fontWeight: FontWeight.w500),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                );
+                              }),
+                            ),
+                            // if (isOneWaySelected)
+                            //   const SizedBox(
+                            //     height: 10,
+                            //   ),
+                            const SizedBox(
+                              height: 5,
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Expanded(
+                                  child: Align(
+                                    alignment: Alignment.bottomCenter,
+                                    child: ElevatedButton(
+                                      style: ButtonStyle(
+                                        backgroundColor:
+                                            MaterialStateProperty.all(
+                                                Colors.blueGrey),
+                                        padding: MaterialStateProperty.all<
+                                                EdgeInsetsGeometry>(
+                                            const EdgeInsets.only(
+                                                top: 10,
+                                                bottom: 10,
+                                                left: 30,
+                                                right: 30)),
+                                      ),
+                                      onPressed: _searchFlights,
+                                      child: const Text(
+                                        "Search",
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            fontWeight: FontWeight.w500,
+                                            color: Colors.white,
+                                            fontFamily: 'Gilroy'),
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ],
+                            )
                           ],
-                        )
-                      ],
+                        ),
+                      ),
                     ),
-                  ),
-                ),
-              ]);
+                  ]);
             }
           },
         );

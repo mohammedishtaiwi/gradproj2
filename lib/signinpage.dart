@@ -1,3 +1,4 @@
+import 'package:get/get.dart';
 import 'package:gradproj2/apiwrapper.dart';
 import 'package:gradproj2/bottomnavigationbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -22,199 +23,234 @@ class _signinState extends State<signin> {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   bool value = false;
   bool _isVisible = true;
-  late ColorNotifire notifire;
-  getdarkmodepreviousstate() async {
-    final prefs = await SharedPreferences.getInstance();
-    bool? previusstate = prefs.getBool("setIsDark");
-    if (previusstate == null) {
-      notifire.setIsDark = false;
-    } else {
-      notifire.setIsDark = previusstate;
-    }
-  }
+  // late ColorNotifire notifire;
+  // getdarkmodepreviousstate() async {
+  //   final prefs = await SharedPreferences.getInstance();
+  //   bool? previusstate = prefs.getBool("setIsDark");
+  //   if (previusstate == null) {
+  //     notifire.setIsDark = false;
+  //   } else {
+  //     notifire.setIsDark = previusstate;
+  //   }
+  // }
 
   @override
   Widget build(BuildContext context) {
-    notifire = Provider.of<ColorNotifire>(context, listen: true);
     return Scaffold(
       resizeToAvoidBottomInset: false,
-      backgroundColor: notifire.backgroundallscreenColor,
-      body: Stack(
-        children: [
-          Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: SingleChildScrollView(
-              physics: const BouncingScrollPhysics(),
+      backgroundColor: Colors.white, // Change background color as needed
+      body: SingleChildScrollView(
+        child: Column(
+          children: [
+            Container(
+              height: 210, // Adjust height as needed
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                color: Color.fromARGB(255, 114, 151, 172),
+                borderRadius: BorderRadius.only(
+                  bottomLeft: Radius.circular(190),
+                  bottomRight: Radius.circular(190),
+                ),
+              ),
               child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset(
+                    "assets/logo2.png",
+                    width: 160,
+                    height: 180,
+                  ),
+                  // const SizedBox(height: 0),
+                  // const Text(
+                  //   'Welcome back!',
+                  //   style: TextStyle(
+                  //     fontSize: 25,
+                  //     fontWeight: FontWeight.w500,
+                  //     color: Colors.white,
+                  //     fontFamily: 'Gilroy',
+                  //   ),
+                  // ),
+                ],
+              ),
+            ),
+            const SizedBox(height: 30),
+            Align(
+              alignment: Alignment.topLeft,
+              child: Text(
+                '   Welcome back!',
+                style: TextStyle(
+                  fontSize: 25,
+                  fontWeight: FontWeight.w500,
+                  color: Colors.black,
+                  fontFamily: 'Gilroy',
+                ),
+              ),
+            ),
+            Padding(
+              padding: const EdgeInsets.symmetric(horizontal: 20),
+              child: Column(
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  RichText(
-                    text: const TextSpan(
-                      text: 'Welcome back!',
-                      style: TextStyle(
-                          fontSize: 25,
-                          fontWeight: FontWeight.w500,
-                          color:
-                              Colors.black, // Adjust the text color as needed
-                          fontFamily: 'Gilroy'),
-                    ),
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  Column(
-                    children: [
-                      TextField(
-                        controller: _emailController,
-                        style: TextStyle(
-                            color: notifire.getdarkscolor,
-                            fontFamily: "gilroy"),
-                        keyboardType: TextInputType.emailAddress,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: notifire.getgreycolor,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: Colors.blueGrey, // Same color as border
-                            ),
-                          ),
-                          hintStyle: TextStyle(
-                              color: notifire.getdarkscolor,
-                              fontFamily: "gilroy"),
-                          fillColor: Colors.white,
-                          hintText: 'Enter Your Email',
-                          labelText: "EMAIL",
-                          labelStyle: TextStyle(
-                              color: notifire.getdarkscolor,
-                              fontFamily: "gilroy"),
-                        ),
-                      ),
-                      const SizedBox(
-                        height: 28,
-                      ),
-                      TextField(
-                        style: TextStyle(
-                            color: notifire.getdarkscolor,
-                            fontFamily: "gilroy"),
-                        controller: _passwordController,
-                        obscureText: _isVisible,
-                        textInputAction: TextInputAction.next,
-                        decoration: InputDecoration(
-                          border: OutlineInputBorder(
-                              borderRadius: BorderRadius.circular(12)),
-                          suffixIcon: IconButton(
-                            onPressed: () {
-                              setState(() {
-                                _isVisible = !_isVisible;
-                              });
-                            },
-                            icon: _isVisible
-                                ? const Icon(
-                                    Icons.visibility_off_outlined,
-                                    color: Colors.grey,
-                                  )
-                                : const Icon(
-                                    Icons.visibility_outlined,
-                                    color: Colors.grey,
-                                  ),
-                          ),
-                          hintText: 'Enter Your Password',
-                          hintStyle: TextStyle(
-                              color: notifire.getdarkscolor,
-                              fontFamily: "gilroy"),
-                          labelText: "PASSWORD",
-                          labelStyle: TextStyle(
-                              color: notifire.getdarkscolor,
-                              fontFamily: "gilroy"),
-                          enabledBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: BorderSide(
-                              color: notifire.getgreycolor,
-                            ),
-                          ),
-                          focusedBorder: OutlineInputBorder(
-                            borderRadius: BorderRadius.circular(12),
-                            borderSide: const BorderSide(
-                              color: Colors.blueGrey, // Same color as border
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                  // const SizedBox(
-                  //   height: 5,
-                  // ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      // ignore: avoid_unnecessary_containers
-
-                      TextButton(
-                        child: Text(
-                          "Forgot Password?",
-                          style: TextStyle(
-                              fontSize: 13,
-                              decoration: TextDecoration.underline,
-                              color: notifire.getdarkscolor,
-                              fontFamily: 'Gilroy'),
-                        ),
-                        onPressed: () {
-                          Navigator.of(context).push(
-                            MaterialPageRoute(
-                              builder: (BuildContext context) =>
-                                  const forgetpassword(),
-                            ),
-                          );
-                        },
-                      ),
-                    ],
-                  ),
-                  const SizedBox(
-                    height: 20,
-                  ),
-                  // ignore: avoid_unnecessary_containers
-                  Container(
-                    child: FloatingActionButton(
-                      elevation: 0,
-                      shape: RoundedRectangleBorder(
+                  const SizedBox(height: 20),
+                  TextField(
+                    controller: _emailController,
+                    style: TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                    keyboardType: TextInputType.emailAddress,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
                           borderRadius: BorderRadius.circular(12)),
-                      // ignore: sort_child_properties_last
-                      child: const Text('SIGN IN',
-                          style: TextStyle(
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16,
-                              color: Colors.black,
-                              fontFamily: 'Gilroy')),
-                      backgroundColor: Color.fromARGB(255, 114, 151, 172),
-                      onPressed: () async {
-                        await _signInWithEmailAndPassword(context);
-                      },
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Colors.blueGrey, // Same color as border
+                        ),
+                      ),
+                      hintStyle:
+                          TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                      fillColor: Colors.white,
+                      hintText: 'Enter Your Email',
+                      labelText: "EMAIL",
+                      labelStyle:
+                          TextStyle(color: Colors.black, fontFamily: "gilroy"),
                     ),
                   ),
                   const SizedBox(
                     height: 28,
                   ),
-                  const SizedBox(
-                    height: 28,
+                  TextField(
+                    style: TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                    controller: _passwordController,
+                    obscureText: _isVisible,
+                    textInputAction: TextInputAction.next,
+                    decoration: InputDecoration(
+                      border: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12)),
+                      suffixIcon: IconButton(
+                        onPressed: () {
+                          setState(() {
+                            _isVisible = !_isVisible;
+                          });
+                        },
+                        icon: _isVisible
+                            ? const Icon(
+                                Icons.visibility_off_outlined,
+                                color: Colors.grey,
+                              )
+                            : const Icon(
+                                Icons.visibility_outlined,
+                                color: Colors.grey,
+                              ),
+                      ),
+                      hintText: 'Enter Your Password',
+                      hintStyle:
+                          TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                      labelText: "PASSWORD",
+                      labelStyle:
+                          TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                      enabledBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: BorderSide(
+                          color: Colors.grey,
+                        ),
+                      ),
+                      focusedBorder: OutlineInputBorder(
+                        borderRadius: BorderRadius.circular(12),
+                        borderSide: const BorderSide(
+                          color: Colors.blueGrey, // Same color as border
+                        ),
+                      ),
+                    ),
                   ),
                 ],
               ),
             ),
-          ),
-        ],
+            const SizedBox(
+              height: 5,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                // ignore: avoid_unnecessary_containers
+                Padding(
+                  padding: EdgeInsets.only(right: 15),
+                  child: TextButton(
+                    child: const Text(
+                      "Forgot Password?",
+                      style: TextStyle(
+                          fontSize: 13,
+                          decoration: TextDecoration.underline,
+                          color: Colors.black,
+                          fontFamily: 'Gilroy'),
+                    ),
+                    onPressed: () {
+                      Navigator.of(context).push(
+                        MaterialPageRoute(
+                          builder: (BuildContext context) =>
+                              const forgetpassword(),
+                        ),
+                      );
+                    },
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 20,
+            ),
+            // ignore: avoid_unnecessary_containers
+            // FloatingActionButton(
+            //   elevation: 0,
+            //   shape: RoundedRectangleBorder(
+            //     borderRadius: BorderRadius.circular(12),
+            //   ),
+            //   child: Text(
+            //     'SIGN IN',
+            //     style: TextStyle(
+            //       fontWeight: FontWeight.w500,
+            //       fontSize: 16,
+            //       color: Colors.black,
+            //       fontFamily: 'Gilroy',
+            //     ),
+            //   ),
+            //   backgroundColor: Color.fromARGB(255, 114, 151, 172),
+            //   onPressed: () async {
+            //     await _signInWithEmailAndPassword(context);
+            //   },
+            // ),floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+            FloatingActionButton.extended(
+              label: const Text(
+                "                                SIGN IN                              ",
+                style: TextStyle(
+                    fontWeight: FontWeight.w500,
+                    fontSize: 16,
+                    color: Colors.white,
+                    fontFamily: "gilroy"),
+              ),
+              onPressed: () async {
+                await _signInWithEmailAndPassword(context);
+              },
+              elevation: 0,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(12),
+              ),
+              backgroundColor: Color.fromARGB(255, 114, 151, 172),
+            ),
+
+            const SizedBox(
+              height: 28,
+            ),
+            const SizedBox(
+              height: 28,
+            ),
+          ],
+        ),
       ),
     );
   }

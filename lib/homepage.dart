@@ -1,3 +1,4 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj2/signinpage.dart';
 import 'package:gradproj2/signuppage.dart';
@@ -51,23 +52,20 @@ class _homeState extends State<home> with SingleTickerProviderStateMixin {
           body: Column(
             children: [
               Align(
-                alignment: Alignment.centerLeft,
+                alignment: Alignment.center,
                 child: Padding(
-                  padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 0),
                   child: Row(
                     children: [
-                      SizedBox(
-                        width: 350,
-                        //color: Colors.red,
-                        //height: 30,
-                        //padding: EdgeInsets.only(left: 12),
+                      Container(
+                        color: Color.fromARGB(255, 114, 151, 172),
+                        width: 392.5,
                         child: TabBar(
                           controller: _tabController,
-                          indicator: UnderlineTabIndicator(
-                              insets:
-                                  const EdgeInsets.symmetric(horizontal: 10),
-                              borderSide: BorderSide(
-                                  width: 2, color: notifire.getdarkscolor)),
+                          indicator: const UnderlineTabIndicator(
+                              insets: EdgeInsets.symmetric(horizontal: 10),
+                              borderSide:
+                                  BorderSide(width: 2, color: Colors.white)),
                           // unselectedLabelStyle: TextStyle(color: Colors.red),
                           // unselectedLabelColor: TextStyle(color: Colors.red),
                           labelPadding:
@@ -76,12 +74,14 @@ class _homeState extends State<home> with SingleTickerProviderStateMixin {
                           indicatorSize: TabBarIndicatorSize.label,
                           indicatorColor: notifire.getdarkscolor,
                           labelColor: notifire.getdarkscolor,
+                          dividerColor: Color.fromARGB(255, 114, 151, 172),
+                          tabAlignment: TabAlignment.center,
                           tabs: [
                             Tab(
                               child: Text(
                                 "Sign in",
                                 style: TextStyle(
-                                    color: notifire.getdarkscolor,
+                                    color: Colors.white,
                                     fontSize: 18,
                                     fontFamily: 'Gilroy'),
                               ),
@@ -90,7 +90,7 @@ class _homeState extends State<home> with SingleTickerProviderStateMixin {
                               child: Text(
                                 "Sign up",
                                 style: TextStyle(
-                                    color: notifire.getdarkscolor,
+                                    color: Colors.white,
                                     fontSize: 18,
                                     fontFamily: 'Gilroy'),
                               ),

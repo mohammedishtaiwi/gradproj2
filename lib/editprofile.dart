@@ -367,7 +367,16 @@ class _editprofileState extends State<editprofile> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 30),
+                  const Text(
+                    'For feedback or inquiry please contact us at qaiaavatars@gmail.com',
+                    style: TextStyle(
+                        fontSize: 15,
+                        fontWeight: FontWeight.w500,
+                        color: Colors.blueGrey,
+                        fontFamily: 'Gilroy'),
+                  ),
+                  const SizedBox(height: 50),
                 ],
               ),
             ),

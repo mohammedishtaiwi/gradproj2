@@ -219,9 +219,9 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceBetween,
                                             children: [
-                                              Text(
+                                              const Text(
                                                 'Amman',
-                                                style: const TextStyle(
+                                                style: TextStyle(
                                                     fontSize: 24,
                                                     fontWeight: FontWeight.w400,
                                                     fontFamily: 'Gilroy'),
@@ -500,74 +500,78 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                         padding: const EdgeInsets.all(16.0),
                         child: Column(
                           children: [
-                            ElevatedButton(
-                              style: ButtonStyle(
-                                backgroundColor: MaterialStateProperty.all(
-                                    const Color.fromARGB(255, 216, 230, 238)),
-                              ),
-                              onPressed: () async {
-                                await fetchTotalAmount();
-                                Navigator.of(context).push(
-                                  MaterialPageRoute(
-                                    builder: (BuildContext context) =>
-                                        UsePaypal(
-                                            sandboxMode: true,
-                                            clientId:
-                                                "ASC44z2CwYZ5O5xinERWYqkft2q58dZ5vFM_sJgV2b7a1hgFHnhwOxzByGvHfxisfeUcMyWZ6WzzswvU",
-                                            secretKey:
-                                                "EJjOIou2B1Vrv8JpO9I7ePCFk7zQ4-5I3I8GIX_mkfVEFcmW0Bjp1Rnn9hJQp-WRfwhUN0hQkkjt2FuG",
-                                            returnURL:
-                                                "https://samplesite.com/return",
-                                            cancelURL:
-                                                "https://samplesite.com/cancel",
-                                            transactions: [
-                                              {
-                                                "amount": {
-                                                  "total": '$totalAmount',
-                                                  "currency": "USD",
-                                                  "details": {
-                                                    "subtotal": '$totalAmount',
-                                                    "shipping": '0',
-                                                    "shipping_discount": 0
-                                                  }
-                                                },
-                                                "description":
-                                                    "The payment transaction description.",
-                                                "item_list": {
-                                                  "items": [
-                                                    {
-                                                      "name": "A demo product",
-                                                      "quantity": 1,
-                                                      "price": '$totalAmount',
-                                                      "currency": "USD"
+                            if (!(!snapshot.hasData ||
+                                snapshot.data!.docs.isEmpty))
+                              ElevatedButton(
+                                style: ButtonStyle(
+                                  backgroundColor: MaterialStateProperty.all(
+                                      const Color.fromARGB(255, 216, 230, 238)),
+                                ),
+                                onPressed: () async {
+                                  await fetchTotalAmount();
+                                  Navigator.of(context).push(
+                                    MaterialPageRoute(
+                                      builder: (BuildContext context) =>
+                                          UsePaypal(
+                                              sandboxMode: true,
+                                              clientId:
+                                                  "ASC44z2CwYZ5O5xinERWYqkft2q58dZ5vFM_sJgV2b7a1hgFHnhwOxzByGvHfxisfeUcMyWZ6WzzswvU",
+                                              secretKey:
+                                                  "EJjOIou2B1Vrv8JpO9I7ePCFk7zQ4-5I3I8GIX_mkfVEFcmW0Bjp1Rnn9hJQp-WRfwhUN0hQkkjt2FuG",
+                                              returnURL:
+                                                  "https://samplesite.com/return",
+                                              cancelURL:
+                                                  "https://samplesite.com/cancel",
+                                              transactions: [
+                                                {
+                                                  "amount": {
+                                                    "total": '$totalAmount',
+                                                    "currency": "USD",
+                                                    "details": {
+                                                      "subtotal":
+                                                          '$totalAmount',
+                                                      "shipping": '0',
+                                                      "shipping_discount": 0
                                                     }
-                                                  ],
+                                                  },
+                                                  "description":
+                                                      "The payment transaction description.",
+                                                  "item_list": {
+                                                    "items": [
+                                                      {
+                                                        "name":
+                                                            "A demo product",
+                                                        "quantity": 1,
+                                                        "price": '$totalAmount',
+                                                        "currency": "USD"
+                                                      }
+                                                    ],
+                                                  }
                                                 }
-                                              }
-                                            ],
-                                            note:
-                                                "Contact us for any questions on your order.",
-                                            onSuccess: (Map params) async {
-                                              print("onSuccess: $params");
-                                            },
-                                            onError: (error) {
-                                              print("onError: $error");
-                                            },
-                                            onCancel: (params) {
-                                              print('cancelled: $params');
-                                            }),
-                                  ),
-                                );
-                              },
-                              child: const Text(
-                                'Pay Now',
-                                style: TextStyle(
-                                    fontSize: 16,
-                                    fontWeight: FontWeight.w500,
-                                    color: Colors.black,
-                                    fontFamily: 'Gilroy'),
+                                              ],
+                                              note:
+                                                  "Contact us for any questions on your order.",
+                                              onSuccess: (Map params) async {
+                                                print("onSuccess: $params");
+                                              },
+                                              onError: (error) {
+                                                print("onError: $error");
+                                              },
+                                              onCancel: (params) {
+                                                print('cancelled: $params');
+                                              }),
+                                    ),
+                                  );
+                                },
+                                child: const Text(
+                                  'Pay Now',
+                                  style: TextStyle(
+                                      fontSize: 16,
+                                      fontWeight: FontWeight.w500,
+                                      color: Colors.black,
+                                      fontFamily: 'Gilroy'),
+                                ),
                               ),
-                            ),
                           ],
                         ),
                       ),

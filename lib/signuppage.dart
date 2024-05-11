@@ -56,7 +56,7 @@ class _SignupState extends State<signup> {
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: [
                 const SizedBox(
-                  height: 18,
+                  height: 25,
                 ),
                 RichText(
                   text: const TextSpan(
@@ -201,7 +201,7 @@ class _SignupState extends State<signup> {
                   ],
                 ),
                 const SizedBox(
-                  height: 25,
+                  height: 35,
                 ),
                 FloatingActionButton(
                   elevation: 0,
@@ -212,7 +212,7 @@ class _SignupState extends State<signup> {
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
-                          color: Colors.black,
+                          color: Colors.white,
                           fontFamily: 'Gilroy')),
                   backgroundColor: Color.fromARGB(255, 114, 151, 172),
                   onPressed: () {

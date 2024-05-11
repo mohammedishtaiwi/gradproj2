@@ -53,46 +53,46 @@ class _BottomNavState extends State<BottomNav> with TickerProviderStateMixin {
         children: d,
       ),
       bottomNavigationBar: BottomAppBar(
-        color: notifire.bottomnavigationbarbacground,
+        color: Colors.white,
         child: TabBar(
           onTap: (index) {
             tabController.animateTo(index);
           },
           indicator: const UnderlineTabIndicator(
             insets: EdgeInsets.only(bottom: 72),
-            borderSide:
-                BorderSide(color: Color.fromARGB(255, 106, 160, 225), width: 2),
+            borderSide: BorderSide(color: Colors.white, width: 2),
           ),
-          labelColor: Color.fromARGB(255, 106, 160, 225),
+          labelColor: Colors.black,
+          dividerColor: Colors.transparent,
           indicatorSize: TabBarIndicatorSize.label,
-          unselectedLabelColor: Colors.grey,
+          unselectedLabelColor: Colors.black,
           controller: tabController,
           tabs: [
             Tab(
-              iconMargin: EdgeInsets.only(bottom: 3, top: 5),
-              icon: Image.asset("assets/homeselected.png", scale: 24),
-              child: Text(
+              iconMargin: const EdgeInsets.only(bottom: 3, top: 5),
+              icon: Image.asset("assets/home.png", scale: 13),
+              child: const Text(
                 'Home',
-                style: TextStyle(fontSize: 12, fontFamily: 'Gilroy'),
+                style: TextStyle(fontSize: 13, fontFamily: 'Gilroy'),
               ),
             ),
             Tab(
-              iconMargin: EdgeInsets.only(bottom: 3, top: 5),
-              icon: Image.asset("assets/exploreunsselected.png", scale: 24),
-              child: Text(
+              iconMargin: const EdgeInsets.only(bottom: 3, top: 5),
+              icon: Image.asset("assets/chat.png", scale: 20),
+              child: const Text(
                 'Chat',
                 style: TextStyle(
-                  fontSize: 12,
+                  fontSize: 13,
                   fontFamily: 'Gilroy',
                 ),
               ),
             ),
             Tab(
-              iconMargin: EdgeInsets.only(bottom: 3, top: 5),
-              icon: Image.asset("assets/tripselected.png", scale: 24),
-              child: Text(
+              iconMargin: const EdgeInsets.only(bottom: 3, top: 5),
+              icon: Image.asset("assets/ticket.png", scale: 20),
+              child: const Text(
                 'Bookings',
-                style: TextStyle(fontSize: 12, fontFamily: 'Gilroy'),
+                style: TextStyle(fontSize: 13, fontFamily: 'Gilroy'),
               ),
             ),
           ],
