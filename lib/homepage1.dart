@@ -89,15 +89,14 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                             final String profileImageUrl =
                                 data?['profileImageUrl'] ?? '';
 
-                            return SizedBox(
+                            return const SizedBox(
                               height: 52,
                               width: 52,
                               child: CircleAvatar(
                                 radius: 25,
-                                backgroundImage: profileImageUrl.isNotEmpty
-                                    ? NetworkImage(profileImageUrl)
-                                    : AssetImage('assets/default_avatar.png')
-                                        as ImageProvider<Object>?,
+                                backgroundImage: AssetImage(
+                                        'assets/default_profile_picture.png')
+                                    as ImageProvider<Object>?,
                               ),
                             );
                           } else {

@@ -1,14 +1,9 @@
 // ignore_for_file: camel_case_types, sort_child_properties_last, non_constant_identifier_names
 
 import 'dart:developer';
-import 'dart:math';
-import 'package:flutter/cupertino.dart';
+
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gradproj2/pages/tickets.dart';
@@ -24,7 +19,6 @@ class searchflight extends StatefulWidget {
 class _searchflightState extends State<searchflight>
     with SingleTickerProviderStateMixin {
   bool show = false;
-  final FirebaseAuth _auth = FirebaseAuth.instance;
 
   final GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
   List<String> cities = [];
@@ -129,8 +123,6 @@ class _searchflightState extends State<searchflight>
                 stream: FirebaseFirestore.instance
                     .collection('Flights')
                     .where(FieldPath.documentId, whereIn: bookedTickets)
-                    // .orderBy('bookingTime', descending: true)
-                    .limit(1)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -398,6 +390,8 @@ class _searchflightState extends State<searchflight>
                         borderRadius: BorderRadius.only(
                           topLeft: Radius.circular(80),
                           topRight: Radius.circular(80),
+                          bottomLeft: Radius.circular(80),
+                          bottomRight: Radius.circular(80),
                         ),
                         color: Color.fromARGB(255, 193, 205, 213),
                       ),
@@ -759,13 +753,6 @@ class _searchflightState extends State<searchflight>
   }
 
   void _searchFlights() {
-    // print('Departure City: $selectedDepartureCity');
-    // print('Arrival City: $selectedArrivalCity');
-    // print('Is Round Trip: $isRoundTripSelected');
-    // print('Selected From Date: $selectedFromDate');
-    // print('Selected To Date: $selectedToDate');
-    // print('Is One Way: $isOneWaySelected');
-
     if (isRoundTripSelected &&
         (selectedFromDate == null || selectedToDate == null)) {
       ScaffoldMessenger.of(context).showSnackBar(
@@ -808,30 +795,6 @@ class _searchflightState extends State<searchflight>
         }
       });
     }
-  }
-
-  Future<Map<String, dynamic>> getLatestBookedTicket() async {
-    try {
-      QuerySnapshot querySnapshot = await FirebaseFirestore.instance
-          .collection('Flights')
-          .orderBy('is_booked_time', descending: true)
-          .limit(1)
-          .get();
-
-      if (querySnapshot.docs.isNotEmpty) {
-        return querySnapshot.docs.first.data() as Map<String, dynamic>;
-      } else {
-        return {}; // Return an empty map if no booked tickets are found
-      }
-    } catch (e) {
-      return {}; // Return an empty map in case of an error
-    }
-  }
-
-  String _formatFlightTime(Timestamp flightTime) {
-    DateTime dateTime = flightTime.toDate();
-    String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
-    return formattedTime;
   }
 
   String extractTimeFromTimestamp(Timestamp flightTime) {

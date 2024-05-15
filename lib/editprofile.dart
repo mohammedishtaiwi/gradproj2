@@ -1,3 +1,4 @@
+import 'dart:developer';
 import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:gradproj2/homepage1.dart';
@@ -36,7 +37,7 @@ class _editprofileState extends State<editprofile> {
   late String _newName;
   late String _newUsername;
   late String _newPassword;
-  late String _profilePictureUrl = 'assets/default_profile_picture.png';
+  // late String _profilePictureUrl = 'assets/default_profile_picture.png';
   final firstname = TextEditingController();
   final middlename = TextEditingController();
   final lastname = TextEditingController();
@@ -60,13 +61,13 @@ class _editprofileState extends State<editprofile> {
     _newName = widget.currentName;
     _newUsername = widget.currentUsername;
     _newPassword = widget.currentPass;
-    _profilePictureUrl = widget.profileImageUrl.isNotEmpty
-        ? widget.profileImageUrl
-        : 'assets/default_profile_picture.png';
+    // _profilePictureUrl = widget.profileImageUrl.isNotEmpty
+    //     ? widget.profileImageUrl
+    //     : 'assets/default_profile_picture.png';
 
-    if (_profilePictureUrl == 'assets/default_profile_picture.png') {
-      _fetchProfilePicture();
-    }
+    // if (_profilePictureUrl == 'assets/default_profile_picture.png') {
+    //   _fetchProfilePicture();
+    // }
     if (_user != null) {
       _fetchUserData(_user!.uid);
     }
@@ -205,13 +206,11 @@ class _editprofileState extends State<editprofile> {
                 child: Stack(
                   children: [
                     GestureDetector(
-                      onTap: _pickImage,
-                      child: CircleAvatar(
+                      // onTap: _pickImage,
+                      child: const CircleAvatar(
                         radius: 50,
-                        backgroundImage: _profilePictureUrl.isNotEmpty
-                            ? NetworkImage(_profilePictureUrl)
-                            : const AssetImage(
-                                    'assets/default_profile_picture.png')
+                        backgroundImage:
+                            AssetImage('assets/default_profile_picture.png')
                                 as ImageProvider<Object>?,
                       ),
                     ),
@@ -219,7 +218,7 @@ class _editprofileState extends State<editprofile> {
                       bottom: 0,
                       right: 0,
                       child: GestureDetector(
-                        onTap: _pickImage,
+                        // onTap: _pickImage,
                         child: Container(
                           height: 43,
                           width: 43,
@@ -386,30 +385,30 @@ class _editprofileState extends State<editprofile> {
     );
   }
 
-  Future<void> _pickImage() async {
-    final picker = ImagePicker();
-    final pickedFile = await picker.pickImage(source: ImageSource.gallery);
+  // Future<void> _pickImage() async {
+  //   final picker = ImagePicker();
+  //   final pickedFile = await picker.pickImage(source: ImageSource.gallery);
 
-    if (pickedFile != null) {
-      setState(() {
-        _profilePictureUrl = pickedFile.path;
-      });
-    }
-  }
+  //   if (pickedFile != null) {
+  //     setState(() {
+  //       _profilePictureUrl = pickedFile.path;
+  //     });
+  //   }
+  // }
 
-  Future<void> _fetchProfilePicture() async {
-    try {
-      final userData =
-          await _firestore.collection('users').doc(_user?.uid).get();
-      final profileImageUrl = userData.data()?['profileImageUrl'];
-      setState(() {
-        _profilePictureUrl =
-            profileImageUrl ?? 'assets/default_profile_picture.png';
-      });
-    } catch (error) {
-      print('Failed to fetch profile picture');
-    }
-  }
+  // Future<void> _fetchProfilePicture() async {
+  //   try {
+  //     final userData =
+  //         await _firestore.collection('users').doc(_user?.uid).get();
+  //     final profileImageUrl = userData.data()?['profileImageUrl'];
+  //     setState(() {
+  //       _profilePictureUrl =
+  //           profileImageUrl ?? 'assets/default_profile_picture.png';
+  //     });
+  //   } catch (error) {
+  //     print('Failed to fetch profile picture');
+  //   }
+  // }
 
   Future<void> _fetchUserData(String userId) async {
     try {
@@ -437,30 +436,6 @@ class _editprofileState extends State<editprofile> {
 
   Future<void> _saveChanges(BuildContext context) async {
     try {
-      // Upload new profile picture if it's different from the current one
-      if (_profilePictureUrl != widget.profileImageUrl) {
-        final Reference storageReference = FirebaseStorage.instance
-            .ref()
-            .child('profile_pictures')
-            .child('${_user?.uid}.jpg');
-
-        final File file = File(_profilePictureUrl);
-
-        final UploadTask uploadTask = storageReference.putFile(
-          file,
-          SettableMetadata(
-              contentType: 'image/jpeg'), // Set metadata for image file
-        );
-        await uploadTask.whenComplete(() async {
-          String downloadUrl = await storageReference.getDownloadURL();
-
-          await _firestore
-              .collection('users')
-              .doc(_user?.uid)
-              .update({'profileImageUrl': downloadUrl});
-        });
-      }
-
       if (_newName != widget.currentName) {
         await _user?.updateDisplayName(_newName);
         await _firestore
@@ -488,11 +463,7 @@ class _editprofileState extends State<editprofile> {
 
       Navigator.pop(context);
     } catch (error) {
-      Navigator.of(context).pop(
-        MaterialPageRoute(
-          builder: (BuildContext context) => const home1(),
-        ),
-      );
+      log(error.toString());
     }
   }
 }
