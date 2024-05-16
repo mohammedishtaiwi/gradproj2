@@ -199,11 +199,11 @@ class _filtershortdetailState extends State<filtershortdetail> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Dubai',
                     style: TextStyle(

@@ -72,9 +72,10 @@ class _paymentinfopageState extends State<paymentinfopage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                 ),
+                alignment: Alignment.center,
                 child: Center(
                   child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios_new_outlined,
                     ),
                     iconSize: 14,
@@ -89,7 +90,6 @@ class _paymentinfopageState extends State<paymentinfopage> {
                     },
                   ),
                 ),
-                alignment: Alignment.center,
               ),
             ),
           ),
@@ -123,7 +123,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(12),
             ),
-            backgroundColor: Color.fromARGB(255, 114, 151, 172),
+            backgroundColor: const Color.fromARGB(255, 114, 151, 172),
             onPressed: () {
               // NAVIGATE
             },
@@ -216,7 +216,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
                                 fontWeight: FontWeight.w600,
                                 fontFamily: 'Gilroy'),
                           ),
-                          activeColor: Color.fromARGB(255, 63, 88, 112),
+                          activeColor: const Color.fromARGB(255, 63, 88, 112),
                         ),
                       ),
                     ),
@@ -286,7 +286,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
                               fontWeight: FontWeight.w600,
                               fontFamily: 'Gilroy'),
                         ),
-                        activeColor: Color.fromARGB(255, 63, 88, 112),
+                        activeColor: const Color.fromARGB(255, 63, 88, 112),
                       ),
                     ),
                   ),
@@ -353,7 +353,7 @@ class _paymentinfopageState extends State<paymentinfopage> {
                               fontWeight: FontWeight.w600,
                               fontFamily: 'Gilroy'),
                         ),
-                        activeColor: Color.fromARGB(255, 63, 88, 112),
+                        activeColor: const Color.fromARGB(255, 63, 88, 112),
                       ),
                     ),
                   ),

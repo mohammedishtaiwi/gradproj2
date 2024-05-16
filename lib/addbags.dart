@@ -569,13 +569,13 @@ class _addbagsState extends State<addbags> {
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
                                   children: [
-                                    Column(
+                                    const Column(
                                       children: [
                                         Padding(
                                           padding:
-                                              const EdgeInsets.only(right: 42),
+                                              EdgeInsets.only(right: 42),
                                           child: Row(
-                                            children: const [
+                                            children: [
                                               Text(
                                                 "Total",
                                                 style: TextStyle(
@@ -587,9 +587,9 @@ class _addbagsState extends State<addbags> {
                                             ],
                                           ),
                                         ),
-                                        const SizedBox(height: 5),
+                                        SizedBox(height: 5),
                                         Row(
-                                          children: const [
+                                          children: [
                                             Text(
                                               '\$650',
                                               style: TextStyle(

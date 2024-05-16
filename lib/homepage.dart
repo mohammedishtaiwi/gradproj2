@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gradproj2/signinpage.dart';
 import 'package:gradproj2/signuppage.dart';
@@ -49,7 +48,7 @@ class _homeState extends State<home> with SingleTickerProviderStateMixin {
           body: Column(
             children: [
               Container(
-                color: Color.fromARGB(255, 114, 151, 172),
+                color: const Color.fromARGB(255, 114, 151, 172),
                 child: TabBar(
                   controller: _tabController,
                   indicator: const UnderlineTabIndicator(

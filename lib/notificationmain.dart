@@ -31,7 +31,7 @@ class _NotificationPageState extends State<NotificationPage> {
   Widget build(BuildContext context) {
     final currentUser = FirebaseAuth.instance.currentUser;
     if (currentUser == null) {
-      return Scaffold(
+      return const Scaffold(
         body: Center(
           child: Text('User not logged in.'),
         ),
@@ -60,9 +60,10 @@ class _NotificationPageState extends State<NotificationPage> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                 ),
+                alignment: Alignment.center,
                 child: Center(
                   child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios_new_outlined,
                     ),
                     iconSize: 14,
@@ -76,7 +77,6 @@ class _NotificationPageState extends State<NotificationPage> {
                     },
                   ),
                 ),
-                alignment: Alignment.center,
               ),
             ),
           ),
@@ -159,7 +159,7 @@ class _NotificationPageState extends State<NotificationPage> {
                         });
                       },
                       background: Container(
-                        color: Color.fromARGB(255, 237, 103,
+                        color: const Color.fromARGB(255, 237, 103,
                             94), // Background color when swiping to delete
                         alignment: Alignment.centerRight,
                         child: const Icon(Icons.delete, color: Colors.white),
@@ -169,7 +169,7 @@ class _NotificationPageState extends State<NotificationPage> {
                             vertical: 8, horizontal: 16),
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(12),
-                          color: Color.fromARGB(
+                          color: const Color.fromARGB(
                               255, 216, 230, 238), // Background color
                           boxShadow: [
                             BoxShadow(
@@ -241,7 +241,7 @@ class _NotificationPageState extends State<NotificationPage> {
         .get();
 
     for (var flightDoc in flightsSnapshot.docs) {
-      var flightData = flightDoc.data() as Map<String, dynamic>;
+      var flightData = flightDoc.data();
       if (flightData['Flight_status'] == 'Delayed' ||
           flightData['Flight_status'] == 'Cancelled') {
         bookedFlights.add({

@@ -98,9 +98,9 @@ class _searchflightroundtripState extends State<searchflightroundtrip> {
                 ),
               ),
               const SizedBox(height: 20),
-              Row(
+              const Row(
                 mainAxisAlignment: MainAxisAlignment.start,
-                children: const [
+                children: [
                   Text(
                     'Suggestions',
                     style: TextStyle(

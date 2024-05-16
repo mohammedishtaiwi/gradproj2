@@ -216,8 +216,8 @@ class _NearbyhotelState extends State<Nearbyhotel> {
                                       color: notifire.getdarkscolor,
                                     ),
                                   ),
-                                  Row(
-                                    children: const [
+                                  const Row(
+                                    children: [
                                       Icon(
                                         Icons.star,
                                         color: Color(0xffFCB26D),

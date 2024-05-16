@@ -321,7 +321,7 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                                       ),
                                     ),
                                     Container(
-                                      color: Color.fromARGB(255, 216, 230, 238),
+                                      color: const Color.fromARGB(255, 216, 230, 238),
                                       child: Row(
                                         children: <Widget>[
                                           const SizedBox(

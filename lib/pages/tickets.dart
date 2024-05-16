@@ -183,9 +183,9 @@ class TicketsPage extends StatelessWidget {
                                 mainAxisAlignment:
                                     MainAxisAlignment.spaceBetween,
                                 children: [
-                                  Text(
+                                  const Text(
                                     'Amman',
-                                    style: const TextStyle(
+                                    style: TextStyle(
                                         fontSize: 24,
                                         fontWeight: FontWeight.w400,
                                         fontFamily: 'Gilroy'),
@@ -348,7 +348,7 @@ class TicketsPage extends StatelessWidget {
                           ),
                         ),
                         Container(
-                          color: Color.fromARGB(255, 216, 230, 238),
+                          color: const Color.fromARGB(255, 216, 230, 238),
                           child: Row(
                             children: <Widget>[
                               const SizedBox(

@@ -83,7 +83,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                       ),
                     ),
                     if (isUserMessage) ...[
-                      SizedBox(width: 8),
+                      const SizedBox(width: 8),
                       StreamBuilder<DocumentSnapshot>(
                         stream: FirebaseFirestore.instance
                             .collection('users')
@@ -93,7 +93,7 @@ class _MessagesScreenState extends State<MessagesScreen> {
                           if (snapshot.connectionState ==
                                   ConnectionState.waiting ||
                               !snapshot.hasData) {
-                            return CircularProgressIndicator();
+                            return const CircularProgressIndicator();
                           }
                           final profilePictureUrl =
                               snapshot.data!['profileImageUrl'];

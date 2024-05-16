@@ -113,7 +113,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                           }
                         } else {
                           // Display a loading indicator while fetching data
-                          return CircularProgressIndicator();
+                          return const CircularProgressIndicator();
                         }
                       },
                     ),
@@ -235,7 +235,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                       );
                     }
                   } else {
-                    return CircularProgressIndicator();
+                    return const CircularProgressIndicator();
                   }
                 },
               ),
@@ -265,8 +265,8 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
 }
 
 Future<DocumentSnapshot<Map<String, dynamic>>> getUser() async {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final User? user = _auth.currentUser;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User? user = auth.currentUser;
 
   if (user != null) {
     final String uid = user.uid;
@@ -287,8 +287,8 @@ Future<DocumentSnapshot<Map<String, dynamic>>> getUser() async {
 }
 
 Stream<DocumentSnapshot<Map<String, dynamic>>> getUserStream() {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
-  final User? user = _auth.currentUser;
+  final FirebaseAuth auth = FirebaseAuth.instance;
+  final User? user = auth.currentUser;
 
   if (user != null) {
     final String uid = user.uid;

@@ -25,14 +25,14 @@ class _forgetpasswordState extends State<forgetpassword> {
         await FirebaseAuth.instance.sendPasswordResetEmail(email: email);
         // Show success message to the user
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Password reset email has been sent to your inbox."),
           ),
         );
       } else {
         // Email does not exist in Firebase users
         ScaffoldMessenger.of(context).showSnackBar(
-          SnackBar(
+          const SnackBar(
             content: Text("Email not found. Please enter a valid email."),
           ),
         );
@@ -42,7 +42,7 @@ class _forgetpasswordState extends State<forgetpassword> {
       print("Failed to send password reset email: $error");
       // Show error message to the user
       ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
+        const SnackBar(
           content: Text("Failed to send password reset email."),
         ),
       );
@@ -70,7 +70,8 @@ class _forgetpasswordState extends State<forgetpassword> {
               child: Container(
                 height: 48,
                 width: 48,
-                decoration: BoxDecoration(),
+                decoration: const BoxDecoration(),
+                alignment: Alignment.center,
                 child: Center(
                   child: IconButton(
                     icon: Icon(
@@ -84,7 +85,6 @@ class _forgetpasswordState extends State<forgetpassword> {
                     },
                   ),
                 ),
-                alignment: Alignment.center,
               ),
             ),
           ),
@@ -94,7 +94,7 @@ class _forgetpasswordState extends State<forgetpassword> {
         padding: const EdgeInsets.only(left: 24, right: 24, top: 30),
         child: Column(
           children: [
-            SizedBox(height: 50),
+            const SizedBox(height: 50),
             Row(
               children: [
                 Text(
@@ -105,7 +105,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                       color: notifire.getdarkscolor,
                       fontFamily: 'Gilroy'),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Text(
                   'password?',
                   style: TextStyle(
@@ -116,7 +116,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                 ),
               ],
             ),
-            SizedBox(height: 8),
+            const SizedBox(height: 8),
             Align(
               alignment: Alignment.centerLeft,
               child: Text(
@@ -128,7 +128,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                     fontFamily: 'Gilroy'),
               ),
             ),
-            SizedBox(height: 55),
+            const SizedBox(height: 55),
             TextField(
               controller: emailController,
               style:
@@ -159,15 +159,7 @@ class _forgetpasswordState extends State<forgetpassword> {
                 elevation: 0,
                 shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(14)),
-                child: Text(
-                  'SEND CODE',
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 16,
-                      fontFamily: 'Gilroy',
-                      color: Colors.black),
-                ),
-                backgroundColor: Color.fromARGB(255, 114, 151, 172),
+                backgroundColor: const Color.fromARGB(255, 114, 151, 172),
                 onPressed: () {
                   String enteredEmail = emailController.text.trim();
                   // Check if email is not empty
@@ -177,12 +169,20 @@ class _forgetpasswordState extends State<forgetpassword> {
                   } else {
                     // Show error message if email field is empty
                     ScaffoldMessenger.of(context).showSnackBar(
-                      SnackBar(
+                      const SnackBar(
                         content: Text("Please enter your email."),
                       ),
                     );
                   }
                 },
+                child: const Text(
+                  'SEND CODE',
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 16,
+                      fontFamily: 'Gilroy',
+                      color: Colors.black),
+                ),
               ),
             ),
           ],

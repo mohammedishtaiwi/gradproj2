@@ -1,12 +1,7 @@
-import 'package:get/get.dart';
-import 'package:gradproj2/apiwrapper.dart';
 import 'package:gradproj2/bottomnavigationbar.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:gradproj2/forgetpasswordscreen.dart';
-import 'package:gradproj2/theme/theme_manager.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // ignore: camel_case_types
 class signin extends StatefulWidget {
@@ -74,7 +69,7 @@ class _signinState extends State<signin> {
               ),
             ),
             const SizedBox(height: 30),
-            Align(
+            const Align(
               alignment: Alignment.topLeft,
               child: Text(
                 '   Welcome back!',
@@ -94,7 +89,7 @@ class _signinState extends State<signin> {
                   const SizedBox(height: 20),
                   TextField(
                     controller: _emailController,
-                    style: TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                    style: const TextStyle(color: Colors.black, fontFamily: "gilroy"),
                     keyboardType: TextInputType.emailAddress,
                     textInputAction: TextInputAction.next,
                     decoration: InputDecoration(
@@ -102,7 +97,7 @@ class _signinState extends State<signin> {
                           borderRadius: BorderRadius.circular(12)),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.grey,
                         ),
                       ),
@@ -113,19 +108,19 @@ class _signinState extends State<signin> {
                         ),
                       ),
                       hintStyle:
-                          TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                          const TextStyle(color: Colors.black, fontFamily: "gilroy"),
                       fillColor: Colors.white,
                       hintText: 'Enter Your Email',
                       labelText: "EMAIL",
                       labelStyle:
-                          TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                          const TextStyle(color: Colors.black, fontFamily: "gilroy"),
                     ),
                   ),
                   const SizedBox(
                     height: 28,
                   ),
                   TextField(
-                    style: TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                    style: const TextStyle(color: Colors.black, fontFamily: "gilroy"),
                     controller: _passwordController,
                     obscureText: _isVisible,
                     textInputAction: TextInputAction.next,
@@ -150,13 +145,13 @@ class _signinState extends State<signin> {
                       ),
                       hintText: 'Enter Your Password',
                       hintStyle:
-                          TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                          const TextStyle(color: Colors.black, fontFamily: "gilroy"),
                       labelText: "PASSWORD",
                       labelStyle:
-                          TextStyle(color: Colors.black, fontFamily: "gilroy"),
+                          const TextStyle(color: Colors.black, fontFamily: "gilroy"),
                       enabledBorder: OutlineInputBorder(
                         borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide(
+                        borderSide: const BorderSide(
                           color: Colors.grey,
                         ),
                       ),
@@ -179,7 +174,7 @@ class _signinState extends State<signin> {
               children: [
                 // ignore: avoid_unnecessary_containers
                 Padding(
-                  padding: EdgeInsets.only(right: 15),
+                  padding: const EdgeInsets.only(right: 15),
                   child: TextButton(
                     child: const Text(
                       "Forgot Password?",
@@ -240,7 +235,7 @@ class _signinState extends State<signin> {
               shape: RoundedRectangleBorder(
                 borderRadius: BorderRadius.circular(12),
               ),
-              backgroundColor: Color.fromARGB(255, 114, 151, 172),
+              backgroundColor: const Color.fromARGB(255, 114, 151, 172),
             ),
 
             const SizedBox(

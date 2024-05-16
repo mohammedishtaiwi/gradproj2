@@ -204,11 +204,11 @@ class _selectseatsState extends State<selectseats> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Dubai',
                     style: TextStyle(
@@ -256,9 +256,9 @@ class _selectseatsState extends State<selectseats> {
                       ),
                     ],
                   ),
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Seat',
                         style: TextStyle(
@@ -280,9 +280,9 @@ class _selectseatsState extends State<selectseats> {
                       )
                     ],
                   ),
-                  Column(
+                  const Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
+                    children: [
                       Text(
                         'Flight no',
                         style: TextStyle(
@@ -329,14 +329,14 @@ class _selectseatsState extends State<selectseats> {
                       ),
                       child: Column(
                         children: [
-                          Row(
+                          const Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Padding(
-                                padding: const EdgeInsets.only(
+                                padding: EdgeInsets.only(
                                     left: 20.0, right: 20.0),
                                 child: Row(
-                                  children: const [
+                                  children: [
                                     Text(
                                       'A',
                                       style: TextStyle(
@@ -357,15 +357,15 @@ class _selectseatsState extends State<selectseats> {
                                   ],
                                 ),
                               ),
-                              const SizedBox(
+                              SizedBox(
                                 width: 20,
                               ),
                               Padding(
-                                padding: const EdgeInsets.only(right: 35),
+                                padding: EdgeInsets.only(right: 35),
                                 child: Row(
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceBetween,
-                                  children: const [
+                                  children: [
                                     Text(
                                       'C',
                                       style: TextStyle(

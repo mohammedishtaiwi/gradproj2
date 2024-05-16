@@ -3,9 +3,7 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
-import 'package:gradproj2/tripspagenaviggationbar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +16,7 @@ import 'homepage1.dart';
 class tripsdetailpage extends StatefulWidget {
   final Map<String, dynamic> ticketData;
   final String documentID;
-  tripsdetailpage({
+  const tripsdetailpage({
     Key? key,
     required this.ticketData,
     required this.documentID,
@@ -158,7 +156,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                       Image.asset('assets/selectflight.png')),
                               Text(
                                 '${widget.ticketData['Flight_duration']}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey,
@@ -203,7 +201,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   ),
                                 ),
                                 Text(
-                                  '${_formatFlightTime(widget.ticketData['Dep_date_time'])}',
+                                  _formatFlightTime(widget.ticketData['Dep_date_time']),
                                   style: TextStyle(
                                       color: notifire.getdarkscolor,
                                       fontSize: 16,
@@ -493,7 +491,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 114, 151, 172)),
+                                      const Color.fromARGB(255, 114, 151, 172)),
                                 ),
                                 onPressed: () {
                                   _bookTicket(context, widget.ticketData,
@@ -515,7 +513,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 114, 151, 172)),
+                                      const Color.fromARGB(255, 114, 151, 172)),
                                 ),
                                 onPressed: () {
                                   _undoBooking(context, widget.documentID);

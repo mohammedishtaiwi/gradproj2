@@ -161,11 +161,11 @@ class _selectflightState extends State<selectflight> {
                 ],
               ),
             ),
-            Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 32),
+            const Padding(
+              padding: EdgeInsets.symmetric(horizontal: 32),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: const [
+                children: [
                   Text(
                     'Dubai',
                     style: TextStyle(
@@ -254,9 +254,9 @@ class _selectflightState extends State<selectflight> {
                                         const SizedBox(
                                           width: 72,
                                         ),
-                                        Center(
+                                        const Center(
                                           child: Row(
-                                            children: const [
+                                            children: [
                                               Text(
                                                 "BH07",
                                                 style: TextStyle(
@@ -545,10 +545,10 @@ class _selectflightState extends State<selectflight> {
                                               Radius.circular(12),
                                             ),
                                           ),
-                                          child: Row(
+                                          child: const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
-                                            children: const [
+                                            children: [
                                               Icon(
                                                 Icons.calendar_month_outlined,
                                                 size: 16,
@@ -579,10 +579,10 @@ class _selectflightState extends State<selectflight> {
                                               Radius.circular(12),
                                             ),
                                           ),
-                                          child: Row(
+                                          child: const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.center,
-                                            children: const [
+                                            children: [
                                               Icon(
                                                 Icons.watch_later_outlined,
                                                 size: 19,
