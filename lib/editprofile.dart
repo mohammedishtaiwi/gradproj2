@@ -214,27 +214,27 @@ class _editprofileState extends State<editprofile> {
                                 as ImageProvider<Object>?,
                       ),
                     ),
-                    Positioned(
-                      bottom: 0,
-                      right: 0,
-                      child: GestureDetector(
-                        // onTap: _pickImage,
-                        child: Container(
-                          height: 43,
-                          width: 43,
-                          padding: const EdgeInsets.all(10),
-                          decoration: BoxDecoration(
-                            color: Color.fromARGB(255, 114, 151, 172),
-                            image: const DecorationImage(
-                                image: AssetImage(
-                                  "assets/Cameraeditprofile.png",
-                                ),
-                                scale: 20),
-                            borderRadius: BorderRadius.circular(100),
-                          ),
-                        ),
-                      ),
-                    ),
+                    // Positioned(
+                    //   bottom: 0,
+                    //   right: 0,
+                    //   child: GestureDetector(
+                    //     // onTap: _pickImage,
+                    //     child: Container(
+                    //       height: 43,
+                    //       width: 43,
+                    //       padding: const EdgeInsets.all(10),
+                    //       decoration: BoxDecoration(
+                    //         color: Color.fromARGB(255, 114, 151, 172),
+                    //         image: const DecorationImage(
+                    //             image: AssetImage(
+                    //               "assets/Cameraeditprofile.png",
+                    //             ),
+                    //             scale: 20),
+                    //         borderRadius: BorderRadius.circular(100),
+                    //       ),
+                    //     ),
+                    //   ),
+                    // ),
                   ],
                 ),
               ),

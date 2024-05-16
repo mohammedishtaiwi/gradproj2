@@ -304,7 +304,7 @@ class _signinState extends State<signin> {
               mainAxisSize: MainAxisSize.min,
               children: <Widget>[
                 const Text(
-                  'Error: Invalid username or password',
+                  'Error: Invalid email or password',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
