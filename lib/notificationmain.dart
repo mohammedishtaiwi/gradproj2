@@ -15,16 +15,16 @@ class NotificationPage extends StatefulWidget {
 class _NotificationPageState extends State<NotificationPage> {
   final FirebaseMessaging _firebaseMessaging = FirebaseMessaging.instance;
   String? _token;
+
   @override
   void initState() {
     super.initState();
-    _firebaseMessaging.getToken().then((token) {
-      setState(() {
-        _token = token;
+    _initializeFCMToken();
+  }
 
-        // print(_token);
-      });
-    });
+  void _initializeFCMToken() async {
+    _token = await _firebaseMessaging.getToken();
+    setState(() {});
   }
 
   @override
@@ -95,7 +95,7 @@ class _NotificationPageState extends State<NotificationPage> {
         child: StreamBuilder<DocumentSnapshot>(
           stream: FirebaseFirestore.instance
               .collection('users')
-              .doc(currentUser!.uid)
+              .doc(currentUser.uid)
               .snapshots(),
           builder:
               (BuildContext context, AsyncSnapshot<DocumentSnapshot> snapshot) {
@@ -118,8 +118,11 @@ class _NotificationPageState extends State<NotificationPage> {
             }
 
             var userData = snapshot.data!.data() as Map<String, dynamic>;
-            var bookedTickets =
-                (userData['bookedTickets'] as List<dynamic>).cast<String>();
+            var bookedTickets = (userData['bookedTickets'] as List<dynamic>);
+
+            // Ensure the list is explicitly of type List<String>
+            List<String> bookedTicketsIds =
+                bookedTickets.map((e) => e['id'] as String).toList();
 
             if (bookedTickets.isEmpty) {
               return const Center(
@@ -128,7 +131,7 @@ class _NotificationPageState extends State<NotificationPage> {
             }
 
             return FutureBuilder<List<Map<String, dynamic>>>(
-              future: _fetchBookedFlights(bookedTickets),
+              future: _fetchBookedFlights(bookedTicketsIds),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return const Center(
@@ -203,15 +206,6 @@ class _NotificationPageState extends State<NotificationPage> {
                                   ),
                                 ],
                               ),
-                              // GestureDetector(
-                              //   onTap: () {
-                              //     // Delete the notification
-                              //     setState(() {
-                              //       snapshot.data!.removeAt(index);
-                              //     });
-                              //   },
-                              //   child: const Icon(Icons.close),
-                              // ),
                               CircleAvatar(
                                 backgroundColor: Colors.transparent,
                                 radius: 30,
@@ -246,7 +240,7 @@ class _NotificationPageState extends State<NotificationPage> {
         .where(FieldPath.documentId, whereIn: bookedTickets)
         .get();
 
-    flightsSnapshot.docs.forEach((flightDoc) {
+    for (var flightDoc in flightsSnapshot.docs) {
       var flightData = flightDoc.data() as Map<String, dynamic>;
       if (flightData['Flight_status'] == 'Delayed' ||
           flightData['Flight_status'] == 'Cancelled') {
@@ -258,13 +252,13 @@ class _NotificationPageState extends State<NotificationPage> {
         // Send push notification
         _sendNotification();
       }
-    });
+    }
 
     return bookedFlights;
   }
 
   void _sendNotification() {
-    print('test succesful');
+    print('test successful');
     // if (_token != null) {
     //   try {
     //     // Send notification using FirebaseMessaging
