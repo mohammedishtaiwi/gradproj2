@@ -46,11 +46,11 @@ class _ProfileState extends State<Profile> {
       appBar: AppBar(
         title: const Text('Profile'),
         leading: IconButton(
-        icon: Icon(Icons.arrow_back),
-        onPressed: () {
-          Navigator.pushReplacementNamed(context, '/home');
-        },
-      ),
+          icon: Icon(Icons.arrow_back),
+          onPressed: () {
+            Navigator.pushReplacementNamed(context, '/home');
+          },
+        ),
         actions: [
           IconButton(
             icon: Icon(Icons.edit),
@@ -113,7 +113,7 @@ class _ProfileState extends State<Profile> {
                       ),
                       const SizedBox(height: 8),
                       Text(
-                        email ?? 'user@example.com',
+                        email ?? 'user@example.comm',
                         style: const TextStyle(
                           fontSize: 18,
                           color: Colors.grey,
