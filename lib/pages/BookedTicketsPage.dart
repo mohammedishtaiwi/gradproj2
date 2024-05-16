@@ -1,7 +1,10 @@
+import 'dart:developer';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_paypal/flutter_paypal.dart';
+import 'package:gradproj2/helpers/date.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'package:intl/intl.dart';
 
@@ -16,64 +19,10 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
   int totalAmount = 0;
   int bookedTicketCount = 0; // New variable to store booked ticket count
 
-  Future<void> fetchBookedTicketCount() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      try {
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .get();
-
-        if (userSnapshot.exists) {
-          List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
-          setState(() {
-            bookedTicketCount = bookedTickets.length;
-          });
-        }
-      } catch (error) {
-        print('Error fetching booked ticket count: $error');
-      }
-    }
-  }
-
-  Future<void> fetchTotalAmount() async {
-    final currentUser = FirebaseAuth.instance.currentUser;
-    if (currentUser != null) {
-      try {
-        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser.uid)
-            .get();
-
-        if (userSnapshot.exists) {
-          List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
-
-          int total = 0;
-          for (String ticketId in bookedTickets) {
-            DocumentSnapshot ticketSnapshot = await FirebaseFirestore.instance
-                .collection('Flights')
-                .doc(ticketId)
-                .get();
-
-            if (ticketSnapshot.exists) {
-              var ticketPrice = ticketSnapshot['Ticket_crown_price'];
-              if (ticketPrice is int) {
-                total += ticketPrice;
-              } else if (ticketPrice is num) {
-                total += ticketPrice.toInt();
-              }
-            }
-          }
-
-          setState(() {
-            totalAmount = total;
-          });
-        }
-      } catch (error) {
-        print('Error fetching total amount: $error');
-      }
-    }
+  @override
+  void initState() {
+    super.initState();
+    fetchTotalAmount();
   }
 
   @override
@@ -85,12 +34,6 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
           child: Text('User not logged in.'),
         ),
       );
-    }
-
-    @override
-    void initState() {
-      super.initState();
-      fetchTotalAmount();
     }
 
     return Scaffold(
@@ -136,6 +79,13 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
             var userData = snapshot.data!.data() as Map<String, dynamic>;
             var bookedTickets = userData['bookedTickets'] ?? [];
 
+       
+
+            log("$bookedTickets");
+            var bookedTicketsIds = [];
+            for (var element in bookedTickets) {
+              bookedTicketsIds.add(element["id"]);
+            }
             if (bookedTickets.isEmpty) {
               return const Center(
                 child: Text('No booked tickets available.'),
@@ -145,7 +95,7 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
             return StreamBuilder<QuerySnapshot>(
               stream: FirebaseFirestore.instance
                   .collection('Flights')
-                  .where(FieldPath.documentId, whereIn: bookedTickets)
+                  .where(FieldPath.documentId, whereIn: bookedTicketsIds)
                   .snapshots(),
               builder: (BuildContext context,
                   AsyncSnapshot<QuerySnapshot> snapshot) {
@@ -166,6 +116,15 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                     child: Text('No booked tickets available'),
                   );
                 }
+                var apiData = [];
+                for (var element in snapshot.data!.docs) {
+                  apiData.add(element.data());
+                }
+                apiData.sort((a, b) {
+                  DateTime dateA = timestampToDateTime(a['Dep_date_time']);
+                  DateTime dateB = timestampToDateTime(b['Dep_date_time']);
+                  return dateA.compareTo(dateB);
+                });
 
                 return SingleChildScrollView(
                   child: Column(
@@ -173,10 +132,10 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
-                        itemCount: snapshot.data!.docs.length,
+                        itemCount: apiData.length,
                         itemBuilder: (BuildContext context, int index) {
-                          var ticketData = snapshot.data!.docs[index].data()
-                              as Map<String, dynamic>;
+                          var ticketData =
+                              apiData[index] as Map<String, dynamic>;
                           if ((ticketData['Arr_date_time'] as Timestamp)
                               .toDate()
                               .isBefore(DateTime.now())) {
@@ -515,9 +474,9 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                                           UsePaypal(
                                               sandboxMode: true,
                                               clientId:
-                                                  "ASC44z2CwYZ5O5xinERWYqkft2q58dZ5vFM_sJgV2b7a1hgFHnhwOxzByGvHfxisfeUcMyWZ6WzzswvU",
+                                                  "AWSmR0_iZMCQDbq4REl_YFPE31z8xTPWl0ZyiFNxz4DvkTKWhQYN3mY_6zGXBZDY3znEE0wRsVd1uefV",
                                               secretKey:
-                                                  "EJjOIou2B1Vrv8JpO9I7ePCFk7zQ4-5I3I8GIX_mkfVEFcmW0Bjp1Rnn9hJQp-WRfwhUN0hQkkjt2FuG",
+                                                  "EDeMBp2b7DD7cT4y1Qhc7QS5fTTfjSEtcfCw1yuam9B_K4gav0M7W-xO1FaoJYnWmwh58l5nhGP0nN1k",
                                               returnURL:
                                                   "https://samplesite.com/return",
                                               cancelURL:
@@ -596,5 +555,65 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
     DateTime dateTime = flightTime.toDate();
     String formattedTime = DateFormat.jm().format(dateTime);
     return formattedTime;
+  }
+
+  Future<void> fetchBookedTicketCount() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userSnapshot.exists) {
+          List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
+          setState(() {
+            bookedTicketCount = bookedTickets.length;
+          });
+        }
+      } catch (error) {
+        print('Error fetching booked ticket count: $error');
+      }
+    }
+  }
+
+  Future<void> fetchTotalAmount() async {
+    final currentUser = FirebaseAuth.instance.currentUser;
+    if (currentUser != null) {
+      try {
+        DocumentSnapshot userSnapshot = await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser.uid)
+            .get();
+
+        if (userSnapshot.exists) {
+          List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
+
+          int total = 0;
+          for (String ticketId in bookedTickets) {
+            DocumentSnapshot ticketSnapshot = await FirebaseFirestore.instance
+                .collection('Flights')
+                .doc(ticketId)
+                .get();
+
+            if (ticketSnapshot.exists) {
+              var ticketPrice = ticketSnapshot['Ticket_crown_price'];
+              if (ticketPrice is int) {
+                total += ticketPrice;
+              } else if (ticketPrice is num) {
+                total += ticketPrice.toInt();
+              }
+            }
+          }
+
+          setState(() {
+            totalAmount = total;
+          });
+        }
+      } catch (error) {
+        print('Error fetching total amount: $error');
+      }
+    }
   }
 }

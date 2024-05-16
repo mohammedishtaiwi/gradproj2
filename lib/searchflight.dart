@@ -1,13 +1,13 @@
 // ignore_for_file: camel_case_types, sort_child_properties_last, non_constant_identifier_names
 
-import 'dart:developer';
-
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gradproj2/pages/tickets.dart';
 import 'package:intl/intl.dart';
+import 'package:gradproj2/helpers/date.dart';
 
 class searchflight extends StatefulWidget {
   const searchflight({Key? key}) : super(key: key);
@@ -59,6 +59,15 @@ class _searchflightState extends State<searchflight>
       key: _scaffoldKey,
       body: Column(
         children: [
+          const Padding(
+              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+              child: Text(
+                'Nearest Booked Ticket',
+                style: TextStyle(
+                    fontFamily: "gilroy",
+                    fontSize: 20,
+                    fontWeight: FontWeight.bold),
+              )),
           buildDividerBox(context, userId),
           buildSelectorBox(context),
         ],
@@ -85,6 +94,11 @@ class _searchflightState extends State<searchflight>
             } else {
               var userData = userSnapshot.data!.data() as Map<String, dynamic>;
               var bookedTickets = userData['bookedTickets'] ?? [];
+
+              var bookedTicketsIds = [];
+              for (var element in bookedTickets) {
+                bookedTicketsIds.add(element["id"]);
+              }
 
               if (bookedTickets.isEmpty) {
                 return Container(
@@ -122,7 +136,7 @@ class _searchflightState extends State<searchflight>
               return StreamBuilder<QuerySnapshot>(
                 stream: FirebaseFirestore.instance
                     .collection('Flights')
-                    .where(FieldPath.documentId, whereIn: bookedTickets)
+                    .where(FieldPath.documentId, whereIn: bookedTicketsIds)
                     .snapshots(),
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
@@ -161,8 +175,19 @@ class _searchflightState extends State<searchflight>
                       ),
                     );
                   } else {
-                    var ticketData = snapshot.data!.docs.first.data()
-                        as Map<String, dynamic>;
+                    var flights = snapshot.data!.docs;
+
+                    // Sort the flights by departure date
+                    flights.sort((a, b) {
+                      DateTime dateA =
+                          (a['Dep_date_time'] as Timestamp).toDate();
+                      DateTime dateB =
+                          (b['Dep_date_time'] as Timestamp).toDate();
+                      return dateA.compareTo(dateB);
+                    });
+
+                    var ticketData =
+                        flights.first.data() as Map<String, dynamic>;
 
                     return SizedBox(
                       child: Card(
@@ -186,7 +211,7 @@ class _searchflightState extends State<searchflight>
                                         MainAxisAlignment.spaceBetween,
                                     children: [
                                       Text(
-                                        '${ticketData['Dep_city']}',
+                                        'Amman',
                                         style: const TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w400,

@@ -570,7 +570,9 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
             .collection('users')
             .doc(currentUser!.uid)
             .update({
-          'bookedTickets': FieldValue.arrayUnion([documentID]),
+          'bookedTickets': FieldValue.arrayUnion([
+            {"id": documentID, "date": ticketData["Dep_date_time"]}
+          ]),
         });
 
         ScaffoldMessenger.of(context).showSnackBar(
