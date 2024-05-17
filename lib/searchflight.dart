@@ -57,15 +57,15 @@ class _searchflightState extends State<searchflight>
       key: _scaffoldKey,
       body: Column(
         children: [
-          const Padding(
-              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
-              child: Text(
-                'Nearest Booked Ticket',
-                style: TextStyle(
-                    fontFamily: "gilroy",
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )),
+          // const Padding(
+          //     padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+          //     child: Text(
+          //       'Nearest Booked Ticket',
+          //       style: TextStyle(
+          //           fontFamily: "gilroy",
+          //           fontSize: 20,
+          //           fontWeight: FontWeight.bold),
+          //     )),
           buildDividerBox(context, userId),
           buildSelectorBox(context),
         ],
@@ -116,7 +116,7 @@ class _searchflightState extends State<searchflight>
                         Positioned.fill(
                           child: Center(
                             child: Text(
-                              'Your upcoming flight will appear here',
+                              'Your nearest booked ticket',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
@@ -159,7 +159,7 @@ class _searchflightState extends State<searchflight>
                             Positioned.fill(
                               child: Center(
                                 child: Text(
-                                  'Your upcoming flight will appear here',
+                                  'Your nearest booked ticket',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -407,7 +407,7 @@ class _searchflightState extends State<searchflight>
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      height: 429,
+                      height: 229,
                       width: 372,
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
