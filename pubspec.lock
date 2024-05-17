@@ -481,7 +481,7 @@ packages:
     source: hosted
     version: "0.8.9+3"
   image_picker_for_web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: image_picker_for_web
       sha256: "869fe8a64771b7afbc99fc433a5f7be2fea4d1cb3d7c11a48b6b579eb9c797f0"
@@ -817,7 +817,7 @@ packages:
     source: hosted
     version: "2.3.2"
   shared_preferences_web:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: shared_preferences_web
       sha256: "9aee1089b36bd2aafe06582b7d7817fd317ef05fc30e6ba14bff247d0933042a"
@@ -838,7 +838,7 @@ packages:
     source: sdk
     version: "0.0.99"
   smart_auth:
-    dependency: transitive
+    dependency: "direct main"
     description:
       name: smart_auth
       sha256: a25229b38c02f733d0a4e98d941b42bed91a976cb589e934895e60ccfa674cf6
