@@ -116,7 +116,7 @@ class _searchflightState extends State<searchflight>
                         Positioned.fill(
                           child: Center(
                             child: Text(
-                              'Your upcoming flight will appear here',
+                              'Your nearest booked ticket',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
@@ -159,7 +159,7 @@ class _searchflightState extends State<searchflight>
                             Positioned.fill(
                               child: Center(
                                 child: Text(
-                                  'Your upcoming flight will appear here',
+                                  'Your nearest booked ticket',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,

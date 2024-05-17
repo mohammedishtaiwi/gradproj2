@@ -67,7 +67,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
           if (userData != null && userData.containsKey('bookedTickets')) {
             List<dynamic>? bookedTickets = userData['bookedTickets'];
             if (bookedTickets != null) {
-              isTicketBooked = bookedTickets.contains(widget.documentID);
+              isTicketBooked = bookedTickets
+                  .any((ticket) => ticket['id'] == widget.documentID);
             }
           }
         }
@@ -201,7 +202,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   ),
                                 ),
                                 Text(
-                                  _formatFlightTime(widget.ticketData['Dep_date_time']),
+                                  _formatFlightTime(
+                                      widget.ticketData['Dep_date_time']),
                                   style: TextStyle(
                                       color: notifire.getdarkscolor,
                                       fontSize: 16,
@@ -608,18 +610,35 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
           .where('booked', isEqualTo: true)
           .get();
 
+      // Remove the undone ticket from the user's bookedTickets array
+      final currentUser = FirebaseAuth.instance.currentUser;
+
+      // Check if there's only one ticket remaining in bookedTickets
+      bool isLastTicket = false;
       if (snapshot.docs.length == 1) {
-        // If only one ticket is booked, clear the array
-        final currentUser = FirebaseAuth.instance.currentUser;
+        isLastTicket = true;
+      }
+
+      if (isLastTicket) {
+        // If only one ticket is booked, clear the array completely
         await FirebaseFirestore.instance
             .collection('users')
             .doc(currentUser!.uid)
             .update({
           'bookedTickets': FieldValue.delete(),
         });
+      } else {
+        await FirebaseFirestore.instance
+            .collection('users')
+            .doc(currentUser!.uid)
+            .update({
+          'bookedTickets': FieldValue.arrayRemove([
+            {"id": documentID, "date": widget.ticketData["Dep_date_time"]}
+          ]),
+        });
       }
 
-      // Otherwise, update the specific ticket document
+      // Update the specific flight document
       if (snapshot.docs.isNotEmpty) {
         final batch = FirebaseFirestore.instance.batch();
         for (var doc in snapshot.docs) {
@@ -632,7 +651,6 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
               bookedTokens.remove(fcmToken);
             }
           }
-          // bookedTokens.add();
           batch.update(doc.reference, {
             'booked': false,
             'bookingTime': null,
@@ -641,15 +659,6 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
         }
         await batch.commit();
       }
-
-      // Remove the undone ticket from the user's bookedTickets array
-      final currentUser = FirebaseAuth.instance.currentUser;
-      await FirebaseFirestore.instance
-          .collection('users')
-          .doc(currentUser!.uid)
-          .update({
-        'bookedTickets': FieldValue.arrayRemove([documentID]),
-      });
 
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(
