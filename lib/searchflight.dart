@@ -407,7 +407,7 @@ class _searchflightState extends State<searchflight>
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     Container(
-                      height: 229,
+                      height: 429,
                       width: 372,
                       decoration: const BoxDecoration(
                         borderRadius: BorderRadius.only(
