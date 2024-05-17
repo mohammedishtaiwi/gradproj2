@@ -57,15 +57,15 @@ class _searchflightState extends State<searchflight>
       key: _scaffoldKey,
       body: Column(
         children: [
-          const Padding(
-              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
-              child: Text(
-                'Nearest Booked Ticket',
-                style: TextStyle(
-                    fontFamily: "gilroy",
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )),
+          // const Padding(
+          //     padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+          //     child: Text(
+          //       'Nearest Booked Ticket',
+          //       style: TextStyle(
+          //           fontFamily: "gilroy",
+          //           fontSize: 20,
+          //           fontWeight: FontWeight.bold),
+          //     )),
           buildDividerBox(context, userId),
           buildSelectorBox(context),
         ],

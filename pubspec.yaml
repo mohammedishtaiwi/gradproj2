@@ -67,7 +67,6 @@ dependencies:
   flutter_inappwebview: ^5.8.0
   webview_flutter_android: ^3.16.1
 
-  flutter_web_plugins: any
   image_picker_for_web: any
   shared_preferences_web: any
   smart_auth: any
