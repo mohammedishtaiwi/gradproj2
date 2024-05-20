@@ -95,10 +95,10 @@ class _MessagesScreenState extends State<MessagesScreen> {
                               !snapshot.hasData) {
                             return const CircularProgressIndicator();
                           }
-                          final profilePictureUrl =
-                              snapshot.data!['profileImageUrl'];
-                          return CircleAvatar(
-                            backgroundImage: NetworkImage(profilePictureUrl),
+                          return const CircleAvatar(
+                            backgroundImage:
+                                AssetImage('assets/default_profile_picture.png')
+                                    as ImageProvider<Object>?,
                             radius: 20,
                           );
                         },

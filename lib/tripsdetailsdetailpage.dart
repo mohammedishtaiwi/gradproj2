@@ -518,7 +518,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                       const Color.fromARGB(255, 114, 151, 172)),
                                 ),
                                 onPressed: () {
-                                  _undoBooking(context, widget.documentID);
+                                  _undoBooking(context, widget.documentID,
+                                      widget.ticketData);
                                 },
                                 child: const Text(
                                   'Cancel Booking',
@@ -599,74 +600,96 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
     }
   }
 
-  Future<void> _undoBooking(BuildContext context, String documentID) async {
+  Future<void> _undoBooking(BuildContext context, String documentID,
+      Map<String, dynamic> ticketData) async {
     try {
+      // Get the FCM token of the user's device
       String? fcmToken = await FirebaseMessaging.instance.getToken();
 
-      print('Undoing booking for document with $documentID');
+      if (fcmToken != null) {
+        final currentUser = FirebaseAuth.instance.currentUser;
+        if (currentUser != null) {
+          // Fetch the current user's booked tickets
+          final userDoc = await FirebaseFirestore.instance
+              .collection('users')
+              .doc(currentUser.uid)
+              .get();
 
-      final QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('Flights')
-          .where('booked', isEqualTo: true)
-          .get();
+          List<dynamic> bookedTickets = userDoc.data()?['bookedTickets'] ?? [];
 
-      // Remove the undone ticket from the user's bookedTickets array
-      final currentUser = FirebaseAuth.instance.currentUser;
-
-      // Check if there's only one ticket remaining in bookedTickets
-      bool isLastTicket = false;
-      if (snapshot.docs.length == 1) {
-        isLastTicket = true;
-      }
-
-      if (isLastTicket) {
-        // If only one ticket is booked, clear the array completely
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser!.uid)
-            .update({
-          'bookedTickets': FieldValue.delete(),
-        });
-      } else {
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser!.uid)
-            .update({
-          'bookedTickets': FieldValue.arrayRemove([
-            {"id": documentID, "date": widget.ticketData["Dep_date_time"]}
-          ]),
-        });
-      }
-
-      // Update the specific flight document
-      if (snapshot.docs.isNotEmpty) {
-        final batch = FirebaseFirestore.instance.batch();
-        for (var doc in snapshot.docs) {
-          var fcmData = doc.data() as Map<String, dynamic>;
-          log("$fcmData");
-          var tokens = fcmData["fcm"] as List<dynamic>;
-          List<dynamic> bookedTokens = tokens;
-          if (tokens.isNotEmpty) {
-            if (bookedTokens.contains(fcmToken)) {
-              bookedTokens.remove(fcmToken);
+          // Find the ticket to remove
+          Map<String, dynamic>? ticketToRemove;
+          for (var ticket in bookedTickets) {
+            if (ticket['id'] == documentID) {
+              ticketToRemove = ticket;
+              break;
             }
           }
-          batch.update(doc.reference, {
-            'booked': false,
-            'bookingTime': null,
-            "fcm": bookedTokens,
-          });
+
+          if (ticketToRemove != null) {
+            // Update the user document to remove the booked flight ID
+            bookedTickets.remove(ticketToRemove);
+
+            await FirebaseFirestore.instance
+                .collection('users')
+                .doc(currentUser.uid)
+                .update({
+              'bookedTickets':
+                  bookedTickets.isEmpty ? FieldValue.delete() : bookedTickets,
+            });
+
+            // Fetch the flight document
+            final flightDoc = await FirebaseFirestore.instance
+                .collection('Flights')
+                .doc(documentID)
+                .get();
+
+            if (flightDoc.exists) {
+              List<dynamic> fcmTokens = flightDoc.data()?['fcm'] ?? [];
+
+              if (fcmTokens.contains(fcmToken)) {
+                fcmTokens.remove(fcmToken);
+              }
+
+              // Update the flight document to remove the FCM token and update booking status
+              await FirebaseFirestore.instance
+                  .collection('Flights')
+                  .doc(documentID)
+                  .update({
+                'booked': fcmTokens.isNotEmpty,
+                'bookingTime': FieldValue.serverTimestamp(),
+                'fcm': fcmTokens,
+              });
+            }
+
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Booking undone successfully!'),
+              ),
+            );
+
+            Navigator.pop(context);
+          } else {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Ticket not found in your booked tickets.'),
+              ),
+            );
+          }
+        } else {
+          ScaffoldMessenger.of(context).showSnackBar(
+            const SnackBar(
+              content: Text('User not found. Please log in again.'),
+            ),
+          );
         }
-        await batch.commit();
+      } else {
+        ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(
+            content: Text('Failed to get FCM token. Please try again.'),
+          ),
+        );
       }
-
-      ScaffoldMessenger.of(context).showSnackBar(
-        const SnackBar(
-          content: Text('Booking undone successfully!'),
-        ),
-      );
-
-      Navigator.pop(context);
     } catch (e) {
       print('Error undoing booking: $e');
       ScaffoldMessenger.of(context).showSnackBar(
