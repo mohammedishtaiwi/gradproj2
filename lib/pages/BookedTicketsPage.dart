@@ -118,11 +118,11 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                 for (var element in snapshot.data!.docs) {
                   apiData.add(element.data());
                 }
-                apiData.sort((a, b) {
-                  DateTime dateA = timestampToDateTime(a['Dep_date_time']);
-                  DateTime dateB = timestampToDateTime(b['Dep_date_time']);
-                  return dateA.compareTo(dateB);
-                });
+                // apiData.sort((a, b) {
+                //   DateTime dateA = timestampToDateTime(a['Dep_date_time']);
+                //   DateTime dateB = timestampToDateTime(b['Dep_date_time']);
+                //   return dateA.compareTo(dateB);
+                // });
 
                 return SingleChildScrollView(
                   child: Column(

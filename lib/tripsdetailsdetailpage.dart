@@ -1,5 +1,3 @@
-// ignore_for_file: camel_case_types, sort_child_properties_last
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
@@ -143,9 +141,6 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                             'Amman',
                             style: TextStyle(
                               fontSize: 24,
-                              // color: notifire.getdarkscolor,
-                              // fontWeight: FontWeight.w400,
-                              // fontFamily: 'Gilroy'
                             ),
                           ),
                           Column(
@@ -460,7 +455,6 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                             const SizedBox(height: 12),
                             const Divider(thickness: 1),
                             const SizedBox(height: 12),
-                            //   if (widget.ticketData['Flight_status'] == "Crown Class")
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -600,96 +594,46 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
     }
   }
 
-  Future<void> _undoBooking(BuildContext context, String documentID,
-      Map<String, dynamic> ticketData) async {
+  Future<void> _undoBooking(
+    BuildContext context,
+    String documentID,
+    Map<String, dynamic> ticketData,
+  ) async {
     try {
-      // Get the FCM token of the user's device
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
+      // Get the current user
+      final currentUser = FirebaseAuth.instance.currentUser;
 
-      if (fcmToken != null) {
-        final currentUser = FirebaseAuth.instance.currentUser;
-        if (currentUser != null) {
-          // Fetch the current user's booked tickets
-          final userDoc = await FirebaseFirestore.instance
-              .collection('users')
-              .doc(currentUser.uid)
-              .get();
-
-          List<dynamic> bookedTickets = userDoc.data()?['bookedTickets'] ?? [];
-
-          // Find the ticket to remove
-          Map<String, dynamic>? ticketToRemove;
-          for (var ticket in bookedTickets) {
-            if (ticket['id'] == documentID) {
-              ticketToRemove = ticket;
-              break;
-            }
-          }
-
-          if (ticketToRemove != null) {
-            // Update the user document to remove the booked flight ID
-            bookedTickets.remove(ticketToRemove);
-
-            await FirebaseFirestore.instance
-                .collection('users')
-                .doc(currentUser.uid)
-                .update({
-              'bookedTickets':
-                  bookedTickets.isEmpty ? FieldValue.delete() : bookedTickets,
-            });
-
-            // Fetch the flight document
-            final flightDoc = await FirebaseFirestore.instance
-                .collection('Flights')
-                .doc(documentID)
-                .get();
-
-            if (flightDoc.exists) {
-              List<dynamic> fcmTokens = flightDoc.data()?['fcm'] ?? [];
-
-              if (fcmTokens.contains(fcmToken)) {
-                fcmTokens.remove(fcmToken);
-              }
-
-              // Update the flight document to remove the FCM token and update booking status
-              await FirebaseFirestore.instance
-                  .collection('Flights')
-                  .doc(documentID)
-                  .update({
-                'booked': fcmTokens.isNotEmpty,
-                'bookingTime': FieldValue.serverTimestamp(),
-                'fcm': fcmTokens,
-              });
-            }
-
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Booking undone successfully!'),
-              ),
-            );
-
-            Navigator.pop(context);
-          } else {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(
-                content: Text('Ticket not found in your booked tickets.'),
-              ),
-            );
-          }
-        } else {
-          ScaffoldMessenger.of(context).showSnackBar(
-            const SnackBar(
-              content: Text('User not found. Please log in again.'),
-            ),
-          );
-        }
-      } else {
-        ScaffoldMessenger.of(context).showSnackBar(
-          const SnackBar(
-            content: Text('Failed to get FCM token. Please try again.'),
-          ),
-        );
+      if (currentUser == null) {
+        throw Exception('No current user found.');
       }
+
+      // Remove the specific ticket from the user's booked tickets
+      await FirebaseFirestore.instance
+          .collection('users')
+          .doc(currentUser.uid)
+          .update({
+        'bookedTickets': FieldValue.arrayRemove([
+          {"id": documentID, "date": ticketData["Dep_date_time"]}
+        ]),
+      });
+
+      // Update the flight document
+      await FirebaseFirestore.instance
+          .collection('Flights')
+          .doc(documentID)
+          .update({
+        'booked': false,
+        'bookingTime': null,
+        'fcm': FieldValue.arrayRemove([]), // Remove FCM token if needed
+      });
+
+      ScaffoldMessenger.of(context).showSnackBar(
+        const SnackBar(
+          content: Text('Booking undone successfully!'),
+        ),
+      );
+
+      Navigator.pop(context);
     } catch (e) {
       print('Error undoing booking: $e');
       ScaffoldMessenger.of(context).showSnackBar(
@@ -702,9 +646,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
 
   String _formatFlightTime(Timestamp flightTime) {
     DateTime dateTime = flightTime.toDate();
-
     String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
-
     return formattedTime;
   }
 
