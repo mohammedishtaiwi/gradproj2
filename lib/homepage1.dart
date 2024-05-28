@@ -209,7 +209,7 @@ class _home1State extends State<home1> with TickerProviderStateMixin {
                       return Row(
                         children: [
                           Text(
-                            "    Welcome, ${snapshot.data!['name']}",
+                            "    Welcome, ${snapshot.data!['username']}",
                             style: TextStyle(
                                 color: notifire.getdarkscolor,
                                 fontWeight: FontWeight.w400,

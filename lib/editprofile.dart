@@ -272,8 +272,8 @@ class _editprofileState extends State<editprofile> {
                       hintStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
-                      hintText: "Enter New Username",
-                      labelText: "NAME",
+                      hintText: "Enter New Email",
+                      labelText: "Email",
                       labelStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                     ),
@@ -308,8 +308,8 @@ class _editprofileState extends State<editprofile> {
                       hintStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
-                      hintText: 'Enter New Email',
-                      labelText: "EMAIL",
+                      hintText: 'Enter New Name',
+                      labelText: "Name",
                       labelStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                     ),
