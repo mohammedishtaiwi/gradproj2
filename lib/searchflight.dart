@@ -1,13 +1,11 @@
 // ignore_for_file: camel_case_types, sort_child_properties_last, non_constant_identifier_names
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gradproj2/tripsdetailsdetailpage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:gradproj2/pages/tickets.dart';
 import 'package:intl/intl.dart';
-import 'package:gradproj2/helpers/date.dart';
 
 class searchflight extends StatefulWidget {
   const searchflight({Key? key}) : super(key: key);
@@ -59,15 +57,15 @@ class _searchflightState extends State<searchflight>
       key: _scaffoldKey,
       body: Column(
         children: [
-          const Padding(
-              padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
-              child: Text(
-                'Nearest Booked Ticket',
-                style: TextStyle(
-                    fontFamily: "gilroy",
-                    fontSize: 20,
-                    fontWeight: FontWeight.bold),
-              )),
+          // const Padding(
+          //     padding: EdgeInsets.fromLTRB(0, 25, 0, 0),
+          //     child: Text(
+          //       'Nearest Booked Ticket',
+          //       style: TextStyle(
+          //           fontFamily: "gilroy",
+          //           fontSize: 20,
+          //           fontWeight: FontWeight.bold),
+          //     )),
           buildDividerBox(context, userId),
           buildSelectorBox(context),
         ],
@@ -118,7 +116,7 @@ class _searchflightState extends State<searchflight>
                         Positioned.fill(
                           child: Center(
                             child: Text(
-                              'Your upcoming flight will appear here',
+                              'Your nearest booked ticket',
                               style: TextStyle(
                                   color: Colors.black,
                                   fontSize: 18,
@@ -161,7 +159,7 @@ class _searchflightState extends State<searchflight>
                             Positioned.fill(
                               child: Center(
                                 child: Text(
-                                  'Your upcoming flight will appear here',
+                                  'Your nearest booked ticket',
                                   style: TextStyle(
                                     color: Colors.white,
                                     fontSize: 18,
@@ -210,9 +208,9 @@ class _searchflightState extends State<searchflight>
                                     mainAxisAlignment:
                                         MainAxisAlignment.spaceBetween,
                                     children: [
-                                      Text(
+                                      const Text(
                                         'Amman',
-                                        style: const TextStyle(
+                                        style: TextStyle(
                                             fontSize: 20,
                                             fontWeight: FontWeight.w400,
                                             fontFamily: 'Gilroy'),
@@ -667,7 +665,7 @@ class _searchflightState extends State<searchflight>
                                           style: TextStyle(
                                               color: selectedIndex == index
                                                   ? Colors.white
-                                                  : Color.fromARGB(
+                                                  : const Color.fromARGB(
                                                       255, 0, 0, 0),
                                               fontSize: 16,
                                               fontFamily: 'Gilroy',

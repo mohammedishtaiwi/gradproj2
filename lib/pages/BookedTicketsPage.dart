@@ -79,8 +79,6 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
             var userData = snapshot.data!.data() as Map<String, dynamic>;
             var bookedTickets = userData['bookedTickets'] ?? [];
 
-       
-
             log("$bookedTickets");
             var bookedTicketsIds = [];
             for (var element in bookedTickets) {
@@ -120,11 +118,11 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                 for (var element in snapshot.data!.docs) {
                   apiData.add(element.data());
                 }
-                apiData.sort((a, b) {
-                  DateTime dateA = timestampToDateTime(a['Dep_date_time']);
-                  DateTime dateB = timestampToDateTime(b['Dep_date_time']);
-                  return dateA.compareTo(dateB);
-                });
+                // apiData.sort((a, b) {
+                //   DateTime dateA = timestampToDateTime(a['Dep_date_time']);
+                //   DateTime dateB = timestampToDateTime(b['Dep_date_time']);
+                //   return dateA.compareTo(dateB);
+                // });
 
                 return SingleChildScrollView(
                   child: Column(
@@ -321,7 +319,8 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
                                       ),
                                     ),
                                     Container(
-                                      color: Color.fromARGB(255, 216, 230, 238),
+                                      color: const Color.fromARGB(
+                                          255, 216, 230, 238),
                                       child: Row(
                                         children: <Widget>[
                                           const SizedBox(
@@ -591,13 +590,14 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
           List<dynamic> bookedTickets = userSnapshot['bookedTickets'];
 
           int total = 0;
-          for (String ticketId in bookedTickets) {
+          for (var ticket in bookedTickets) {
             DocumentSnapshot ticketSnapshot = await FirebaseFirestore.instance
                 .collection('Flights')
-                .doc(ticketId)
+                .doc(ticket['id'])
                 .get();
 
-            if (ticketSnapshot.exists) {
+            if (ticketSnapshot.exists &&
+                ticketSnapshot['Flight_status'] != 'Cancelled') {
               var ticketPrice = ticketSnapshot['Ticket_crown_price'];
               if (ticketPrice is int) {
                 total += ticketPrice;
@@ -610,6 +610,8 @@ class _BookedTicketsPageState extends State<BookedTicketsPage> {
           setState(() {
             totalAmount = total;
           });
+
+          print(totalAmount);
         }
       } catch (error) {
         print('Error fetching total amount: $error');

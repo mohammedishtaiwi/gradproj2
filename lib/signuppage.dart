@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:image_picker/image_picker.dart';
-import 'package:gradproj2/apiwrapper.dart';
 
 class signup extends StatefulWidget {
   const signup({Key? key}) : super(key: key);
@@ -208,16 +206,16 @@ class _SignupState extends State<signup> {
                   heroTag: 'Sign-up',
                   shape: RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(12)),
+                  backgroundColor: const Color.fromARGB(255, 114, 151, 172),
+                  onPressed: () {
+                    _signUp();
+                  },
                   child: const Text('SIGN UP',
                       style: TextStyle(
                           fontWeight: FontWeight.w500,
                           fontSize: 18,
                           color: Colors.white,
                           fontFamily: 'Gilroy')),
-                  backgroundColor: Color.fromARGB(255, 114, 151, 172),
-                  onPressed: () {
-                    _signUp();
-                  },
                 ),
               ],
             ),

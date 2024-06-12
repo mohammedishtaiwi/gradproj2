@@ -8,7 +8,6 @@ import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_storage/firebase_storage.dart';
 
 // ignore: camel_case_types
 class editprofile extends StatefulWidget {
@@ -112,9 +111,10 @@ class _editprofileState extends State<editprofile> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(16),
                 ),
+                alignment: Alignment.center,
                 child: Center(
                   child: IconButton(
-                    icon: Icon(
+                    icon: const Icon(
                       Icons.arrow_back_ios_new_outlined,
                     ),
                     iconSize: 14,
@@ -128,7 +128,6 @@ class _editprofileState extends State<editprofile> {
                     },
                   ),
                 ),
-                alignment: Alignment.center,
               ),
             ),
           ),
@@ -168,7 +167,7 @@ class _editprofileState extends State<editprofile> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                backgroundColor: Color.fromARGB(255, 114, 151, 172),
+                backgroundColor: const Color.fromARGB(255, 114, 151, 172),
               ),
             ),
             const SizedBox(height: 16),
@@ -191,7 +190,7 @@ class _editprofileState extends State<editprofile> {
                 shape: RoundedRectangleBorder(
                   borderRadius: BorderRadius.circular(12),
                 ),
-                backgroundColor: Color.fromARGB(255, 114, 151, 172),
+                backgroundColor: const Color.fromARGB(255, 114, 151, 172),
               ),
             ),
           ],
@@ -273,8 +272,8 @@ class _editprofileState extends State<editprofile> {
                       hintStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
-                      hintText: "Enter New Username",
-                      labelText: "NAME",
+                      hintText: "Enter New Email",
+                      labelText: "Email",
                       labelStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                     ),
@@ -309,8 +308,8 @@ class _editprofileState extends State<editprofile> {
                       hintStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                       fillColor: Colors.white,
-                      hintText: 'Enter New Email',
-                      labelText: "EMAIL",
+                      hintText: 'Enter New Name',
+                      labelText: "Name",
                       labelStyle: TextStyle(
                           color: notifire.getdarkscolor, fontFamily: "gilroy"),
                     ),

@@ -1,11 +1,7 @@
-// ignore_for_file: camel_case_types, sort_child_properties_last
-
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:gradproj2/theme/theme_manager.dart';
-import 'package:gradproj2/tripspagenaviggationbar.dart';
 import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -18,7 +14,7 @@ import 'homepage1.dart';
 class tripsdetailpage extends StatefulWidget {
   final Map<String, dynamic> ticketData;
   final String documentID;
-  tripsdetailpage({
+  const tripsdetailpage({
     Key? key,
     required this.ticketData,
     required this.documentID,
@@ -69,7 +65,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
           if (userData != null && userData.containsKey('bookedTickets')) {
             List<dynamic>? bookedTickets = userData['bookedTickets'];
             if (bookedTickets != null) {
-              isTicketBooked = bookedTickets.contains(widget.documentID);
+              isTicketBooked = bookedTickets
+                  .any((ticket) => ticket['id'] == widget.documentID);
             }
           }
         }
@@ -144,9 +141,6 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                             'Amman',
                             style: TextStyle(
                               fontSize: 24,
-                              // color: notifire.getdarkscolor,
-                              // fontWeight: FontWeight.w400,
-                              // fontFamily: 'Gilroy'
                             ),
                           ),
                           Column(
@@ -158,7 +152,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                       Image.asset('assets/selectflight.png')),
                               Text(
                                 '${widget.ticketData['Flight_duration']}',
-                                style: TextStyle(
+                                style: const TextStyle(
                                     fontSize: 12,
                                     fontWeight: FontWeight.bold,
                                     color: Colors.grey,
@@ -203,7 +197,8 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                                   ),
                                 ),
                                 Text(
-                                  '${_formatFlightTime(widget.ticketData['Dep_date_time'])}',
+                                  _formatFlightTime(
+                                      widget.ticketData['Dep_date_time']),
                                   style: TextStyle(
                                       color: notifire.getdarkscolor,
                                       fontSize: 16,
@@ -460,7 +455,6 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                             const SizedBox(height: 12),
                             const Divider(thickness: 1),
                             const SizedBox(height: 12),
-                            //   if (widget.ticketData['Flight_status'] == "Crown Class")
                             Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -493,7 +487,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 114, 151, 172)),
+                                      const Color.fromARGB(255, 114, 151, 172)),
                                 ),
                                 onPressed: () {
                                   _bookTicket(context, widget.ticketData,
@@ -515,10 +509,11 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
                               ElevatedButton(
                                 style: ButtonStyle(
                                   backgroundColor: MaterialStateProperty.all(
-                                      Color.fromARGB(255, 114, 151, 172)),
+                                      const Color.fromARGB(255, 114, 151, 172)),
                                 ),
                                 onPressed: () {
-                                  _undoBooking(context, widget.documentID);
+                                  _undoBooking(context, widget.documentID,
+                                      widget.ticketData);
                                 },
                                 child: const Text(
                                   'Cancel Booking',
@@ -599,58 +594,37 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
     }
   }
 
-  Future<void> _undoBooking(BuildContext context, String documentID) async {
+  Future<void> _undoBooking(
+    BuildContext context,
+    String documentID,
+    Map<String, dynamic> ticketData,
+  ) async {
     try {
-      String? fcmToken = await FirebaseMessaging.instance.getToken();
-
-      print('Undoing booking for document with $documentID');
-
-      final QuerySnapshot snapshot = await FirebaseFirestore.instance
-          .collection('Flights')
-          .where('booked', isEqualTo: true)
-          .get();
-
-      if (snapshot.docs.length == 1) {
-        // If only one ticket is booked, clear the array
-        final currentUser = FirebaseAuth.instance.currentUser;
-        await FirebaseFirestore.instance
-            .collection('users')
-            .doc(currentUser!.uid)
-            .update({
-          'bookedTickets': FieldValue.delete(),
-        });
-      }
-
-      // Otherwise, update the specific ticket document
-      if (snapshot.docs.isNotEmpty) {
-        final batch = FirebaseFirestore.instance.batch();
-        for (var doc in snapshot.docs) {
-          var fcmData = doc.data() as Map<String, dynamic>;
-          log("$fcmData");
-          var tokens = fcmData["fcm"] as List<dynamic>;
-          List<dynamic> bookedTokens = tokens;
-          if (tokens.isNotEmpty) {
-            if (bookedTokens.contains(fcmToken)) {
-              bookedTokens.remove(fcmToken);
-            }
-          }
-          // bookedTokens.add();
-          batch.update(doc.reference, {
-            'booked': false,
-            'bookingTime': null,
-            "fcm": bookedTokens,
-          });
-        }
-        await batch.commit();
-      }
-
-      // Remove the undone ticket from the user's bookedTickets array
+      // Get the current user
       final currentUser = FirebaseAuth.instance.currentUser;
+
+      if (currentUser == null) {
+        throw Exception('No current user found.');
+      }
+
+      // Remove the specific ticket from the user's booked tickets
       await FirebaseFirestore.instance
           .collection('users')
-          .doc(currentUser!.uid)
+          .doc(currentUser.uid)
           .update({
-        'bookedTickets': FieldValue.arrayRemove([documentID]),
+        'bookedTickets': FieldValue.arrayRemove([
+          {"id": documentID, "date": ticketData["Dep_date_time"]}
+        ]),
+      });
+
+      // Update the flight document
+      await FirebaseFirestore.instance
+          .collection('Flights')
+          .doc(documentID)
+          .update({
+        'booked': false,
+        'bookingTime': null,
+        'fcm': FieldValue.arrayRemove([]), // Remove FCM token if needed
       });
 
       ScaffoldMessenger.of(context).showSnackBar(
@@ -672,9 +646,7 @@ class _tripsdetailpageState extends State<tripsdetailpage> {
 
   String _formatFlightTime(Timestamp flightTime) {
     DateTime dateTime = flightTime.toDate();
-
     String formattedTime = DateFormat('yyyy-MM-dd').format(dateTime);
-
     return formattedTime;
   }
 

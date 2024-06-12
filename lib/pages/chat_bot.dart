@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:dialog_flowtter/dialog_flowtter.dart';
 import 'package:flutter/material.dart';
@@ -138,7 +137,7 @@ class _ChatState extends State<Chat> {
                       _controller.clear();
                     },
                     icon: const Icon(Icons.send),
-                    color: Color.fromARGB(255, 0, 0, 0),
+                    color: const Color.fromARGB(255, 0, 0, 0),
                   ),
                 ],
               ),
@@ -164,7 +163,7 @@ class _ChatState extends State<Chat> {
                   shape: BoxShape.circle,
                   border: Border.all(
                     color: selectedAvatar == title
-                        ? Color.fromARGB(255, 31, 120, 193)
+                        ? const Color.fromARGB(255, 31, 120, 193)
                         : Colors.transparent,
                     width: 3.0,
                   ),
